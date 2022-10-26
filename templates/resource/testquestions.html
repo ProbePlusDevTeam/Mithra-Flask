@@ -1,0 +1,86 @@
+<html>
+    <form id="addQuestion" method="post" >
+        <div class="">
+        <h5>English</h5>
+        <div class="card p-4">
+            <div class="form-outline mb-4 ">
+                <!-- <label class="form-label" for="form2Example11">Device Name</label> -->
+                <textarea rows="3" class="form-control" id="ques_e" placeholder="Question"></textarea>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <input type="text" id="opt1_e" class="form-control"
+                            placeholder="Option 1" />   
+                        </div>
+                        <div class="col-6">
+                            <input type="text" id="opt2_e" class="form-control"
+                            placeholder="Option 2" />   
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" id="opt3_e" class="form-control"
+                            placeholder="Option 3" />   
+                        </div>
+                        <div class="col-6">
+                            <input type="text" id="opt4_e" class="form-control"
+                            placeholder="Option 4" />
+
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload English audio file</label>
+                        <input class="form-control" type="file" id="audio_e">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+        <h5>Kannada</h5>
+        <div class="card p-4">
+            <div class="form-outline mb-4 ">
+            <!-- <label class="form-label" for="form2Example11">Device Name</label> -->
+                <textarea rows="3" class="form-control" id="ques_k" placeholder="Question"></textarea>
+            </div>
+
+                <div class="form-outline mb-4">
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <input type="text" id="opt1_k" class="form-control"
+                            placeholder="Option 1" />   
+                        </div>
+                        <div class="col-6">
+                            <input type="text" id="opt2_k" class="form-control"
+                            placeholder="Option 2" />   
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" id="opt3_k" class="form-control"
+                            placeholder="Option 3" />   
+                        </div>
+                        <div class="col-6">
+                            <input type="text" id="opt4_k" class="form-control"
+                            placeholder="Option 4" />
+
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload Kannada audio file</label>
+                        <input class="form-control" type="file" id="audio_k">
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <div class="text-center pt-1 mt-3 pb-1">
+        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" onclick="addQuestion();">Submit</button>
+        </a>
+        </div> 
+    </form>
+</html>

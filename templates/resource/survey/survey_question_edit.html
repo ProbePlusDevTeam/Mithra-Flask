@@ -1,0 +1,771 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Edit Survey Question {% endblock %}
+
+{% block content %}
+
+<script>
+  $(document).ready(function () {
+
+    var MaxInputs = 8; //maximum input boxes allowed
+    var InputsWrapper = $("#addOptionEng"); //Input boxes wrapper ID
+    var InputsWrapper2 = $("#addOptionKan");
+    var AddButton = $("#AddMoreFileBox"); //Add button ID
+
+    var x = InputsWrapper.length; //initlal text box count
+    var y = InputsWrapper2.length;
+    var FieldCount = 1; //to keep track of text box added
+
+    $(AddButton).click(function (e)  //on add input button click
+    {
+      if (x <= MaxInputs && y <= MaxInputs) //max input box allowed
+      {
+        FieldCount++; //text box added increment
+        //add input box
+
+        $(InputsWrapper).append('<div class="row mb-3 " id="engDiv"><div class="d-flex"><div class="col-lg-2 col-md-2 col-sm-12 d-flex  "><div class="col-6"><label for="exampleInputEmail1" class=" modal-text  px-2">English </label></div><div class="col-6"><input type="text" class="form-control input-text  ques_num_e w-50" placeholder="Opt"></div></div><div class="col-lg-8"><div id="InputsWrapper2"><div class="row"><div class="col-xs-10"><input type="text" name="skill[]" placeholder="Options" id="eng_opt"class="form-control name_list ques_e" /></div></div></div></div><div class="col-lg-1 col-md-2 col-sm-12 px-2 "><input type="text" class="form-control input-text w_e" placeholder="W" id="weitage"></div><div class="col-lg-1 col-md-5 col-sm-12 px-1"><input type="text" class="form-control input-text ob_e" placeholder="O/B" id="sub_branch"></div><button class="btn btn-danger removeclass px-1">×</button></div></div></div>');
+        $(InputsWrapper2).append('<div class="row mb-3 " id="kanDiv"><div class="d-flex"><div class="col-lg-2 col-md-2 col-sm-12 d-flex  "><div class="col-6"><label for="exampleInputEmail1" class=" modal-text  px-2">Kannada </label></div><div class="col-6"></div></div><div class="col-lg-8"><div id="InputsWrapper2"><div class="row"><div class="col-xs-10"><input type="text" name="skill[]" placeholder="Options" id="kan_opt"class="form-control name_list ques_k" /></div></div></div></div><div class="col-lg-1 col-md-2 col-sm-12 px-2 "><button class="btn btn-danger d-none removeclass px-1">×</button></div></div></div>');
+        document.getElementById("addOptionEng").style.display = "block"
+        document.getElementById("addOptionKan").style.display = "block"
+
+        x++; //text box increment
+        y++;
+      }
+      return false;
+    });
+
+    $("body").on("click", ".removeclass", function (e) { //user click on remove text
+      if (x > 1 && y > 1) {
+        // $(this).parent('div').remove(); //remove text box
+        // $(this).parent('#addOptionKan').remove();
+        // $(this).parent('#addOptionEng').remove();
+        // $(this).parent('div').remove()
+        var engDiv =
+          document.getElementById("engDiv");
+        engDiv.remove();
+
+        var kanDiv =
+          document.getElementById("kanDiv");
+        kanDiv.remove();
+        // $(this).parent().remove()
+        // document.getElementById("addOptionEng").style.display = "none"
+        // document.getElementById("addOptionKan").style.display = "none"
+
+
+        x--; //decrement textbox
+        y--;
+      }
+      return false;
+    })
+
+    $('#submit').click(function () {
+      $.ajax({
+        url: "/postskill",
+        method: "POST",
+        data: $('#add_skills').serialize(),
+        success: function (data) {
+          alert(data)
+          $('#resultbox').html(data);
+          $('#add_skills')[0].reset();
+        }
+      });
+    });
+
+  });
+</script>
+
+<!-- Content -->
+<div class="container content-wrapper mb-3">
+  <div class="row">
+    <div class="d-flex justify-content-between">
+      <div class="col-6">
+        <ul class="breadcrumb roles_breadcrumb ques_edit_list d-flex">
+          <li><a href="#">Resources</a></li>
+          <li><a href="/que_Surveylist">Survey question</a></li>
+          <li><a href="#">Survey question edit</a></li>
+
+        </ul>
+      </div>
+      <!-- <div class="col-6 qf_button_pos">
+        <button type="submit" class="btn ques_active_button " onclick="">English</button>
+        <button type="submit" class="btn ques_inactive_button" onclick="">ಕನ್ನಡ</button>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- Content -->
+    <div class="view-coordinator">
+
+      <div class="mt-4">
+        <div class="card">
+
+          <div class="cards-style  card-body role-bg">
+
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row mb-4">
+
+
+                  <div class="d-flex  justify-content-center ">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-2 px-2 ">
+                      <input type="text" class="form-control input-text" value="Q:English" disabled>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-1 flex-column">
+                      <input type="number" class="form-control input-text" placeholder="No" id="question-number"
+                        value="{{responses.que_num}}">
+                      <div class="invalid-entry" id="editQnumError"></div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-8 px-2 flex-column">
+                      <textarea rows="3" class="form-control input-text" placeholder="Question"
+                        id="english-question">{{responses.que_e}}</textarea>
+                      <div class="invalid-entry" id="editEngQError"></div>
+                      <!-- <input type="text" class="form-control input-text" placeholder="Question"> -->
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-1">
+                      <input type="text" class="form-control input-text" placeholder="Q/B" id="question-branch"
+                        value="{{responses.que_branch}}">
+                    </div>
+                  </div>
+                </div>
+                <input type="text" class="d-none" id="question_id" value="{{responses.que_pk_id}}">
+                <input type="text" class="d-none" id="sur_ques_id" value="{{responses.sur_id}}">
+                <div class="row mb-4">
+                  <div class="d-flex justify-content-center ">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-2 px-2">
+                      <input type="text" class="form-control input-text" value="Q:Kannada" disabled>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-1">
+                      <input type="text" class="form-control input-text" placeholder="No" style="display: none;">
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-8 px-2 flex-column">
+                      <textarea rows="3" class="form-control input-text" placeholder="Question"
+                        id="kannada-question">{{responses.que_k}}</textarea>
+                      <div class="invalid-entry" id="editKanQError"></div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-1">
+                      <input type="text" class="form-control input-text" placeholder="Q/B" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="d-flex ">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 ">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Section</label>
+                    </div>
+                    {% if responses.section == 'yes' %}
+                    <div class="col-lg-1 col-md-2 col-sm-1">
+                      <input type="checkbox" id="question-section" checked>
+                    </div>
+                    {% else %}
+                    <div class="col-lg-1 col-md-2 col-sm-11">
+                      <input type="checkbox" id="question-section" >
+                    </div>
+                    {% endif %}
+                    <div class="col-lg-2 col-md-2 col-sm-4">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3 px-3">Section Name</label>
+                    </div>
+                    <div class="col-lg-7 col-md-5 col-sm-4">
+                      <input type="text" class="form-control input-text" id="question-sectionName"
+                        value="{{responses.section_name_e}}">
+                        <input type="text" class="form-control input-text" id="question-sectionNameKannada"
+                        value="{{responses.section_name_k}}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="d-flex ">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-6">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Type </label>
+                    </div>
+                    <div class="d-flex col-lg-9 col-md-9 col-sm-8 type_direction">
+                      <div class="form-check px-4 pad-5 pad-2">
+                        {% if responses.opt_type == 'single_select' %}
+                        <input class="form-check-input" type="radio" name="type" id="single_q"
+                          onclick="viewQuesOptions1()" value="single_select" checked>
+                        {% else %}
+                        <input class="form-check-input" type="radio" name="type" id="single_q"
+                          onclick="viewQuesOptions1()" value="single_select">
+                        {% endif %}
+
+                        <label class="form-check-label " for="type">
+                          Single
+                        </label>
+                      </div>
+
+                      <div class="form-check px-5 pad-2">
+                        {% if responses.opt_type == 'multi_select' %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions2()"
+                          id="multiple_q" value="multi_select" checked>
+                        {% else %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions2()"
+                          id="multiple_q" value="multi_select">
+                        {% endif %}
+                        <label class="form-check-label" for="type">
+                          Multiple
+                        </label>
+                      </div>
+
+                      <div class="form-check px-5 pad-2">
+                        {% if responses.opt_type == 'text' %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions3()"
+                          id="text_q" value="text" checked>
+                        {% else %}
+
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions3()"
+                          id="text_q" value="text">
+                        {% endif %}
+                        <label class="form-check-label" for="type">
+                          Text
+                        </label>
+                      </div>
+
+                      <div class="form-check px-5 pad-2">
+                        {% if responses.opt_type == 'date' %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions4()"
+                          id="date_q" value="date" checked>
+                        {% else %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions4()"
+                          id="date_q" value="date">
+                        {% endif %}
+                        <label class="form-check-label" for="type">
+                          Date
+                        </label>
+                      </div>
+
+                      <div class="form-check px-4 pad-5 pad-2">
+                        {% if responses.opt_type == 'numeric' %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions5()"
+                          id="numeric_q" value="numeric" checked>
+                        {% else %}
+                        <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions5()"
+                          id="numeric_q" value="numeric">
+                        {% endif %}
+                        <label class="form-check-label" for="type">
+                          Numeric
+                        </label>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div class="parent_all_ques" id="parent_all_ques" style="display: block;">
+                  {% if responses.opt_type == "multi_select" %}
+
+                  {% for count in range(responses.no_opt) %}
+
+                  {% set count = count + 1 %}
+
+
+                  {% set opt_no = 'opt' ~ count ~ '_no' %}
+                  {% set ans_key = 'opt' ~ count ~ '_e' %}
+                  {% set wei_key = 'opt' ~ count ~ '_weight' %}
+                  {% set sb_key = 'opt' ~ count ~ '_subbranch' %}
+                  <!-- {% set opt_id = 'optid' ~ count %} -->
+
+                  {% set optionnumber = responses[opt_no] %}
+                  {% set answer = responses[ans_key] %}
+                  {% set weightage = responses[wei_key] %}
+                  {% set sub_branch = responses[sb_key] %}
+                  <!-- {% set optid = responses[opt_id] %} -->
+
+
+                  <div class="row mb-4 g-5">
+
+
+
+
+                    <div class="d-flex">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-2">
+                        <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">English: {{ optionnumber
+                          }}</label>
+                      </div>
+
+
+
+                      <div class="col-lg-8 col-md-5 col-sm-3 col-8 col-xs-3">
+                        <input type="text" class="form-control input-text ques_e" placeholder="Options" id="eng_opt"
+                          value="{{ answer }}">
+                      </div>
+
+                      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 col-1 px-2 ">
+                        <input type="text" class="form-control input-text w_e" placeholder="W" value="{{ weightage }}"
+                          id="weitage">
+                      </div>
+                      <div class="col-lg-1 col-md-1 col-sm-1 col-1 px-1">
+                        <input type="text" class="form-control input-text ob_e" placeholder="O/B"
+                          value="{{ sub_branch }}" id="sub_branch">
+                      </div>
+                      <input type="text" class="opt_ids d-none" id="opt_id" value={{optid}}>
+
+
+
+                    </div>
+                  </div>
+
+                  {% endfor %}
+
+
+                  {% for count in range(responses.no_opt) %}
+
+                  {% set count = count + 1 %}
+
+                  {% set opt_no = 'opt' ~ count ~ '_no' %}
+                  {% set ans_k = 'opt' ~ count ~ '_k' %}
+                  <!-- {% set opt_id = 'optid' ~ count %} -->
+
+                  {% set optionnumber = responses[opt_no] %}
+
+
+                  {% set answer = responses[ans_k] %}
+                  <!-- {% set optid = responses[opt_id] %} -->
+
+
+                  <input type="text" id="no_option" value="{{responses.no_opt}}" style="display: none;" />
+                  <div class="row mb-4 g-5">
+                    <div class="d-flex">
+                      <div class="col-lg-2 col-md-2 col-sm-12 ">
+                        <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Kannada: {{ optionnumber
+                          }}</label>
+                      </div>
+                      <div class="col-lg-8 col-md-2 col-sm-12 ">
+                        <input type="text" class="form-control input-text ques_k" id="kan_opt" placeholder="Options"
+                          value="{{answer}}">
+                      </div>
+                      <div class="col-lg-1 col-md-2 col-sm-12 px-2 ">
+                        <!-- <input type="text" class="form-control input-text w_k" placeholder="W"> -->
+                      </div>
+                      <div class="col-lg-1 col-md-5 col-sm-12 px-1">
+                        <!-- <input type="text" class="form-control input-text ob_k" placeholder="O/B"> -->
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  {% elif responses.opt_type == "single_select" %}
+
+
+                  {% for count in range(responses.no_opt) %}
+
+                  {% set count = count + 1 %}
+
+
+                  {% set opt_no = 'opt' ~ count ~ '_no' %}
+                  {% set ans_key = 'opt' ~ count ~ '_e' %}
+                  {% set wei_key = 'opt' ~ count ~ '_weight' %}
+                  {% set sb_key = 'opt' ~ count ~ '_subbranch' %}
+                  {% set active_opt = 'opt' ~ count ~ '_active' %}
+                  <!-- {% set opt_id = 'optid' ~ count %} -->
+
+                  {% set optionnumber = responses[opt_no] %}
+                  {% set answer = responses[ans_key] %}
+                  {% set weightage = responses[wei_key] %}
+                  {% set sub_branch = responses[sb_key] %}
+                  {% set active_data = responses[active_opt] %}
+                  <!-- {% set optid = responses[opt_id] %} -->
+
+                  <form name="add_skills" id="add_skills">
+
+
+
+                    <div class="row mb-4 g-5">
+
+
+
+
+                      <div class="d-flex">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 d-flex align-items-center">
+                          <div class="col-6">
+                            <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">English </label>
+                          </div>
+                          <div class="col-6 d-flex">
+                            <input type="text" class="form-control input-text ques_num_e w-50" value="{{optionnumber}}"
+                              placeholder="Opt">
+                          </div>
+                        </div>
+
+                        <input type="text" id="optStatusID" value="" class="d-none">
+
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6 d-flex">
+                          {% if active_data == "yes" %}
+                          <button type="button" class="btn textBoxActive" name="{{optid}}" onclick="optEnglishId(name)"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Edit status</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="optionId-now mb-4">
+                                    <div class="d-flex justify-content-between">
+                                      <div class="col-6 ">
+                                        <input type="radio" id="editOptionactive" value="yes" class="gender"
+                                          name="editOptionactive" checked='checked' />
+                                        <label for="editOptionactive" id="editcoactive">Active</label>
+                                      </div>
+
+                                      <div class="col-6 ">
+
+                                        <input type="radio" id="editOptionInactive" value="no" class="gender"
+                                          name="editOptionactive" />
+                                        <label for="editOptionInactive" id="editcoinactive">Inactive</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn add_button text-center" name="{{optid}}"
+                                      onclick="chageOptEnglishId(name)">Save changes</button>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          {% else %}
+                          <button type="button" class="btn textBoxInActive" name="{{optid}}"
+                            onclick="optEnglishId(name)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Edit status</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="optionId-now mb-4">
+                                    <div class="d-flex justify-content-between">
+                                      <div class="col-6 ">
+                                        <input type="radio" id="editOptionactive" value="yes" class="gender"
+                                          name="editOptionactive" />
+                                        <label for="editOptionactive" id="editcoactive">Active</label>
+                                      </div>
+
+                                      <div class="col-6 ">
+
+                                        <input type="radio" id="editOptionInactive" value="no" class="gender"
+                                          name="editOptionactive" checked='checked' />
+                                        <label for="editOptionInactive" id="editcoinactive">Inactive</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn add_button text-center" name="{{optid}}"
+                                      onclick="chageOptEnglishId(name)">Save changes</button>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          {% endif %}
+                          <input type="text" class="form-control input-text ques_e px-2" placeholder="Options"
+                            id="eng_opt" value="{{ answer }}">
+
+                        </div>
+
+                        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 px-2 ">
+                          <input type="text" class="form-control input-text w_e" placeholder="W" value="{{ weightage }}"
+                            id="weitage">
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 px-1">
+                          <input type="text" class="form-control input-text ob_e" placeholder="O/B"
+                            value="{{ sub_branch }}" id="sub_branch">
+                        </div>
+                        <input type="text" class="opt_ids d-none" id="opt_id" value={{optid}}>
+
+
+
+                      </div>
+                    </div>
+
+                    {% endfor %}
+                    <div class="row mb-3" id="addOptionEng" style="display: none;">
+                      <input type="text" class="opt_ids d-none" id="opt_id" value="null">
+                    </div>
+
+
+
+                    {% for count in range(responses.no_opt) %}
+
+                    {% set count = count + 1 %}
+
+                    {% set opt_no = 'opt' ~ count ~ '_no' %}
+                    {% set ans_k = 'opt' ~ count ~ '_k' %}
+                    {% set active_opt2 = 'opt' ~ count ~ '_active' %}
+                    <!-- {% set opt_id = 'optid' ~ count %} -->
+
+                    {% set optionnumber = responses[opt_no] %}
+                    {% set active_data2 = responses[active_opt2] %}
+
+
+
+                    {% set answer = responses[ans_k] %}
+                    <!-- {% set optid = responses[opt_id] %} -->
+
+
+                    <input type="text" id="no_option" value="{{responses.no_opt}}" style="display: none;" />
+                    <div class="row mb-4 g-5">
+                      <div class="d-flex">
+                        <div class="col-lg-2 col-md-2 col-sm-2 d-flex align-items-center">
+                          <div class="col-6">
+                            <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Kannada </label>
+                          </div>
+                          <div class="col-6">
+                            <input type="text" class="form-control input-text ques_num_k w-50 d-none" placeholder="Opt">
+                          </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 d-flex">
+                          {% if active_data2 == "yes" %}
+                          <button type="button" class="btn textBoxActive" name="{{optid}}" onclick="optEnglishId(name)"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Edit status</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="optionId-now mb-4">
+                                    <div class="d-flex justify-content-between">
+                                      <div class="col-6 ">
+                                        <input type="radio" id="editOptionactive" value="yes" class="gender"
+                                          name="editOptionactive" checked='checked' />
+                                        <label for="editOptionactive" id="editcoactive">Active</label>
+                                      </div>
+
+                                      <div class="col-6 ">
+
+                                        <input type="radio" id="editOptionInactive" value="no" class="gender"
+                                          name="editOptionactive" />
+                                        <label for="editOptionInactive" id="editcoinactive">Inactive</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn add_button text-center" name="{{optid}}"
+                                      onclick="chageOptEnglishId(name)">Save changes</button>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          {% else %}
+                          <button type="button" class="btn textBoxInActive" name="{{optid}}"
+                            onclick="optEnglishId(name)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Edit status</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="optionId-now mb-4">
+                                    <div class="d-flex justify-content-between">
+                                      <div class="col-6 ">
+                                        <input type="radio" id="editOptionactive" value="yes" class="gender"
+                                          name="editOptionactive" />
+                                        <label for="editOptionactive" id="editcoactive">Active</label>
+                                      </div>
+
+                                      <div class="col-6 ">
+
+                                        <input type="radio" id="editOptionInactive" value="no" class="gender"
+                                          name="editOptionactive" checked='checked' />
+                                        <label for="editOptionInactive" id="editcoinactive">Inactive</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn add_button text-center" name="{{optid}}"
+                                      onclick="chageOptEnglishId(name)">Save changes</button>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          {% endif %}
+                          <input type="text" class="form-control input-text ques_k" id="kan_opt" placeholder="Options"
+                            value="{{answer}}">
+
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-sm-12 px-2 ">
+                          <!-- <input type="text" class="form-control input-text w_k" placeholder="W"> -->
+                        </div>
+                        <div class="col-lg-1 col-md-5 col-sm-12 px-1">
+                          <!-- <input type="text" class="form-control input-text ob_k" placeholder="O/B"> -->
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="row mb-3" id="addOptionKan" style="display: none;">
+
+                      <!-- <input type="text" class="opt_ids d-none" id="opt_id" value="null"> -->
+                    </div>
+
+                    {% endif %}
+
+                  {% if responses.opt_type == "date" %}
+
+                    <div class="row d-none">
+                      <div class="d-flex justify-content-center">
+                        <div class="col-xs-2"><button type="button" name="add" id="AddMoreFileBox"
+                            class="btn more-btn ">Add More</button></div>
+                      </div>
+                    </div>
+                  {% else %}
+                  <div class="row ">
+                    <div class="d-flex justify-content-center">
+                      <div class="col-xs-2"><button type="button" name="add" id="AddMoreFileBox"
+                          class="btn more-btn ">Add More</button></div>
+                    </div>
+                  </div>
+                  {% endif %}
+
+
+                    <!-- <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />   -->
+                  </form>
+                  <div class="row mb-4">
+                    <div class="col-lg-2 col-md-2 col-sm-12">
+                    </div>
+                    <!-- <div class="d-grid col-lg-8 col-md-8 col-sm-12">
+                                          <button type="button" class="btn more-btn"  onclick="addMoreQuesOptions();">Create More Option</button>
+                                      </div> -->
+                  </div>
+                </div>
+
+                <div class="row mb-4 d-flex">
+                  <div class="d-flex">
+                    <div class="col-lg-2 col-md-2 col-sm-12">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Status</label>
+                    </div>
+                    <div class="donate-now">
+                      <div class="d-flex col-lg-8 col-md-8 col-sm-12">
+                        {% if responses.active == "yes" %}
+                        <input type="radio" id="ques_active" value="yes" class="gender" name="ques_status" checked />
+                        <label for="ques_active" id="ques_active">Active</label>
+
+                        <input type="radio" id="ques_inactive" value="no" class="gender" name="ques_status" />
+                        <label for="ques_inactive" id="ques_inactive">Inactive</label>
+                        {% else %}
+                        <input type="radio" id="ques_active" value="yes" class="gender" name="ques_status" />
+                        <label for="ques_active" id="ques_active">Active</label>
+
+                        <input type="radio" id="ques_inactive" value="no" class="gender" name="ques_status" checked />
+                        <label for="ques_inactive" id="ques_inactive">Inactive</label>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="d-flex">
+                    <div class="col-lg-2 col-md-2 col-sm-12"></div>
+                    <div class="col-lg-8 col-md-8 col-sm-12">
+                      <button class="btn add_button" type="submit" name="{{responses.section_name}}"
+                        onclick="UpdateQuestion();">Update</button>
+                    </div>
+                    <div class="d-flex align-items-center col-lg-2 col-sm-2 col-md-2">
+                      <a href="" class="btn more-btn" data-bs-toggle="modal"
+                        data-bs-target="#reUpAudio">Reupload Audio</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="reUpAudio" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Reupload Audio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form enctype="multipart/form-data" id="editActivityImageForm" onsubmit="return false;">
+        <input type="text" value="" id="editVideoId" class="d-none">
+        <div class="modal-body">
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="reuploadImage" class="mb-2 modal-text">English Audio</label>
+              <input type="file" class="form-control" id="reuploadEngAudio" name="reuploadEngAudio" />
+              <div class="invalid-entry" id="reUpEngAudError"></div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="reuploadImage" class="mb-2 modal-text">Kannada Audio</label>
+              <input type="file" class="form-control" id="reuploadKanAudio" name="reuploadKanAudio" />
+              <div class="invalid-entry" id="reUpKanAudError"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button id="reupload-button" class="btn modal-button mt-3" onclick="audioReupload(this.form, event);">
+                Upload </button>
+            </div>
+          </div>
+        </div>
+        <div id="static_file_response"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- / Content -->
+
+<!-- </div> -->
+
+
+{% endblock %}

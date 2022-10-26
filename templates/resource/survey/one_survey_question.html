@@ -1,0 +1,70 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Surveys Questions {% endblock %}
+
+{% block content %} 
+
+
+
+
+<!-- Content -->
+<div class="container">
+    
+    <div class="content-wrapper">
+        <!-- Content -->
+        <div class="view-coordinator view_one_sur_list">
+            <ul class="breadcrumb sur_list_breadcrumbs d-flex">
+                <li><a href="#">Resource</a></li>
+                <li><a href="#">Survey Questions</a></li>
+              </ul>
+            <!-- <div class=""> -->
+                <div class="row sur_list">    
+                    {% for response in responses %}
+
+                    <a href='{{ url_for("questions",version = "eng", PkId=response["survey_pri_id"]) }}'  style="width: fit-content">
+                        <!-- <button class="d-none" name={{response.survey_pri_id}} onclick="question(name);"> -->
+                        <!-- <button class="" type="submit" name={{ response.survey_name }} > -->
+
+                            <div class=" col-4" >
+                            
+                                <div class="survey  mt-5 mb-3" id="survey" >
+                                <!-- <div class="row"> -->
+                                    <div class=" ">
+                                        <div class="p-2">
+                                            <!-- <button type="button" class="btn-light" style="border: 0;" data-bs-toggle="modal" data-bs-target="#questions" > -->
+                                                <div class="card sr_list_card" style="width: 15rem; height: 8em; border-radius: 20px;">
+                                                    {% if response.active == "yes" %}
+                                                        <img src="{{ url_for('static', filename='assets/img/icons/active.svg')}}"/>
+                                                        {%else%}
+                                                        <img src="{{ url_for('static', filename='assets/img/icons/inactive.svg')}}"/>
+                                                    {%endif%}
+                                                    <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <!-- <input type="text" class="" id="sur_name" value={{response.survey_pri_id}} > -->
+                                                    
+                                                    <h5 class="card-title text-center m-0" id="survey_name">{{response.survey_name}}</h5>
+                                                    <!-- <h5 class="card-title text-center m-0" id="ssname">{{response.survey_pri_id}}</h5> -->
+                                                    <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
+                                                    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                                                    </div>
+                                                </div>
+                                            <!-- </button> -->
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+                                </div>
+
+                            </div>
+                        <!-- </button> -->
+                        <!-- </button> -->
+                    </a>
+                    {% endfor %}
+                </div>
+
+               
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

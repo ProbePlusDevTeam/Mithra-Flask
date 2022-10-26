@@ -1,0 +1,189 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Researcher {% endblock %}
+
+{% block content %} 
+
+<div class="view-coordinator">
+    
+    <div class="container container-p-y">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success  alert-dismissible fade show" role="alert">
+          <strong>success </strong> {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>      
+        {% endfor %}
+        <div class="card">
+         
+            <div class="top-role-image">
+                <img src="{{ url_for('static', filename='assets/img/user/user.png')}}" class="view-role-image">
+            </div>
+            <!-- {% for response in responses %}
+            <p>{{response.first_name}}</p>
+            {% endfor %} -->
+            <div class="card-body role-bg">
+                <div class="role-bg p-4 mb-4">
+                    <div class="row">
+                        <div class="d-flex justify-content-between">
+        
+                            <h5 class="basic-details p-1 mb-3">Basic Details</h5>
+                            <input type="text" id="rename" class="d-none" value="{{responses.name}}">
+                            <input type="text" id="coname" class="d-none" value="{{responses.name}}">
+                            <img src="{{ url_for('static', filename='assets/img/icons/edit.svg')}}" class="edit-img" onclick="researcherEditEnable();">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">First Name</label>
+                            <input type="email" class="form-control input-text" placeholder="First Name" id="editrefirst_name" value="{{responses.first_name}}" disabled aria-describedby="emailHelp">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Last Name</label>
+                            <input type="email" class="form-control input-text" placeholder="Last Name" id="editrelast_name" value="{{responses.last_name}}" disabled aria-describedby="emailHelp">
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Phone Number</label>
+                            <input type="email" class="form-control input-text" placeholder="Phone Number" id="editrenumber" value="{{responses.mobile_number}}" disabled aria-describedby="emailHelp">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Email Id</label>
+                            <input type="email" class="form-control input-text" placeholder="Email Id" value="{{responses.email_id}}" id="editreemail" disabled aria-describedby="emailHelp">
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Age</label>
+                            <input type="email" class="form-control input-text" placeholder="Phone Number" id="editreage" value="{{responses.age}}" disabled aria-describedby="emailHelp">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Gender</label>
+                            <input type="email" class="form-control input-text" placeholder="Email Id" value="{{responses.gender}}" id="editregender" disabled aria-describedby="emailHelp">
+                          </div>
+                        </div>
+                    </div>
+
+                    <!-- 
+                    <div class="row">
+                        <div class="d-flex col-lg-6 col-md-6 col-sm-12">
+                            <label class="form-label mb-3" for="form2Example22">Gender</label>
+
+                            <div class="donate-now ">
+                                <div class="d-flex justify-content-between">
+                                <div class="col-4 ">
+                                    <input type="radio" id="male" value="Male" class="gender" name="gender" />
+                                    <label for="male" id="male">Male</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" id="female" value="Female" class="gender" name="gender" />
+                                    <label for="female" id="female">Female</label> 
+                                </div>
+                                <div class="col-4"> 
+                                    <input type="radio" id="other" value="other" class="gender" name="gender" />
+                                    <label for="other" id="other">Other</label>
+                                </div> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="row" id="editreEnable" style="display: none;">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="d-flex col-lg-6 col-md-6 col-sm-12">
+                                    <!-- <label class="form-label mb-3" for="form2Example22">Gender</label> -->
+
+                                    <div class="donate-now">
+                                        <div class="d-flex justify-content-between">
+                                        <!-- <div class="col-4 "> -->
+                                            <input type="radio" id="editreactive" value="yes" class="gender" name="editrestatus" />
+                                            <label for="editreactive" id="editcoactive">Active</label>
+                                            <!-- </div>
+
+                                            <div class="col-4 "> -->
+                                        
+                                            <input type="radio" id="editreinactive" value="no" class="gender" name="editrestatus" />
+                                            <label for="editreinactive" id="editcoinactive">Inactive</label> 
+                                        <!-- </div>  -->
+                                        </div> 
+                                    </div>
+                                </div>
+                            <!-- </div> -->
+                            <!-- <div class="d-flex justify-content-between align-items-center col-lg-6 col-md-6 col-sm-12"> -->
+                                <button class="btn add_button " onclick="editResearcherData();">Update</button>
+                            </div>
+                        <!-- </div> -->
+                            <!-- Reset Password -->
+
+                    </div>
+
+
+                </div>
+
+                <div class="role-location">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                          <div class="row ">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <h3 class="role-loc-header m-0">Panchayat</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <h3 class="role-loc-header m-0">Village</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <h3 class="role-loc-header m-0">SHG</h3>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    {% for value in values %}
+                    <div class="card mt-3 mb-3">
+                        <div class="card-body">
+                          <div class="row ">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <h3 class="role-loc-sub m-0">{{value.panchayat}}</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <h3 class="role-loc-sub m-0">{{value.village}}</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <h3 class="role-loc-sub m-0">{{value.shg}}</h3>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,236 @@
+function editModule(name){
+    if (document.getElementById("edit-btn").className == "side-edit-sm"){
+        document.getElementById("edit-btn").className = "side-edit-lg"
+    }
+    var editSurveyname = document.getElementById("editSurveyname");
+
+    // alert(name)
+    // console.log(name)
+  
+    $.ajax({
+        type: "GET",
+        url: "/Module/"+name,
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(result) {
+            editSurveyname.value = result.survey_name;
+            document.getElementById("editModnumber").value = result.module_number;
+            document.getElementById("editsmodulenum").value = result.sub_module_number;
+            document.getElementById("editsmodulename").value = result.sub_module_name;
+            document.getElementById("updatebutton").value = result.name;
+            if (result.group1 == '[control, intervention]'){
+                document.getElementById("groupAll").checked = true;
+            }
+            else if(result.group1 == 'control'){
+                document.getElementById("groupControl").checked = true;
+            }
+            else if(result.group1 == 'intervention'){
+                document.getElementById("groupIntervention").checked = true;
+            }
+            else{
+                document.getElementById("groupAll").checked = false;
+
+            }
+            // alert(result.name)
+
+
+
+          } 
+    });
+}
+
+function addModule(){
+
+    var surveyName = document.getElementById("surveyname").value;
+    var modulenumber = document.getElementById("modulenumber").value;
+    var subModNum = document.getElementById("submodnumber").value;
+    var subModName = document.getElementById("submodname").value;
+    var group = document.querySelector('input[name="group"]:checked').value;
+
+    if (surveyName.length < 1){
+        document.getElementById("surveynameErr").innerText = "Please enter valid data !"
+    }
+    if(modulenumber.length < 1){
+        document.getElementById("moduleNumberErr").innerText = "Please enter valid data !"
+    }
+    if(subModNum.length < 1){
+        document.getElementById("submodNumErr").innerText = "Please enter valid data !"
+    }
+    if(subModName.length < 1){
+        document.getElementById("submodNameErr").innerText = "Please enter valid data !"
+    }
+   if(surveyName.length && modulenumber.length && subModName.length && subModNum.length > 1 ) {
+    var server_data = [
+        {"sur_id": 'SUR0002',
+          "survey_name" : surveyName,
+         "module_number":modulenumber,
+         "sub_module_number":subModNum,
+         "sub_module_name":subModName,
+         "group1": group}
+    ];
+    console.log(server_data)
+    $.ajax({
+        type: "POST",
+        url: "/AddModule",
+        data: JSON.stringify(server_data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(result){
+            console.log(result)
+            // $("#modulelist").load(" #modulelist > *");
+            // $("#modulelist").load(location.href+" #modulelist>*","");
+            $("#modulelist").load(location.href + " #modulelist");
+            document.getElementById("surveyname").value='';
+            document.getElementById("modulenumber").value='';
+            document.getElementById("submodnumber").value='';
+            document.getElementById("submodname").value='';
+
+        }
+    });
+    $('#addModal').modal('hide');
+    // location.reload();
+}
+}
+
+
+function update_module(){
+   var updated_mod_number= document.getElementById("editModnumber").value;
+   var updated_submod_number= document.getElementById("editsmodulenum").value;
+   var updated_submod_name= document.getElementById("editsmodulename").value;
+   var updated_survey_name = document.getElementById("editSurveyname").value;
+   var group = "null"
+   var group = document.querySelector('input[name="updatedGroup"]:checked').value;
+   var status = document.querySelector('input[name="updatedStatus"]:checked').value;
+   var name = document.getElementById("updatebutton").value;
+
+   if (updated_mod_number.length <1){
+    document.getElementById("edit-mod-num").innerText = "Please enter a valid data"
+   }
+   if (updated_submod_number.length <1){
+    document.getElementById("edit-submod-num").innerText = "Please enter a valid data"
+   }
+   if (updated_submod_name.length <1){
+    document.getElementById("edit-submod-name").innerText = "Please enter a valid data"
+   }
+   if (updated_survey_name.length <1){
+    document.getElementById("edit-surveyname").innerText = "Please enter a valid data"
+   }
+   if(updated_survey_name.length && updated_mod_number.length && updated_submod_number.length && updated_submod_name.length > 1){
+
+   var server_data = [
+    {"sur_id": 'SUR0002',
+     "survey_name" : updated_survey_name,
+     "module_number":updated_mod_number,
+     "sub_module_number":updated_submod_number,
+     "sub_module_name":updated_submod_name,
+     "group1": group,
+     "active":status}
+];
+
+    $.ajax({
+        type: "PUT",
+        url: "/editModule/"+name,
+        data: JSON.stringify(server_data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(result) {
+            $("#modulelist").load(location.href + " #modulelist");
+        //   $('#coordinators').load(location.href +  ' #coordinators');
+        // $('#coordinators').load(location.href +  ' #coordinators');
+
+        } 
+    });
+$('#editModal').modal('hide');
+   }
+}
+
+
+// function addMoreMapping(){
+//     // var modId = document.getElementById()
+//     var $input = $('.add-week').children().eq(0).clone();
+//     // $('.add-week').append($input);
+//     // alert("aaaa")var childInst = do
+//     var text =  "";
+//     const countAll = document.querySelectorAll('.modAdd').length + 1
+//     // alert(countAll)
+//     var $input = $('.add-week').children().eq(0).clone().prop('id', 'add_'+countAll );
+
+    
+//     // alert(countAll)
+//     // for(var i=0;i<=z;i++)
+//     // {
+//     text = '<input class="form-control modAdd" type="text" name="add" id="add_'+countAll+'" /></br>';
+    
+//     // }
+//     $('.add-week').append($input);
+
+//     // $(".add-week").html($input);
+// }
+
+function addModuleMapping(){
+    alert("countAll")
+
+    const elements = Array.from(document.getElementsByClassName("modAdd"))
+    // const elementWeek = Array.from(document.getElementsByClassName("modWeek"))
+
+    // console.log(elements.value);
+    var instance= []
+    var week = []
+    var weekData = []
+
+    // var selected = [];
+    // for (var option of document. getElementById('survey_name'). options) {
+    //     if (option. selected) {
+    //     selected. push(option. value);
+    //     }
+    // }
+    var inst = document.querySelectorAll('#instance_name option:checked');
+    var selected_inst = Array.from(inst).map(el => el.value);
+    alert(selected_inst);
+    
+
+    let selected = document.querySelectorAll('#module_name option:checked');
+    let selected_values = Array.from(selected).map(el => el.value);
+    alert(selected_values);
+
+    for(var i = 0; i < elements.length; i++) {
+        console.log(elements[i].value)
+        instance.push(elements[i].value)
+    }
+    
+    console.log(instance)
+    console.log(week)
+
+    var sname = document.getElementById("survey_name").value
+    var desc = document.getElementById("survey_description").value
+    var min = document.getElementById('score_min').value;
+    var max = document.getElementById('score_max').value
+
+    var weekData = {"interval":instance , "module_no":selected_values}
+ 
+    alert(JSON.stringify(weekData))
+
+    var mappingData = [
+        {"sur_id": sname,
+        "min_score":min,
+        "max_score":max,
+        "week_data" : weekData,
+        "description" : desc,
+        "instance": selected_inst
+        }
+   ];
+   alert(JSON.stringify(mappingData))
+
+   $.ajax({
+    type: "POST",
+    url: "/CreateModulemapping",
+    data: JSON.stringify(mappingData),
+    contentType: "application/json",
+    dataType: 'json',
+    success: function(result){
+        console.log(result)
+        // $("#modulelist").load(location.href + " #modulelist");
+
+    }
+}); 
+}

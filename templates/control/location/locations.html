@@ -1,0 +1,431 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Locations {% endblock %}
+
+{% block content %}
+
+<!-- Content -->
+<div class="content-wrapper">
+  <!-- Content -->
+  <div class="view-coordinator">
+    <div class="container container-p-y">
+      <ul class="breadcrumb  d-flex">
+        <li><a href="#">Control</a></li>
+        <li><a href="#">Locations</a></li>
+      </ul>
+      <div class="card">
+
+        <div class="cards-style  card-body role-bg">
+          <div class="role-location">
+            <table id="locationsTable" class="display nowrap" style="width:100%">
+              <thead class="tableHead">
+                <tr>
+                  <th class="td_online" style="width: 10px;"></th>
+                  <th class="role-loc-header table_had_content text-center">Location ID</th>
+                  <th class="role-loc-header table_had_content text-center">Panchayat</th>
+                  <th class="role-loc-header table_had_content text-center">Village</th>
+                  <th class="role-loc-header table_had_content text-center">SHG</th>
+                  <th class="role-loc-header table_had_content m-0 text-center">Arm</th>
+                  <th class="role-loc-header table_had_content m-0 text-center">Co-ordinator</th>
+                  <th class="role-loc-header table_had_content m-0 text-center">Researcher</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody style="margin-bottom: 20px;">
+                {% for response in responses %}
+                <tr class="table_body mb-5">
+                  <td>
+                    <div class="d-flex align-items-center justify-content-center online col-lg-1 col-md-2 col-sm-12">
+                      {% if response.active == "yes" %}
+                      <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto" />
+                      {%else%}
+                      <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto" />
+                      {%endif%}
+                    </div>
+                  </td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.loc_id}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.panchayat}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.village}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.shg}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.group1}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.coordinator}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.researcher}}</td>
+                  <td>
+                    <div class="d-flex align-items-center justify-content-end">
+                      <div id="editB{{response.name}}" value="{{response.name}}">
+                        <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                          id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id" name="{{response.name}}"
+                          style="display: block" onclick="enableEditList(name);" />
+                        <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                          id="full_edit{{response.name}}" name="{{response.name}}" data-bs-toggle="modal"
+                          data-bs-target="#editLocation" style="display: none" class="loc_expand_edit_img act_full_img_id" onclick="editLocationData(name);" />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="add-button">
+        <!-- <button class=""> -->
+        <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+          data-bs-target="#addLocation" class="add-btn-img" style="cursor: pointer ;">
+        <!-- </button> -->
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+  </div>
+
+  <!-- Add location Modal -->
+
+  <div class="modal fade" id="addLocation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="exampleInputEmail1" class=" modal-text mb-3">Location ID</label>
+              <input type="text" class="form-control input-text" placeholder="Location ID" id="locationID"
+                aria-describedby="emailHelp">
+              <div class="invalid-entry" id="locIdError"></div>
+              <div class="invalid-entry" id="locIdExistError"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Panchayat</label>
+                <input type="text" class="form-control input-text" placeholder="Panchayat" id="panchayat"
+                  aria-describedby="emailHelp">
+                <div class="invalid-entry" id="panchayatrequired"></div>
+                <div class="invalid-entry" id="panchayatNameError"></div>
+
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Village</label>
+                <input type="text" class="form-control input-text" placeholder="Village" id="village"
+                  aria-describedby="emailHelp">
+                <div class="invalid-entry" id="villagerequired"></div>
+                <div class="invalid-entry" id="villageNameError"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">SHG</label>
+                <input type="text" class="form-control input-text" placeholder="SHG" id="shg"
+                  aria-describedby="emailHelp">
+                <div class="invalid-entry" id="shgNameExist"></div>
+                <div class="invalid-entry" id="shgrequired"></div>
+                <div class="invalid-entry" id="shgNameError"></div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Coordinator</label>
+
+                <select class="form-select" id="locCoordinator" aria-label="Default select example">
+                  <option value="Select One">-- Select One --</option>
+                  {% for coordinator in coordinators %}
+                  <option value="{{coordinator.user_pri_id}}">{{coordinator.user_name}}</option>
+                  {% endfor %}
+
+                </select>
+                <div class="invalid-entry" id="locUserError"></div>
+
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Researcher</label>
+                <select class="form-select" id="locResearcher" aria-label="Default select example">
+                  <option value="Select One">-- Select One --</option>
+                  {% for researcher in researchers %}
+                  <option value="{{researcher.user_pri_id}}">{{researcher.user_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
+                        <div class="d-flex ">
+                          <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                            <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Arm allotment</label>
+                          </div>
+                          <div class="ps-3 col-lg-6 col-md-6 col-sm-12">
+                            <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Location Status</label>
+                          </div>
+                        </div>
+                      
+
+                        <div class="location-now ">
+
+                            <div class="d-flex justify-content-between">
+
+                            <div class="col-6 d-flex justify-content-between px-2">
+                                <input type="radio" id="locationcontrol" value="control" class="gender" name="locationarm" />
+                                <label for="locationcontrol" id="locationcontrol">Control</label>
+                                <input type="radio" id="locationintervention" value="intervention" class="gender" name="locationarm" />
+                                <label for="locationintervention" id="locationintervention">Intervention</label>
+                            </div>
+
+                            <div class="col-6 d-flex justify-content-between px-2">
+                                <input type="radio" id="locationactive" value="yes" class="gender" name="locationstatus" />
+                                <label for="locationactive" id="locationactive">Active</label> 
+                                <input type="radio" id="locationdisabled" value="no" class="gender" name="locationstatus" />
+                                <label for="locationdisabled" id="locationdisabled">Disabled</label> 
+                            </div>
+                        
+                            </div> 
+                        </div>
+                    </div>
+                </div> -->
+
+
+
+          <div class="modal-footer mt-4">
+            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+            <button type="button" class="btn modal-button" onclick="addLocation();">Save </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit location Modal -->
+
+  <div class="modal fade" id="editLocation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Location</h5>
+          <input type="text" value="" id="location_edit_id" class="d-none">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="exampleInputEmail1" class=" modal-text mb-3">Location ID</label>
+              <input type="text" class="form-control input-text" placeholder="Location ID" id="editLocationID" value=""
+                aria-describedby="emailHelp">
+              <div class="invalid-entry" id="editLocIdError"></div>
+              <div class="invalid-entry" id="editLocIdExistError"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Panchayat</label>
+                <input type="text" class="form-control input-text" placeholder="First Name" id="edit_panchayat"
+                  aria-describedby="emailHelp">
+                <div class="invalid-entry" id="editPanchayatError"></div>
+                <div class="invalid-entry" id="editPanchayatNameError"></div>
+
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Village</label>
+                <input type="text" class="form-control input-text" placeholder="First Name" id="edit_village"
+                  aria-describedby="emailHelp">
+                <div class="invalid-entry" id="editVillageError"></div>
+                <div class="invalid-entry" id="editVillageNameError"></div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">SHG</label>
+                <input type="text" class="form-control input-text" placeholder="First Name" id="edit_shg"
+                  aria-describedby="emailHelp">
+                <div class="invalid-entry" id="editShgError"></div>
+                <div class="invalid-entry" id="editShgNameError"></div>
+                <div class="invalid-entry" id="editShgNameExistError"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Coordinator</label>
+
+                <select class="form-select" id="edit_locCoordinator" aria-label="Default select example">
+                  <!-- <option selected="{{responses.coordinator}}">{{responses.coordinator}}</option> -->
+                  <option value="Select One">-- Select One --</option>
+                  {% for coordinator in coordinators %}
+                  <option value="{{coordinator.user_pri_id}}">{{coordinator.user_name}}</option>
+                  {% endfor %}
+
+                </select>
+                <div class="invalid-entry" id="editUserLocationError"></div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Researcher</label>
+                <select class="form-select" id="edit_locResearcher" aria-label="Default select example">
+                  <option value="Select One">-- Select One --</option>
+                  {% for researcher in researchers %}
+                  <option value="{{researcher.user_pri_id}}">{{researcher.user_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="d-flex ">
+                <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                  <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Arm Allotment</label>
+                </div>
+              </div>
+              <div class="location-now ">
+                <div class="d-flex justify-content-between">
+                  <div class="col-12 d-flex justify-content-between">
+                    <input type="radio" id="Control" value="control" class="gender" name="Arm" />
+                    <label for="Control" id="locationcontrol" class="">Control</label>
+
+                    <input type="radio" id="Intervention" value="intervention" class="gender mx-4" name="Arm" />
+                    <label for="Intervention" id="locationintervention" class="">Intervention</label>
+
+                    <input type="radio" id="none" value="none" class="gender mx-4" name="Arm" />
+                    <label for="none" id="none_label" class="">None</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+              <div class="d-flex ">
+                <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                  <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Location Status</label>
+                </div>
+              </div>
+              <div class="location-now ">
+                <div class="d-flex justify-content-between">
+                  <div class="col-12 d-flex justify-content-between">
+                    <input type="radio" id="editLocationActive" value="yes" class="gender" name="Location_status" />
+                    <label for="editLocationActive" id="locationcontrol" class="">Active</label>
+
+                    <input type="radio" id="editLocationDisable" value="no" class="gender mx-4"
+                      name="Location_status" />
+                    <label for="editLocationDisable" id="locationintervention" class="">Disabled</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="d-flex ">
+              <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Eligibility</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="location-now ">
+                <div class="d-flex justify-content-between">
+                  <div class="col-12 d-flex justify-content-between">
+                    <input type="radio" id="Eligibility_yes" value="yes" class="gender" name="Eligibility" />
+                    <label for="Eligibility_yes" id="locationcontrol" class="">Yes</label>
+
+                    <input type="radio" id="Eligibility_no" value="no" class="gender mx-3" name="Eligibility" />
+                    <label for="Eligibility_no" id="locationintervention" class="">No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
+                        <div class="d-flex ">
+                          <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                            <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Arm allotment</label>
+                          </div>
+                          <div class="ps-3 col-lg-6 col-md-6 col-sm-12">
+                            <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Location Status</label>
+                          </div>
+                        </div>
+                      
+
+                        <div class="location-now ">
+
+                            <div class="d-flex justify-content-between">
+
+                            <div class="col-6 d-flex justify-content-between px-2">
+                                <input type="radio" id="locationcontrol" value="control" class="gender" name="locationarm" />
+                                <label for="locationcontrol" id="locationcontrol">Control</label>
+                                <input type="radio" id="locationintervention" value="intervention" class="gender" name="locationarm" />
+                                <label for="locationintervention" id="locationintervention">Intervention</label>
+                            </div>
+
+                            <div class="col-6 d-flex justify-content-between px-2">
+                                <input type="radio" id="locationactive" value="yes" class="gender" name="locationstatus" />
+                                <label for="locationactive" id="locationactive">Active</label> 
+                                <input type="radio" id="locationdisabled" value="no" class="gender" name="locationstatus" />
+                                <label for="locationdisabled" id="locationdisabled">Disabled</label> 
+                            </div>
+                        
+                            </div> 
+                        </div>
+                    </div>
+                </div> -->
+
+
+
+          <div class="modal-footer mt-4">
+            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+            <button type="button" class="btn modal-button" onclick="editLocation();">Update </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- / Content -->
+
+
+
+
+  {% endblock %}

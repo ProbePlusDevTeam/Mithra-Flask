@@ -1,0 +1,412 @@
+<script>
+
+  function hide_view_roles(){
+    var x = document.getElementById("roles")
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
+
+  function hide_view_resources(){
+    var x = document.getElementById("resources")
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
+
+  function hide_view_control(){
+    var x = document.getElementById("control")
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
+  
+
+</script>
+<aside id="layout-menu" class="layout-menu menu-vertical sidebar menu ">
+    <div class="m-3">
+      <a href="#" class="app-brand-link">
+        <img src="{{ url_for('static', filename = '/assets/img/logo/MithraLogo.svg')}}" class="logo">
+      </a>
+
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+      </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+      <!-- Dashboard -->
+      <!-- <li class="menu-item active">
+        <a href="/dashboard" class="menu-link menu-main">
+          <i class="menu-icon tf-icons bx bx-home-circle"></i>
+          <div data-i18n="Analytics">Home</div>
+        </a>
+      </li> -->
+
+      <!-- Layouts -->
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-main menu-toggle" onclick="hide_view_roles()">
+          <!-- <i class="menu-icon tf-icons bx bx-layout"></i> -->
+          <div data-i18n="Layouts">Role</div>
+        </a>
+
+        <ul class="" id="roles" style="display: block;">
+        
+
+          {% if 'coordinator' in request.path %}
+
+          <li class="menu-item active">
+
+            <a href="/coordinators" class="menu-link active" style="
+            padding-bottom: 5px;">
+              <div data-i18n="" class="sidemenu menu_bg">Coordinators</div>
+            </a>
+          </li>
+          {% else %}
+
+          <li class="menu-item ">
+
+            <a href="/coordinators" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="" class="sidemenu">Coordinators</div>
+            </a>
+          </li>
+          {% endif %}
+
+          {% if 'researcher' in request.path %}
+
+          <li class="menu-item">
+            <a href="/researchers" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Researchers</div>
+            </a>
+          </li>
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/researchers" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Researchers</div>
+            </a>
+          </li>
+          {% endif %}
+
+          {% if 'Studyinvestigator' in request.path %}
+
+          
+          <li class="menu-item">
+            <a href="/Studyinvestigators" class="menu-link" style="
+            padding-bottom: 5px;">
+              <div data-i18n="Container" class="sidemenu menu_bg">Study Investigator</div>
+            </a>
+          </li>
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/Studyinvestigators" class="menu-link" style="
+            padding-bottom: 5px;">
+              <div data-i18n="Container" class="sidemenu">Study Investigator</div>
+            </a>
+          </li>
+          {% endif %}
+
+          {% if 'participant' in request.path %}
+
+          <li class="menu-item">
+            <a href="/participants" class="menu-link" style="
+            padding-bottom: 5px;">
+              <div data-i18n="Container" class="sidemenu menu_bg">Participants</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/participants" class="menu-link" style="
+            padding-bottom: 5px;">
+              <div data-i18n="Container" class="sidemenu">Participants</div>
+            </a>
+          </li>
+          {% endif %}
+        
+       
+        </ul>
+      </li>
+
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-main menu-toggle" onclick="hide_view_resources()">
+          <!-- <i class="menu-icon tf-icons bx bx-layout"></i> -->
+          <div data-i18n="Layouts">Resource</div>
+        </a>
+
+        <ul class="" id="resources" style="display: block;">
+          {% if 'allvideos' in request.path %}
+
+          <li class="menu-item ">
+            <a href="/allvideos" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="" class="sidemenu menu_bg">Videos</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item ">
+            <a href="/allvideos" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="" class="sidemenu">Videos</div>
+            </a>
+          </li>
+          {% endif %}
+
+          {% if '/surveylist'in request.path %}
+
+          <li class="menu-item">
+            <a href="/surveylist" class="menu-link "style="padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Create</div>
+            </a>
+          </li>
+
+          
+          {% elif '/surveys' in request.path %}
+
+          <li class="menu-item">
+            <a href="/surveylist" class="menu-link "style="padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Create</div>
+            </a>
+          </li>
+
+          {% elif '/create_survey' in request.path %}
+
+          <li class="menu-item">
+            <a href="/surveylist" class="menu-link "style="padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Create</div>
+            </a>
+          </li>
+
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/surveylist" class="menu-link "style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Survey Create</div>
+            </a>
+          </li>
+
+          {% endif %}
+
+          {% if '/que_Surveylist' in request.path %}
+
+          <li class="menu-item">
+            <a href="/que_Surveylist" class="menu-link "style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Questions</div>
+            </a>
+          </li>
+          
+
+          {% elif '/questions' in request.path %}
+
+          <li class="menu-item">
+            <a href="/que_Surveylist" class="menu-link "style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Questions</div>
+            </a>
+          </li>
+
+          {% elif '/addquestionpage' in request.path %}
+
+          <li class="menu-item">
+            <a href="/que_Surveylist" class="menu-link "style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Questions</div>
+            </a>
+          </li>
+
+          {% elif '/question' in request.path %}
+
+          <li class="menu-item">
+            <a href="/que_Surveylist" class="menu-link "style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Survey Questions</div>
+            </a>
+          </li>       
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/que_Surveylist" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Survey Questions</div>
+            </a>
+          </li>
+
+          {% endif %}
+        
+          
+          {% if '/modules' in request.path %}
+
+          <li class="menu-item">
+            <a href="/modules" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Modules</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/modules" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Modules</div>
+            </a>
+          </li>
+
+          {% endif %}
+
+
+          {% if 'mod_map_surveylist' in request.path %}
+
+          <li class="menu-item">
+            <a href="/mod_map_surveylist" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Module Mapping</div>
+            </a>
+          </li>
+
+             
+          {% elif '/sur_fil_mod_map' in request.path %}
+       
+          <li class="menu-item">
+            <a href="/modules" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Module Mapping</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/mod_map_surveylist" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Module Mapping</div>
+            </a>
+          </li>
+
+          {% endif %}
+
+
+          {% if 'activities' in request.path %}
+
+          <li class="menu-item">
+            <a href="/activities" class="menu-link" style="
+            padding-bottom: 5px;">
+              <div data-i18n="Container" class="sidemenu menu_bg">Activities</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/activities" class="menu-link" style="
+            padding-bottom: 5px;">
+              <div data-i18n="Container" class="sidemenu">Activities</div>
+            </a>
+          </li>
+
+          {% endif %}
+                   
+        </ul>
+      </li>
+
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-main menu-toggle" onclick="hide_view_control();">
+          <!-- <i class="menu-icon tf-icons bx bx-layout"></i> -->
+          <div data-i18n="Layouts" >Control</div>
+        </a>
+
+        <ul class="" id="control" style="display: block">
+
+          {% if 'devices' in request.path %}
+
+          <li class="menu-item ">
+            <a href="/devices" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="" class="sidemenu menu_bg">Devices</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item ">
+            <a href="/devices" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="" class="sidemenu">Devices</div>
+            </a>
+          </li>
+
+          {% endif %}
+
+        
+
+          {% if 'locations' in request.path %}
+
+          <li class="menu-item">
+            <a href="/locations" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Locations</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/locations" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Locations</div>
+            </a>
+          </li>
+
+          {% endif %}
+
+          {% if '/reasons' in request.path %}
+
+          <li class="menu-item">
+            <a href="/reasons" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu menu_bg">Status</div>
+            </a>
+          </li>
+
+          {% else %}
+
+          <li class="menu-item">
+            <a href="/reasons" class="menu-link " style="
+            padding-bottom: 5px;">
+              <div data-i18n="Without navbar" class="sidemenu">Status</div>
+            </a>
+          </li>
+
+          {% endif %}
+         
+
+        </ul>
+      </li>
+
+      <li class="menu-item active">
+        <a href="/logout" class="menu-link menu-main">
+          <!-- <i class="menu-icon tf-icons bx bx-home-circle"></i> -->
+          <div data-i18n="Analytics" class="logout" onclick="logout();">Logout</div>
+        </a>
+      </li>
+    </ul>
+  </aside>

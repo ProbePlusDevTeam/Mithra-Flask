@@ -1,0 +1,349 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Devices {% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper">
+
+
+    <div class="view-coordinator">
+        <div class="container container-p-y">
+            <ul class="breadcrumb  d-flex">
+                <li><a href="#">Control</a></li>
+                <li><a href="#">Devices</a></li>
+            </ul>
+            <div class="card">
+
+                <div class="cards-style  card-body role-bg">
+                    <div class="role-location">
+
+
+
+                        <table id="example" class="display nowrap" style="width:100%">
+                            <thead class="tableHead">
+                                <tr>
+                                    <th class="td_online" style="width: 10px;"></th>
+                                    <th class="role-loc-header table_had_content text-center">Device ID</th>
+                                    <th class="role-loc-header table_had_content text-center">Allot Device (Coordinator)
+                                    </th>
+                                    <th class="role-loc-header  text-center">Allot Device (Researcher)</th>
+                                    <th class="role-loc-header m-0 text-center">Device Type</th>
+                                    <th class="role-loc-header m-0 text-center">Device Details</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody style="margin-bottom: 20px;">
+                                {% for response in responses %}
+                                <tr class="table_body mb-5">
+                                    <td>
+                                        <div
+                                            class="d-flex align-items-center justify-content-start online col-lg-1 col-md-2 col-sm-12">
+                                            {% if response.active == "yes" %}
+                                            <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}"
+                                                class="me-auto" />
+                                            {%else%}
+                                            <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}"
+                                                class="me-auto" />
+                                            {%endif%}
+                                        </div>
+                                    </td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.device_id}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.coordinator}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.researcher}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.device_type}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.device_details}}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <div id="editB{{response.name}}" value="{{response.name}}">
+                                                <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                                                    id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id"
+                                                    name="{{response.name}}" style="display: block"
+                                                    onclick="enableEditList(name);" />
+                                                <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                                                    id="full_edit{{response.name}}" name="{{response.name}}"
+                                                    data-bs-toggle="modal" data-bs-target="#editDevice"
+                                                    style="display: none" class="loc_expand_edit_img act_full_img_id" onclick="editDeviceData(name);" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="add-button">
+                <!-- <button class=""> -->
+                <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+                    data-bs-target="#addDevice" class="add-btn-img" style="cursor: pointer ;">
+                <!-- </button> -->
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+    <!--Add device Modal -->
+
+    <div class="modal fade" id="addDevice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Add New Device</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDevice">
+
+                        <div class="form-outline mb-3">
+                            <label class="modal-text mb-3" for="form2Example11">Manual ID</label>
+                            <input type="text" id="mac" class="form-control input-text" placeholder="Manual ID" />
+                            <div id="macAddrssError" class="invalid-entry "></div>
+                            <div id="deviceIdExist" class="invalid-entry"></div>
+                        </div>
+                        <div class="row gx-5">
+                            <div class="col-12 mb-3">
+                                <label class=" modal-text mb-2" for="editdevicetablet" id="editdevicetablet">Allot
+                                    Device</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between ">
+
+                                        <!-- <div class="col-4 ">
+                                            <input type="radio" id="editreactive" value="yes" class="gender" name="editrestatus" />
+                                            <label for="editreactive" id="editcoactive">Coordinator</label>
+                                        
+                                        
+                                            <input type="radio" id="editreinactive" value="no" class="gender" name="editrestatus" />
+                                            <label for="editreinactive" id="editcoinactive">Researcher</label> 
+                                        </div>  -->
+
+                                        <div class="col-lg-6 col-md-6 col-sm-6 p-1">
+                                            <select class="form-select" id="devCoordinator"
+                                                aria-label="Default select example">
+                                                <option value="Select One">-- Select Coordinator --</option>
+                                                {% for coordinator in coordinators %}
+                                                <option value="{{coordinator.user_pri_id}}">{{coordinator.user_name}}
+                                                </option>
+                                                {% endfor %}
+
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 p-1">
+                                            <select class="form-select" id="devResearcher"
+                                                aria-label="Default select example">
+                                                <option value="Select One">-- Select Researcher --</option>
+                                                {% for researcher in researchers %}
+                                                <option value="{{researcher.user_pri_id}}">{{researcher.user_name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                            <div id="researcherError" class="invalid-entry"></div>
+
+                                        </div>
+                                    </div>
+                                    <div id="coordinatorError" class="invalid-entry"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Device
+                                    Type</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between">
+
+                                        <!-- <div class="col-4 "> -->
+                                        <input type="radio" id="devTablet" value="tablet" class="gender"
+                                            name="devType" />
+                                        <label for="devTablet" id="">Tablet</label>
+
+                                        <input type="radio" id="devMobile" value="mobile" class="gender"
+                                            name="devType" />
+                                        <label for="devMobile" id="">Mobile</label>
+                                        <!-- </div>  -->
+                                    </div>
+                                    <div id="devTypeError" class="invalid-entry"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Device
+                                    Status</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between">
+
+                                        <!-- <div class="col-4 "> -->
+                                        <input type="radio" id="devActive" value="yes" class="gender" name="devStatus"
+                                            checked />
+                                        <label for="devActive" id="">Active</label>
+
+
+                                        <input type="radio" id="decInactive" value="no" class="gender"
+                                            name="devStatus" />
+                                        <label for="decInactive" id="editcoinactive">Disabled</label>
+                                        <!-- </div>  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label class="modal-text mb-3" for="form2Example11">Device Details</label>
+                            <input type="text" id="deviceDetails" class="form-control input-text"
+                                placeholder="Device Details" />
+                            <div id="deviceDetailsError" class="invalid-entry"></div>
+
+                        </div>
+
+                        <div class="text-center pt-1 mb-2 pb-1">
+                            <button type="button" class="btn modal-button" onclick="addDevice();">Save </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal END-->
+
+    <!--Edit device Modal -->
+
+    <div class="modal fade" id="editDevice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Edit Device</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDevice">
+                        <input type="text" id="devId" class="d-none" value="">
+                        <div class="form-outline mb-3">
+                            <label class="modal-text mb-3" for="form2Example11">Manual ID</label>
+                            <input type="text" id="editmac" class="form-control input-text" placeholder="Manual ID"
+                                value="{{responses.device_id}}" />
+                            <div id="editManualIdError" class="invalid-entry"></div>
+                            <div id="editManualIdExistError" class="invalid-entry"></div>
+
+                        </div>
+                        <div class="row gx-5">
+                            <div class="col-12 mb-3">
+                                <label class=" modal-text mb-2" for="editdevicetablet" id="editdevicetablet">Allot
+                                    Device</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between ">
+
+                                        <!-- <div class="col-4 ">
+                                            <input type="radio" id="editreactive" value="yes" class="gender" name="editrestatus" />
+                                            <label for="editreactive" id="editcoactive">Coordinator</label>
+                                        
+                                        
+                                            <input type="radio" id="editreinactive" value="no" class="gender" name="editrestatus" />
+                                            <label for="editreinactive" id="editcoinactive">Researcher</label> 
+                                        </div>  -->
+
+                                        <div class="col-lg-6 col-md-6 col-sm-6 p-1">
+                                            <select class="form-select" id="editdevCoordinator"
+                                                aria-label="Default select example">
+                                                <option value="Select One">Selct Coordinator</option>
+                                                {% for coordinator in coordinators %}
+                                                <option value="{{coordinator.user_pri_id}}">{{coordinator.user_name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 p-1">
+                                            <select class="form-select" id="editdevResearcher"
+                                                aria-label="Default select example">
+                                                <option value="Select One">Select Researcher</option>
+                                                {% for researcher in researchers %}
+                                                <option value="{{researcher.user_pri_id}}">{{researcher.user_name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div id="editAllotError" class="invalid-entry"></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Device
+                                    Type</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between">
+
+                                        <!-- <div class="col-4 "> -->
+                                        <input type="radio" id="editdevTablet" value="tablet" class="gender"
+                                            name="editdevType" />
+                                        <label for="editdevTablet" id="">Tablet</label>
+
+
+                                        <input type="radio" id="editdevMobile" value="mobile" class="gender"
+                                            name="editdevType" />
+                                        <label for="editdevMobile" id="">Mobile</label>
+                                        <!-- </div>  -->
+                                    </div>
+                                    <div id="editDevTypeError" class="invalid-entry"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Device
+                                    Status</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between">
+
+                                        <!-- <div class="col-4 "> -->
+                                        <input type="radio" id="editdevActive" value="yes" class="gender"
+                                            name="editdevStatus" />
+                                        <label for="editdevActive" id="">Active</label>
+
+
+                                        <input type="radio" id="editdecInactive" value="no" class="gender"
+                                            name="editdevStatus" />
+                                        <label for="editdecInactive" id="editcoinactive">Disabled</label>
+                                        <!-- </div>  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label class="modal-text mb-3" for="form2Example11">Device Details</label>
+                            <input type="text" id="editdeviceDetails" class="form-control input-text"
+                                placeholder="Device Details" />
+                            <div id="editDevDetailsError" class="invalid-entry"></div>
+                        </div>
+
+                        <div class="text-center pt-1 mb-2 pb-1">
+                            <button type="button" class="btn modal-button" onclick="editDevice();">Save </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Content END-->
+
+
+{% endblock %}

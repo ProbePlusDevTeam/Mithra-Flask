@@ -1,0 +1,205 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Status {% endblock %}
+
+{% block content %}
+
+<!-- Content -->
+<div class="content-wrapper">
+    <!-- Content -->
+    <div class="view-coordinator">
+        <div class="container container-p-y">
+            <ul class="breadcrumb  d-flex">
+                <li><a href="#">Control</a></li>
+                <li><a href="#">Status</a></li>
+            </ul>
+            <div class="card">
+
+                <div class="cards-style  card-body role-bg">
+                    <div class="role-location">
+                        <table id="locationsTable" class="display nowrap" style="width:100%">
+                            <thead class="tableHead">
+                                <tr>
+                                    <th class="td_online" style="width: 10px;"></th>
+                                    <th class="role-loc-header table_had_content text-center">Reason</th>
+                                    <th class="role-loc-header table_had_content text-center">Category</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody style="margin-bottom: 20px;">
+                                {% for response in responses %}
+                                <tr class="table_body mb-5">
+                                    <td>
+                                        <div
+                                            class="d-flex align-items-center justify-content-center online col-lg-1 col-md-2 col-sm-12">
+                                            {% if response.active == "yes" %}
+                                            <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}"
+                                                class="me-auto" />
+                                            {%else%}
+                                            <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}"
+                                                class="me-auto" />
+                                            {%endif%}
+                                        </div>
+                                    </td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.reason}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.reason_category}}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <div id="editB{{response.name}}" value="{{response.name}}">
+                                                <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                                                    id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id"
+                                                    name="{{response.name}}" style="display: block"
+                                                    onclick="enableEditList(name);" />
+                                                <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                                                    id="full_edit{{response.name}}" name="{{response.name}}"
+                                                    data-bs-toggle="modal" data-bs-target="#editStatus"
+                                                    style="display: none" class="loc_expand_edit_img act_full_img_id" onclick="editStatusData(name);" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="add-button">
+                <!-- <button class=""> -->
+                <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+                    data-bs-target="#addStatus" class="add-btn-img" style="cursor: pointer ;">
+                <!-- </button> -->
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+    <!-- Add status Modal -->
+
+    <div class="modal fade" id="addStatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Reason</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="exampleInputEmail1" class=" modal-text mb-3">Reason</label>
+                            <textarea row="2" class="form-control input-text" placeholder="Reason" id="reason"></textarea>
+                            <div class="invalid-entry" id="reasonError"></div>
+                            <div class="invalid-entry" id="addreasonExistError"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="exampleInputEmail1" class=" modal-text mb-3">Category</label>
+                            <select class="form-select" id="category" aria-label="Default select example">
+                                <option value="Select One">-- Select One --</option>
+                                <option value="status_active">Active</option>
+                                <option value="status_inactive">Inactive</option>
+                                <option value="attempt">Attempt</option>
+                                <option value="refer">Refer</option>
+                            </select>
+                            <div class="invalid-entry" id="categoryError"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="mt-4">
+                        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn modal-button" onclick="addStatus();">Save </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit status Modal -->
+
+    <div class="modal fade" id="editStatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
+                    <input type="text" value="" id="reason_id" class="d-none">
+                    <input type="text" value="" id="location_edit_id" class="d-none">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="exampleInputEmail1" class=" modal-text mb-3">Reason</label>
+                            <input type="text" class="form-control input-text" placeholder="Reason" id="editReason"
+                                aria-describedby="emailHelp">
+                            <div class="invalid-entry" id="editReasonError"></div>
+                            <div class="invalid-entry" id="reasonExistError"></div>
+
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="exampleInputEmail1" class=" modal-text mb-3">Category</label>
+                            <select class="form-select" id="editCategory" aria-label="Default select example">
+                                <option value="status_active">Active</option>
+                                <option value="status_inactive">Inactive</option>
+                                <option value="attempt">Attempt</option>
+                                <option value="refer">Refer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex ">
+                            <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                                <label class=" modal-text mb-3" for="editdevicetablet"
+                                    id="editdevicetablet">Status</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="location-now ">
+                                <div class="d-flex justify-content-between">
+                                    <div class="col-12 d-flex justify-content-between">
+                                        <input type="radio" id="reason_yes" value="yes" class="gender" name="status" />
+                                        <label for="reason_yes" id="" class="">Active</label>
+
+                                        <input type="radio" id="reason_no" value="no" class="gender mx-3"
+                                            name="status" />
+                                        <label for="reason_no" id="" class="">Inactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mt-4">
+                        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn modal-button" onclick="editStatus();">Update </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- / Content -->
+
+
+
+
+    {% endblock %}

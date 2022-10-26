@@ -1,0 +1,520 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Activities {% endblock %}
+
+{% block content %}
+
+<script>
+  function isGoodImage(file) {
+    var deferred = jQuery.Deferred();
+    var image = new Image();
+
+    image.onload = function () {
+      // Check if image is bad/invalid
+      if (this.width + this.height === 0) {
+        this.onerror();
+        return;
+      }
+
+      // Check the image resolution
+      if (this.width <= 100 && this.height <= 100) {
+        deferred.resolve(true);
+      } else {
+        alert("The image resolution is too low.");
+        deferred.resolve(false);
+      }
+    };
+
+    image.onerror = function () {
+      alert("Invalid image. Please select an image file.");
+      deferred.resolve(false);
+    }
+
+    // image.src = _URL.createObjectURL(file);
+
+    return deferred.promise();
+  }
+</script>
+
+
+
+<style>
+
+.act_2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(29, 106, 154, 0.72);
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.act_1:hover .act_2 {
+  visibility: visible;
+  opacity: 1;
+}
+
+</style>
+
+<div class="content-wrapper">
+
+
+  <div class="view-coordinator">
+    <div class="container container-p-y">
+      <ul class="breadcrumb  d-flex">
+        <li><a href="#">Resource</a></li>
+        <li><a href="#">Activities</a></li>
+      </ul>
+      <div class="card">
+
+        <div class="cards-style  card-body role-bg">
+          <div class="role-location">
+            <div class="card mb-3">
+
+
+              <table id="activityTable" class="display nowrap" style="width:100%">
+                <thead class="tableHead">
+                  <tr>
+                    <th class="td_online" style="width: 10px;"></th>
+                    <th class="role-loc-header table_had_content text-center">Activity Name</th>
+                    <th class="role-loc-header table_had_content text-center">Survey Name</th>
+                    <th class="role-loc-header  text-center">Sub Module Number</th>
+                    <th class="role-loc-header m-0 text-center">Duration</th>
+                    <th class="role-loc-header m-0 text-center">Time Spent</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody style="margin-bottom: 20px;">
+                  {% for response in responses %}
+                  <tr class="table_body mb-5">
+                    <td>
+                      <div class="d-flex align-items-center justify-content-start online col-lg-1 col-md-2 col-sm-12">
+                        {% if response.active == "yes" %}
+                        <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto" />
+                        {%else%}
+                        <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto" />
+                        {%endif%}
+                      </div>
+                    </td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.activity_name_e}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.survey_name}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.sub_module_data}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.duration}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.time_spent}}</td>
+                    <td>
+                      <div class="d-flex align-items-center justify-content-end">
+                        <div id="editB{{response.name}}" value="{{response.name}}">
+                          <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                            id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id" name="{{response.name}}"
+                            style="display: block" onclick="enableEditList(name);" />
+                          <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                            id="full_edit{{response.name}}" name="{{response.name}}" data-bs-toggle="modal"
+                            data-bs-target="#editActivities" style="display: none" class="loc_expand_edit_img act_full_img_id" onclick="activityData(name);" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  <!-- activityData(name); -->
+                </tbody>
+                <!-- <tfoot>
+                          <tr class="">
+                              <th class="role-loc-header m-0 text-center">Device ID</th>
+                              <th class="role-loc-header m-0 text-center">Allot Device (Coordinator)</th>
+                              <th class="role-loc-header m-0 text-center">Allot Device (Researcher)</th>
+                              <th class="role-loc-header m-0 text-center">Device Type</th>
+                              <th class="role-loc-header m-0 text-center">Device Details</th>
+                          </tr>
+                      </tfoot> -->
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="add-button">
+          <!-- <button class=""> -->
+          <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+            data-bs-target="#addActivity" class="add-btn-img" style="cursor: pointer ;">
+          <!-- </button> -->
+
+
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <!--Add activities Modal -->
+
+    <div class="modal fade" id="addActivity" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Add New Activity</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form enctype="multipart/form-data" id="activityImageForm" onsubmit="return false;">
+            <div class="modal-body">
+              <div class="row d-flex mb-3">
+                <label class="modal-text mb-3" for="form2Example11">Activity Name</label>
+
+                <div class="col-6">
+                  <input type="text" id="activity_english" name="activity_english" class="form-control input-text"
+                    placeholder="English" />
+                  <div class="invalid-entry" id="actEngNameError"></div>
+                </div>
+                <div class="col-6">
+                  <input type="text" id="activity_kannada" name="activity_kannada" class="form-control input-text"
+                    placeholder="Kannada" />
+                  <div class="invalid-entry" id="actKanNameError"></div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class=" modal-text mb-3">Survey Name </label>
+                    <select class="form-select" id="activitySurveyName" name="activitySurveyName"
+                      aria-label="Default select example" onchange="getSubModuleNos();">
+                      <option value="Select One">-- Select Survey --</option>
+                      {% for response in surveynamedata %}
+                      <option value="{{response.sur_id}}">{{response.sur_name}}</option>
+                      {% endfor %}
+                    </select>
+                    <div class="invalid-entry" id="actSurveyError"></div>
+
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class=" modal-text mb-3">Sub Module Number</label>
+                    <select class="form-select" id="activityModNum" name="activityModNum"
+                      aria-label="Default select example">
+                      <!-- <option value="Select One">-- Select Module Number--</option> -->
+                      <option value=""></option>
+                    </select>
+                    <div class="invalid-entry" id="activityModNumError"></div>
+                    <div class="invalid-entry" id="activityModNumExistError"></div>
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class=" modal-text mb-3">Duration</label>
+                    <input type="number" class="form-control input-text" placeholder="Duration" name="duration"
+                      id="duration" aria-describedby="emailHelp">
+                    <div class="invalid-entry" id="durationError"></div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class=" modal-text mb-3">Time Spent </label>
+                    <input type="text" class="form-control input-text" placeholder="Time spent" name="timeSpent"
+                      id="timeSpent" aria-describedby="emailHelp">
+                    <div class="invalid-entry" id="timeSpentError"></div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row d-flex mb-3">
+                <label class="modal-text mb-3" for="form2Example11">Intensity</label>
+
+                <div class="col-6">
+                  <input type="text" id="intensity_english" name="intensity_english" class="form-control input-text"
+                    placeholder="English" />
+                  <div class="invalid-entry" id="intensity_englishError"></div>
+                </div>
+                <div class="col-6">
+                  <input type="text" id="intensity_kannada" name="intensity_kannada" class="form-control input-text"
+                    placeholder="Kannada" />
+                  <div class="invalid-entry" id="intensity_kannadaError"></div>
+                </div>
+              </div>
+
+
+              <input type="text" class="d-none" id="video_id" name="video_id" value="">
+              <div class="row">
+                <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="mb-4">
+                                          <label for="exampleInputEmail1" class=" modal-text mb-3">Mood Scale</label>
+                                          <input type="number" class="form-control input-text" placeholder="Mood scale [5 or 10]" id="mood" aria-describedby="emailHelp">
+                                          <div class="invalid-entry" id="moodScaleError"></div>
+                                        </div>
+                                    </div> -->
+                <!-- <div class="col-12 mb-4">
+                                        <div class="d-flex justify-content-end mt-4 pt-2">
+                                            <button id="btnsave" type="submit" class="btn modal-button" onclick="" >Save </button>
+                                        </div> 
+                                      
+                                    </div> -->
+              </div>
+              <input type="text" id="activity_id" name="activity_id" class="d-none" value="">
+              <div class="row">
+                <div class="col-6">
+                  <label for="activityImg" class="modal-text mx-2">Select Activity Image</label>
+                  <input class="form-control btn upload-btn" type="file" name="activityImg" id="activityImg">
+                  <div class="invalid-entry" id="imageFileError"></div>
+                </div>
+                <div class="col-6">
+                  <button id="upload-button" class="btn modal-button mt-3"
+                    onclick="isGoodImage() ; uploadImg(this.form, event)"> Upload </button>
+                  <!-- <button type="submit" class="btn modal-button" onclick="">Upload </button> -->
+                </div>
+              </div>
+              <div id="static_file_response"> </div>
+
+
+              <!-- <div class="container" style="margin-top: 10px;">
+                                <ul class="nav nav-tabs">
+                                  <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#msg">Message</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#pro" disabled>Profile</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#set">Setting</a>
+                                  </li>
+                                </ul>
+                                
+                                <div class="tab-content">
+                                  <div class="tab-pane container active" id="msg" >This is a message tab.</div>
+                                  <div class="tab-pane container fade" id="pro">This is a profile tab.</div>
+                                  <div class="tab-pane container fade" id="set">This is a setting tab.</div>
+                                </div>
+                            </div> -->
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal END-->
+
+    <!--Edit activities Modal -->
+
+    <div class="modal fade" id="editActivities" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header ">
+            <h4 class="modal-title" id="exampleModalLabel">Edit activity</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div></div>
+              <!-- Button trigger modal -->
+              <a href="" class="btn more-btn" data-bs-toggle="modal" data-bs-target="#editActivityImage"> Reupload
+                image</a>
+            </div>
+            <input type="text" value="" id="activityId" class="d-none">
+            <div class="row d-flex mb-3">
+              <label class="modal-text mb-3" for="form2Example11">Activity Name</label>
+
+              <div class="col-6 flex-column">
+                <input type="text" id="editactivity_english" class="form-control input-text" placeholder="English" />
+                <!-- <div class="invalid-entry" id="actEngNameError"></div> -->
+                <div class="invalid-entry" id="edActErrorEng"></div>
+
+
+              </div>
+              <div class="col-6">
+                <input type="text" id="editactivity_kannada" class="form-control input-text" placeholder="Kannada" />
+                <div class="invalid-entry" id="edActErrorKan"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Survey Name </label>
+                  <select class="form-select" id="editactivitySurveyName" aria-label="Default select example"
+                    onchange="getSubModuleNoAct();">
+                    {% for response in surveynamedata %}
+                    <option value="{{response.sur_id}}">{{response.sur_name}}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="invalid-entry" id="actSurveyError"></div>
+
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Sub Module Number</label>
+                  <select class="form-select" id="editactivityModNum" aria-label="Default select example">
+                    <option value=""></option>
+                  </select>
+                  <div class="invalid-entry" id="activityModNumError"></div>
+                  <div class="invalid-entry" id="editactivityModNumExistError"></div>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Duration</label>
+                  <input type="text" class="form-control input-text" placeholder="Duration" id="editduration"
+                    aria-describedby="emailHelp">
+                  <div class="invalid-entry" id="editdurationError"></div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Time Spent </label>
+                  <input type="email" class="form-control input-text" placeholder="Time spent" id="edittimeSpent"
+                    aria-describedby="emailHelp">
+                  <div class="invalid-entry" id="edittimeSpentError"></div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="row d-flex mb-3">
+              <label class="modal-text mb-3" for="form2Example11">Intensity</label>
+
+              <div class="col-6">
+                <input type="text" id="editintensity_english" class="form-control input-text" placeholder="English" />
+                <div class="invalid-entry" id="editintensity_englishError"></div>
+              </div>
+              <div class="col-6">
+                <input type="text" id="editintensity_kannada" class="form-control input-text" placeholder="Kannada" />
+                <div class="invalid-entry" id="editintensity_kannadaError"></div>
+              </div>
+            </div>
+
+
+            <input type="text" class="d-none" id="video_id" name="video_id" value="">
+            <div class="row">
+              <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="mb-4">
+                                          <label for="exampleInputEmail1" class=" modal-text mb-3">Mood Scale</label>
+                                          <input type="text" class="form-control input-text" placeholder="Mood scale" id="editmood" aria-describedby="emailHelp">
+                                          <div class="invalid-entry" id="editmoodError"></div>
+
+                                        </div>
+                                    </div> -->
+              <div class="col-6">
+                <div class="d-flex ">
+                  <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                    <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Status</label>
+                  </div>
+                </div>
+                <div class="activity-now ">
+                  <div class="d-flex justify-content-between">
+                    <div class="col-12 d-flex justify-content-between">
+                      <input type="radio" id="acitivityActive" value="yes" class="gender" name="acitivityActive" />
+                      <label for="acitivityActive" id="" class="">Yes</label>
+
+                      <input type="radio" id="acitivityInactive" value="no" class="gender mx-3"
+                        name="acitivityActive" />
+                      <label for="acitivityInactive" id="" class="">No</label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-12 mb-4">
+                <div class="d-flex justify-content-center mt-4 pt-2">
+                  <button type="submit" class="btn modal-button" onclick="editActivity(); ">Save </button>
+                </div>
+
+              </div>
+              <div class="row">
+
+
+              </div>
+              <!-- <form id="editactivityImageForm" style="display: none;">
+
+                               
+                                <div class="row" >
+                                    <div class="col-6">
+                                        <input class="form-control" type="file" id="activityImg">
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" class="btn modal-button" onclick=" addActivityImage();"  >Upload </button>
+                                    </div>
+                                </div>
+                                </form>
+                             -->
+
+              <!-- <div class="container" style="margin-top: 10px;">
+                                <ul class="nav nav-tabs">
+                                  <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#msg">Message</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#pro" disabled>Profile</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#set">Setting</a>
+                                  </li>
+                                </ul>
+                                
+                                <div class="tab-content">
+                                  <div class="tab-pane container active" id="msg" >This is a message tab.</div>
+                                  <div class="tab-pane container fade" id="pro">This is a profile tab.</div>
+                                  <div class="tab-pane container fade" id="set">This is a setting tab.</div>
+                                </div>
+                            </div> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editActivityImage" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Reupload activity image</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form enctype="multipart/form-data" id="editActivityImageForm" onsubmit="return false;">
+            <input type="text" value="" id="editActivityId" class="d-none">
+            <div class="modal-body">
+              <div class="row mb-4">
+                <div class="col-12">
+                  <label for="reuploadImage" class="mb-2">Select Image</label>
+                  <input type="file" class="form-control" id="reuploadImage" name="reuploadImage" />
+                  <div class="invalid-entry" id="reUpImageError"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <button id="reupload-button" class="btn modal-button mt-3"
+                    onclick="activityReuploadImage(this.form, event);"> Upload </button>
+                </div>
+              </div>
+              <div id="static_file_response"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Content END-->
+
+
+    {% endblock %}

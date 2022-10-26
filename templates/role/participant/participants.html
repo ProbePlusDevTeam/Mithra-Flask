@@ -1,0 +1,421 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Participants {% endblock %}
+
+{% block content %} 
+
+<script>
+
+// const myTimeout = setTimeout(download_file, 5000);
+
+function download_file() {
+  $.ajax({
+      type: "POST",
+      url: "/downloadexcel",
+      success: function (data) {
+        console.log("data");
+        // if(data){
+          window.location.href ="/static/Downloads/test.xlsx"
+        // }
+      }
+    });
+  }
+// $(function () {
+//   $('a.href_download').on("click", function (e) {
+//         e.preventDefault();
+//     });
+// });
+
+			var count = 5; // Number of remaining seconds.
+			var counter; // Handle for the countdown event.
+			
+			function start() {
+				counter = setInterval(timer, 1000);
+			}
+
+			function timer() {
+
+					window.location.href = "/static/Downloads/test.xlsx";
+
+			}		
+			// Start the countdown timer when the page loads. 
+			// window.addEventListener("load", start, false);
+		</script>
+
+
+<script type="text/javascript">
+  function DownloadAll(fileName) {
+      //Set the File URL.
+      // var url = "/static/Downloads/" + fileName;
+
+      $.ajax({
+          url: "/downloadexcel/all",
+          type:"POST",
+          cache: false,
+          xhr: function () {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function (data) {
+            var location = data[1]
+            var fileName= data[2]
+            if(data[0] == "success"){
+              window.location.href = "/downloadfile/web/"+location+"/"+fileName
+            }
+
+          }
+      });
+  };
+
+  function DownloadQuestion(fileName) {
+      //Set the File URL.
+      // var url = "/static/Downloads/" + fileName;
+
+      $.ajax({
+          url: "/downloadexcel/question",
+          type:"POST",
+          cache: false,
+          xhr: function () {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function (data) {
+            var location = data[1]
+            var fileName= data[2]
+            if(data[0] == "success"){      
+              window.location.href = "/downloadfile/web/"+location+"/"+fileName
+            }
+
+          }
+      });
+  };
+
+  function DownloadVideo(fileName) {
+      //Set the File URL.
+      // var url = "/static/Downloads/" + fileName;
+
+      $.ajax({
+          url: "/downloadexcel/video",
+          type:"POST",
+          cache: false,
+          xhr: function () {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function (data) {
+            var location = data[1]
+            var fileName= data[2]
+            if(data[0] == "success"){
+              window.location.href = "/downloadfile/web/"+location+"/"+fileName
+            }
+    
+          }
+      });
+  };
+
+  function DownloadActivity(fileName) {
+      //Set the File URL.
+      // var url = "/static/Downloads/" + fileName;
+
+      $.ajax({
+          url: "/downloadexcel/activity",
+          type:"POST",
+          cache: false,
+          xhr: function () {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function (data) {
+            var location = data[1]
+            var fileName= data[2]
+            if(data[0] == "success"){
+              window.location.href = "/downloadfile/web/"+location+"/"+fileName
+            }
+     
+          }
+      });
+  };
+
+  function DownloadContext(fileName) {
+      //Set the File URL.
+      // var url = "/static/Downloads/" + fileName;
+
+      $.ajax({
+          url: "/downloadexcel/participant_context",
+          type:"POST",
+          cache: false,
+          xhr: function () {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function (data) {
+            var location = data[1]
+            var fileName= data[2]
+            if(data[0] == "success"){
+              window.location.href = "/downloadfile/web/"+location+"/"+fileName
+            }
+          }
+      });
+  };
+
+  function DownloadLogin(fileName) {
+      //Set the File URL.
+      // var url = "/static/Downloads/" + fileName;
+
+      $.ajax({
+          url: "/downloadexcel/login_logout",
+          type:"POST",
+          cache: false,
+          xhr: function () {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function (data) {
+            var location = data[1]
+            var fileName= data[2]
+            if(data[0] == "success"){
+              window.location.href = "/downloadfile/web/"+location+"/"+fileName
+            }
+      
+          }
+      });
+  };
+
+</script>
+
+<style>
+  .file_download{
+    /* pointer-events:none; */
+    float: right !important;
+    left: 0;
+    /* text-decoration: dashed; */
+  }
+</style>
+
+    <!-- Content -->
+    <div class="container content-wrapper">
+        <!-- Content -->
+       
+        <div class="container  participants">
+          <ul class="breadcrumb  d-flex">
+            <li><a href="#">Roles</a></li>
+            <li><a href="#">Participants</a></li>
+          </ul>
+            <div class="container cards-style mt-3 mb-3">
+                <!-- <div class="card-body ps-0 pe-0"> -->
+                 
+                  <div class="row ">
+                   
+                    <div class=''>
+                        <a href='#'>
+                    <!-- <div class="d-flex align-items-center justify-content-around">
+                        <div class="col-lg-1 col-md-1 col-sm-12">
+                          <h3 class="role-loc-sub m-0"></h3>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                          <h3 class="role-loc-sub m-0 text-center">Name </h3>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                          <h3 class="role-loc-sub m-0 text-center">Age </h3>
+                        </div>
+                 
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                          <h3 class="role-loc-sub m-0 text-center">Number </h3>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                            <h3 class="role-loc-sub m-0 text-center">SHG</h3>
+                        </div>
+                        <div class="col-lg-2 col-md-1 col-sm-12">
+                          <h3 class="role-loc-sub m-0 text-center">Username</h3>
+                        </div>
+                      
+                    </div>
+                  </div> -->
+                    </a>
+                <!-- </div> -->
+                </div>
+            </div>
+
+          <div class="coordinators">
+            
+          
+                <!-- <a href="../researcher/researcher.html"> -->
+                
+      
+              
+              <!-- </a> -->
+              <!-- <form action="/downloadexcel" method="post"> -->
+                <!-- <button type="submit" class="btn more-btn" onclick="myVar = setTimeout(download_file, 3000);timer();"> -->
+
+                  <!-- <a href="/static/Downloads/test.xlsx " id="href_download" class="href_download more-btn px-2" >
+                      Download File
+
+                  </a> -->
+                  <!-- Download File
+
+                </button> -->
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-4"> -->
+                    <button type="button" class="btn btn-primary file_download" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Download Report
+                    </button>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Download Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+
+                            <input type="button" class="btn btn-secondary mb-2" value="All Report" onclick="DownloadAll('.xlsx')" />
+                            <input type="button" class="btn btn-secondary mb-2" value="Question Report" onclick="DownloadQuestion('test.xlsx')" />
+                            <input type="button" class="btn btn-secondary mb-2" value="Activity Report" onclick="DownloadActivity('test.xlsx')" />
+                            <input type="button" class="btn btn-secondary mb-2" value="Video Report" onclick="DownloadVideo('test.xlsx')" />
+                            <input type="button" class="btn btn-secondary mb-2" value="Context Data (Status)" onclick="DownloadContext('test.xlsx')" />
+                            <input type="button" class="btn btn-secondary mb-2" value="Login & Logout " onclick="DownloadLogin('test.xlsx')" />
+
+
+                            <!-- <a href="/static/Downloads/test.xlsx" class="btn btn-secondary mb-2" onclick="myVar = setTimeout(download_file, 3000);timer();">All Report</a>
+                            <a href="" class="btn btn-secondary mb-2 ">Question Report</a>
+                            <a href="" class="btn btn-secondary mb-2 ">Activity Report</a>
+                            <a href="" class="btn btn-secondary mb-2 ">Video Reprot</a> -->
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- </div> -->
+                <!-- </div> -->
+              
+
+              <!-- </form> -->
+              <br/><br/>
+              <table id="participants" class="display nowrap" style="width:100%">
+                <!-- <form action="/downloadexcel" method="POST"><div id="btn"><a href="" onclick="" download>Report</a></div>
+                </form> -->
+                <thead class="tableHead">
+                    <tr>
+                        <th class="td_online" style="width: 10px;"></th>
+                        <th class="role-loc-header table_had_content text-center">Name</th>
+                        <th class="role-loc-header table_had_content text-center">Age</th>
+                        <th class="role-loc-header table_had_content text-center">Number</th>
+                        <th class="role-loc-header table_had_content m-0 text-center">SHG</th>
+                        <th class="role-loc-header table_had_content m-0 text-center">Username</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody style="margin-bottom: 20px;">
+                  {% if responses != "No Participant available"%}
+                    {% for response in responses %}
+
+                    <tr class="table_body mb-5"  >
+
+                        <td>
+                          <div class="d-flex align-items-center justify-content-start online col-lg-1 col-md-2 col-sm-12">
+                              {% if response.active == "yes" %}
+                              <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto"/>
+                              {%else%}
+                              <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto"/>
+                              {%endif%}
+                            </div>
+                        </td>
+                        <td class="role-loc-sub mx-2 m-0 mt-5">{{response.full_name}}</td>
+                        <td class="role-loc-sub mx-2 m-0 mt-5">{{response.age}}</td>
+                        <td class="role-loc-sub mx-2 m-0 mt-5">{{response.mobile_number}}</td>
+                        <td class="role-loc-sub mx-2 m-0 mt-5">{{response.shg}}</td>
+                        <td class="role-loc-sub mx-2 m-0 mt-5">{{response.user_name}}</td>
+                        <td class="role-loc-sub mx-2 m-0 mt-5">
+                          <a href='{{ url_for("participant_details", PkId=response.user_pri_id) }}'  style="width: fit-content">View</a>
+
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    <hr>
+                </tbody>
+              
+
+                <!-- <tfoot>
+                    <tr class="">
+                        <th class="role-loc-header m-0 text-center">Device ID</th>
+                        <th class="role-loc-header m-0 text-center">Allot Device (Coordinator)</th>
+                        <th class="role-loc-header m-0 text-center">Allot Device (Researcher)</th>
+                        <th class="role-loc-header m-0 text-center">Device Type</th>
+                        <th class="role-loc-header m-0 text-center">Device Details</th>
+                    </tr>
+                </tfoot> -->
+            </table>
+            
+
+        </div>
+        
+        </div>
+    
+        <!-- Add coordinator Modal -->
+        
+        </div>
+        <!-- Content END-->
+
+
+{% endblock %}

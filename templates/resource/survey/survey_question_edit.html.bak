@@ -1,0 +1,417 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Locations {% endblock %}
+
+{% block content %} 
+
+    <!-- Content -->
+    <div class="container content-wrapper">
+     
+    <div class="content-wrapper">
+        <!-- Content -->
+        <div class="view-coordinator">
+            <div class="mt-4">
+                <div class="card">
+                  
+                    <div class="cards-style  card-body role-bg">
+                        <div class="">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                  <div class="row mb-4">
+                                    <div class="d-flex  justify-content-center ">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 px-2">
+                                            <input type="text" class="form-control input-text" value="Q:English" disabled>
+                                        </div>
+                                        <div class="col-lg-1 col-md-7 col-sm-12">
+                                            <input type="text" class="form-control input-text" placeholder="No" id="question-number" value="{{responses.que_num}}">
+                                        </div>
+                                        <div class="col-lg-8 col-md-2 col-sm-12 px-2">
+                                            <textarea rows="3" class="form-control input-text" placeholder="Question" id="english-question">{{responses.que_e}}</textarea>
+                                            <!-- <input type="text" class="form-control input-text" placeholder="Question"> -->
+                                        </div>
+                                        <div class="col-lg-1 col-md-2 col-sm-12">
+                                            <input type="text" class="form-control input-text" placeholder="Q/B" id="question-branch" value="{{responses.que_branch}}">
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-4">
+                                    <div class="d-flex justify-content-center ">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 px-2">
+                                            <input type="text" class="form-control input-text" value="Q:Kannada" disabled>
+                                        </div>
+                                        <div class="col-lg-1 col-md-7 col-sm-12">
+                                            <input type="text" class="form-control input-text" placeholder="No" style="display: none;" >
+                                        </div>
+                                        <div class="col-lg-8 col-md-2 col-sm-12 px-2">
+                                            <textarea rows="3" class="form-control input-text" placeholder="Question" id="kannada-question">{{responses.que_k}}</textarea>
+                                        </div>
+                                        <div class="col-lg-1 col-md-2 col-sm-12">
+                                            <input type="text" class="form-control input-text" placeholder="Q/B" style="display: none;">
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-4">
+                                    <div class="d-flex ">
+
+                                        <div class="col-lg-2 col-md-2 col-sm-12 ">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Section</label>
+                                        </div>
+                                        {% if responses.section == 'yes' %}
+                                        <div class="col-lg-1 col-md-2 col-sm-12">
+                                            <input type="checkbox" id="question-section" checked>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-lg-1 col-md-2 col-sm-12">
+                                            <input type="checkbox" id="question-section" checked>
+                                        </div>
+                                        {% endif %}
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-3 px-3">Section Name</label>
+                                        </div>
+                                        <div class="col-lg-7 col-md-5 col-sm-12">
+                                            <input type="text" class="form-control input-text" id="question-sectionName" value="{{responses.section_name}}">
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mb-4">
+                                    <div class="d-flex ">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 ">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Type</label>
+                                        </div>
+                                        <div class="d-flex col-lg-9 col-md-9 col-sm-12">
+                                            <div class="form-check px-4">
+                                                <input class="form-check-input" type="radio" name="type" id="single_q" onclick="viewQuesOptions1()" value="single" >
+                                                <label class="form-check-label " for="type">
+                                                  Single
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check px-5">
+                                                <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions2()" id="multiple_q" value="multiple" >
+                                                <label class="form-check-label" for="type">
+                                                  Multiple
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check px-5">
+                                                <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions3()" id="text_q" value="text" >
+                                                <label class="form-check-label" for="type">
+                                                  Text
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check px-5">
+                                                <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions4()" id="date_q" value="date" >
+                                                <label class="form-check-label" for="type">
+                                                  Date
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check px-4">
+                                                <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions5()" id="numeric_q" value="numeric" >
+                                                <label class="form-check-label" for="type">
+                                                  Numeric
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                     
+                                    </div>
+                                  </div>
+
+                                  
+
+
+
+
+
+
+                                  <div class="parent_all_ques" id="parent_all_ques" style="display: block;">
+                                    {% if responses.opt_type == "single_select" %}
+
+                                  {% for count in range(responses.no_opt) %}
+
+                                      {% set count = count + 1 %}
+
+
+                                      {% set opt_no = 'opt' ~ count ~ '_no' %}
+                                      {% set ans_key = 'opt' ~ count ~ '_e' %}
+                                      {% set wei_key = 'opt' ~ count ~ '_weight' %}
+                                      {% set sb_key = 'opt' ~ count ~ '_subbranch' %}
+
+                                      {% set optionnumber = responses[opt_no] %}
+                                      {% set answer = responses[ans_key] %}
+                                      {% set weightage = responses[wei_key] %}
+                                      {% set sub_branch = responses[sb_key] %}
+                                    <div class="row mb-4 g-5">
+
+                                        
+
+
+                                      <div class="d-flex">
+                                          <div class="col-lg-2 col-md-2 col-sm-12 ">
+                                              <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">English: {{ optionnumber }}</label>
+                                          </div>
+
+                                        
+                                          
+                                              <div class="col-lg-8 col-md-2 col-sm-12 ">
+                                                  <input type="text" class="form-control input-text ques_e" placeholder="Options" value = "{{ answer }}">
+                                              </div>
+
+                                              <div class="col-lg-1 col-md-2 col-sm-12 px-2 ">
+                                                  <input type="text" class="form-control input-text w_e" placeholder="W" value = "{{ weightage }}">
+                                              </div>
+                                              <div class="col-lg-1 col-md-5 col-sm-12 px-1">
+                                                  <input type="text" class="form-control input-text ob_e" placeholder="O/B" value = "{{ sub_branch }}">
+                                              </div>
+
+                                              
+                                          
+                                      </div>
+                                    </div>
+
+                                    {% endfor %}
+
+                                
+                                    {% for count in range(responses.no_opt) %}
+
+                                      {% set count = count + 1 %}
+
+                                      {% set opt_no = 'opt' ~ count ~ '_no' %}
+                                      {% set ans_k = 'opt' ~ count ~ '_k' %}
+
+                                      {% set optionnumber = responses[opt_no] %}
+                                      {% set answer = responses[ans_k] %}
+                                      <input type="text" id="no_option" value="{{responses.no_opt}}" style="display: none;"/>
+                                    <div class="row mb-4 g-5">
+                                      <div class="d-flex">
+                                          <div class="col-lg-2 col-md-2 col-sm-12 ">
+                                              <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Kannada: {{ optionnumber }}</label>
+                                          </div>
+                                          <div class="col-lg-8 col-md-2 col-sm-12 ">
+                                              <input type="text" class="form-control input-text ques_k"  id ="{{count}}" placeholder="Options" value="{{answer}}">
+                                          </div>
+                                          <div class="col-lg-1 col-md-2 col-sm-12 px-2 ">
+                                              <!-- <input type="text" class="form-control input-text w_k" placeholder="W"> -->
+                                          </div>
+                                          <div class="col-lg-1 col-md-5 col-sm-12 px-1">
+                                              <!-- <input type="text" class="form-control input-text ob_k" placeholder="O/B"> -->
+                                          </div>
+                                      </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                  
+                                    <div class="row mb-4">
+                                      <div class="col-lg-2 col-md-2 col-sm-12">
+  
+                                      </div>
+                                      <div class="d-grid col-lg-8 col-md-8 col-sm-12">
+                                          <button type="button" class="btn more-btn" onclick="addMoreQuesOptions();">Create More Option</button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                  
+
+                                  
+
+                                 
+
+                                  <div class="row mb-4">
+                                    <div class="col-lg-2 col-md-2 col-sm-12">
+
+                                    </div>
+                                    <div class="d-grid col-lg-4 col-md-4 col-sm-12">
+                                      <input type="file" name="uploadfile" id="eng_audio" style="display:none;"/>
+                                      <label for="eng_audio" class="btn upload-btn">Upload English Audio</label>
+                                        <!-- <input type="file" class="btn upload-btn" placeholder="kkkk"> -->
+                                        <!-- <button type="button" class="btn upload-btn">Upload English Audio</button> -->
+                                    </div>
+                                    <div class="d-grid col-lg-4 col-md-4 col-sm-12">
+                                      <input type="file" name="uploadfile" id="kan_audio" style="display:none;"/>
+                                      <label for="eng_audio" class="btn upload-btn">Upload Kannada Audio</label>                                    </div>
+                                  </div>
+
+                                  
+                                  <div class="row mb-4 d-flex">
+                                    <div class="d-flex">
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Status</label>
+                                        </div>
+                                        <div class="donate-now">
+                                            <div class="d-flex col-lg-8 col-md-8 col-sm-12">
+                                            <!-- <div class="col-4 "> -->
+                                                <input type="radio" id="ques_active" value="yes" class="gender" name="ques_status" />
+                                                <label for="ques_active" id="ques_active">Active</label>
+                                                <!-- </div>
+    
+                                                <div class="col-4 "> -->
+                                            
+                                                <input type="radio" id="ques_inactive" value="no" class="gender" name="ques_status" />
+                                                <label for="ques_inactive" id="ques_inactive">Inactive</label> 
+                                            <!-- </div>  -->
+                                            </div> 
+                                        </div>
+
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="d-flex">
+                                        <div class="col-lg-2 col-sm-2 col-sm-12"></div>
+                                        <div class="col-lg-8 col-sm-8 col-sm-12">
+                                            <button class="btn add_button" type="submit" onclick="UpdateQuestion();">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                 
+                                  </div>
+                                </div>
+                                 
+                                  </div>
+                                </div>
+
+
+                                
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="add-button">
+                    <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal" data-bs-target="#addLocation" class="add-btn-img" style="cursor: pointer ;">
+                 
+                </div> -->
+            </div>
+            
+
+        
+      
+      
+        
+        </div>
+
+        <!-- Add location Modal -->
+
+        <div class="modal fade" id="addLocation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3">Panchayat</label>
+                      <input type="email" class="form-control input-text" placeholder="First Name" id="panchayat" aria-describedby="emailHelp">
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3">Village</label>
+                      <input type="email" class="form-control input-text" placeholder="First Name" id="village" aria-describedby="emailHelp">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3">SHG</label>
+                      <input type="email" class="form-control input-text" placeholder="First Name" id="shg" aria-describedby="emailHelp">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3">Coordinator</label>
+
+                      <select class="form-select" id="locCoordinator" aria-label="Default select example">
+                        {% for response in responses %}
+                        <option value="{{response.coordinator}}">{{response.coordinator}}</option>
+                        {% endfor %}
+
+                      </select> 
+                      
+                     </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class=" modal-text mb-3">Researcher</label>
+                      <select class="form-select" id="locResearcher" aria-label="Default select example">
+                        {% for response in responses %}
+                        <option value="{{response.researcher}}">{{response.researcher}}</option>
+                        {% endfor %}
+                      </select>                        
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
+                        <div class="d-flex ">
+                          <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                            <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Arm allotment</label>
+                          </div>
+                          <div class="ps-3 col-lg-6 col-md-6 col-sm-12">
+                            <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Location Status</label>
+                          </div>
+                        </div>
+                      
+
+                        <div class="location-now ">
+
+                            <div class="d-flex justify-content-between">
+
+                            <div class="col-6 d-flex justify-content-between px-2">
+                                <input type="radio" id="locationcontrol" value="control" class="gender" name="locationarm" />
+                                <label for="locationcontrol" id="locationcontrol">Control</label>
+                                <input type="radio" id="locationintervention" value="intervention" class="gender" name="locationarm" />
+                                <label for="locationintervention" id="locationintervention">Intervention</label>
+                            </div>
+
+                            <div class="col-6 d-flex justify-content-between px-2">
+                                <input type="radio" id="locationactive" value="yes" class="gender" name="locationstatus" />
+                                <label for="locationactive" id="locationactive">Active</label> 
+                                <input type="radio" id="locationdisabled" value="no" class="gender" name="locationstatus" />
+                                <label for="locationdisabled" id="locationdisabled">Disabled</label> 
+                            </div>
+                        
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="modal-footer mt-4">
+                  <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                  <button type="button" class="btn modal-button" onclick="addLocation();">Save </button>
+                </div>
+
+              </div>
+         
+            </div>
+          </div>
+        </div>
+        </div>
+        
+        <!-- / Content -->
+
+    <!-- </div> -->
+
+
+{% endblock %}

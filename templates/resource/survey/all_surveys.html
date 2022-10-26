@@ -1,0 +1,124 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Surveys {% endblock %}
+
+{% block content %} 
+
+
+
+
+<!-- Content -->
+<div class="container">
+    <div class="content-wrapper">
+
+        
+        <!-- Content -->
+        <div class="view-coordinator view_sur_list">
+            <ul class="breadcrumb  d-flex">
+                <li><a href="#">Resource</a></li>
+                <li><a href="#">Survey Create</a></li>
+              </ul>
+            <div class="">
+                <div class="row">    
+                    {% for response in responses %}
+                   
+
+                    <a href='{{ url_for("surveys", PkId=response["survey_pri_id"]) }}' style="width: fit-content">
+                        <!-- <button class="d-none" name={{response.survey_pri_id}} onclick="question(name);"> -->
+                        <!-- <button class="" type="submit" name={{ response.survey_name }} > -->
+                            <div class="d-flex">
+                            <div class=" col-4" >
+                            
+                                <div class="survey  mt-5 mb-3" id="survey" >
+                                <!-- <div class="row"> -->
+                                    <div class=" ">
+                                        <div class="p-2">
+                                            <!-- <button type="button" class="btn-light" style="border: 0;" data-bs-toggle="modal" data-bs-target="#questions" > -->
+                                                <div class="card sr_list_card" style="width: 14rem; height: 8em; border-radius: 20px;">
+                                                    {% if response.active == "yes" %}
+                                                        <img src="{{ url_for('static', filename='assets/img/icons/active.svg')}}"/>
+                                                        {%else%}
+                                                        <img src="{{ url_for('static', filename='assets/img/icons/inactive.svg')}}"/>
+                                                    {%endif%}
+                                                    <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <!-- <input type="text" class="" id="sur_name" value={{response.survey_pri_id}} > -->
+                                                    
+                                                    <h5 class="card-title text-center m-0" id="survey_name">{{response.survey_name}}</h5>
+                                                    <!-- <h5 class="card-title text-center m-0" id="ssname">{{response.survey_pri_id}}</h5> -->
+                                                    <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
+                                                    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                                                    </div>
+                                                </div>
+                                            <!-- </button> -->
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+                                </div>
+
+                            </div>
+                        </div>
+                           
+                        <!-- </button> -->
+                        <!-- </button> -->
+                    </a>
+                    {% endfor %}
+                    <div class="add-button">
+                        <!-- <button class=""> -->
+                          <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal" data-bs-target="#addSurveyModal" class="add-btn-img" style="cursor: pointer ;">
+                        <!-- </button> -->
+      
+                       
+                      </div>
+                </div>
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="addSurveyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Add New Survey</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <form id="addNewSurvey"  >
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="form-outline mb-4 d-flex">
+                                        <div class="col-4">
+                                            <label class="modal-text mb-3" for="form2Example11 ">Survey Name</label>
+                                        </div>
+                                        <div class="col-8 flex-column">
+                                            <input type="text" id="new_sur_name" class="form-control"
+                                        placeholder="Survey Name" />
+                                        <span id="surNameError" class="pt-2 text-danger"></span>
+                                        <span id="surveyNameExist" class="pt-2 text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="text-center mb-3 pb-1">
+                            <button class="btn add_button mb-3" type="submit" onclick="surveyNameAdd(event);">Submit</button>
+                            </a>
+                            </div>
+
+                        
+
+                        </form>                     
+                        </div>
+                    </div>
+                    </div>
+                </div>
+    <!-- Modal END-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Survey Question {% endblock %}
+
+{% block content %}
+
+<script>
+    //   $(document).ready(function(){
+    //     $('.eng').click(function(){
+    //       alert("eng")
+
+    //        $(this).removeClass('ques_inactive_button').addClass('ques_active_button');
+    //     });
+    // });
+
+
+    //   $(document).ready(function(){
+    //     $('.kan').click(function(){
+    //       alert("kan")
+
+    //        $(this).removeClass('ques_inactive_button').addClass('ques_active_button');
+    //     });
+    // });
+
+    $(".kan").click(function () {
+        // remove expand class and add original mybtn class
+        $(".ques_inactive_button").removeClass("ques_inactive_button").addClass("ques_active_button");
+
+        $(this).removeClass("ques_active_button").addClass('ques_inactive_button');
+
+    }); 
+</script>
+
+<!-- Content -->
+<div class="container content-wrapper">
+    <div class="row">
+        <div class="d-flex justify-content-between">
+            <div class="col-6">
+                <ul class="breadcrumb roles_breadcrumb sur_ques_list d-flex">
+                    <li><a href="#">Reources</a></li>
+                    <li><a href="/que_Surveylist">Survey questions</a></li>
+                    <li><a href="#" id="brd">
+                            {% if responses == "No questions available" %}
+                            {{sur_name}}
+                            {% else %}
+                            {% for response in responses[0:1] %}
+                            {{sur_name}}
+                            {% endfor %}
+                            {% endif %}
+                        </a></li>
+                </ul>
+            </div>
+
+            {% if 'eng' in request.path %}
+            <div class="col-6 qf_button_pos">
+                <a href='{{ url_for("questions",version = "eng", PkId=sur_id) }}' style="width: fit-content">
+                    <button type="submit" id="eng_btn" class="btn ques_active_button eng"
+                        onclick="question_filter_eng()">English</button>
+                </a>
+                <a href='{{ url_for("questions",version = "kan", PkId=sur_id) }}' style="width: fit-content">
+                    <button type="submit" id="kan_btn" class="btn ques_inactive_button  kan"
+                        onclick="question_filter_kan()">ಕನ್ನಡ</button>
+                </a>
+            </div>
+            {% else %}
+            <div class="col-6 qf_button_pos">
+                <a href='{{ url_for("questions",version = "eng", PkId=sur_id) }}' style="width: fit-content">
+                    <button type="submit" id="eng_btn" class="btn ques_inactive_button eng"
+                        onclick="question_filter_eng()">English</button>
+                </a>
+                <a href='{{ url_for("questions",version = "kan", PkId=sur_id) }}' style="width: fit-content">
+                    <button type="submit" id="kan_btn" class="btn ques_active_button  kan"
+                        onclick="question_filter_kan()">ಕನ್ನಡ</button>
+                </a>
+            </div>
+            {% endif %}
+            </script>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- Content -->
+        {% if responses == "No questions available" %}
+        <h2 class="no-data mt-5">No questions available</h2>
+        {%else%}
+        <div class="view-coordinator sur_ques_editlist_card">
+            <div class="mt-4">
+                <div class="card">
+
+                    {% for response in responses %}
+
+                    <div class="cards-style  card-body role-bg">
+                        <div class="role-location">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    {% if response.section != "no" %}
+                                    <hr>
+                                    {% endif %}
+
+
+
+                                    {% if response.section_name != "null" %}
+
+                                    <div class="row">
+                                        <!-- <hr> -->
+                                        <h4 class="text-start">{{response.section_name}}</h4>
+                                    </div>
+
+                                    {% endif %}
+
+                                    <div class="row ">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <!-- <div class="col-lg-1 col-md-2 col-sm-12">
+                                            <h3 class="role-loc-header m-0">{{response.que_num}}.</h3>
+                                        </div> -->
+                                            <div class="col-lg-10 col-md-7 col-sm-9">
+                                                <h3 class="role-loc-header m-0 text-start">{{response.que_num}} .
+                                                    {{response.que}}.</h3>
+                                            </div>
+
+                                            {% if response.que_branch != "null" %}
+                                            <div class="col-lg-1 col-md-2 col-sm-1 px-2">
+                                                <!-- <input type="text" class="form-control input-text" value = "{{ response.que_branch }}" style="height: 50px; width: 76px;"> -->
+                                                <h2 type="text" class="form-control input-text" style="height: 50px;">
+                                                    {{ response.que_branch }}</h2>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="col-lg-1 col-md-2 col-sm-2">
+                                                <a href='{{ url_for("question", PkId=response["que_pk_id"]) }}'>
+                                                    <!-- <img src="{{ url_for('static', filename='assets/img/icons/edit.svg')}}" id="question_id" class="ms-auto" name="{{response.que_pk_id}}" style="display: block" onclick="editSurQuestion(name);"/> -->
+                                                    <img src="{{ url_for('static', filename='assets/img/icons/edit.svg')}}"
+                                                        id="question_id" class="ms-auto" style="display: block" />
+                                                    <input type="text" class="d-none" id="qq_id"
+                                                        value="{{response.sur_id}}">
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+
+
+                                        {% if response.opt_type == "single_select" %}
+
+                                        {% for count in range(response.no_opt) %}
+
+                                        {% set count = count + 1 %}
+
+                                        {% set ans_key = 'opt' ~ count %}
+                                        {% set wei_key = 'opt' ~ count ~ '_weight' %}
+                                        {% set sb_key = 'opt' ~ count ~ '_subbranch' %}
+
+
+                                        {% set answer = response[ans_key] %}
+                                        {% set weightage = response[wei_key] %}
+                                        {% set sub_branch = response[sb_key] %}
+
+
+                                        <div class="row mb-2">
+                                            <div class="col-lg-10 col-md-10 col-sm-12 mb-2 d-flex justify-content-center align-items-center"
+                                                style="border: 1px solid #D1D1D1;border-radius: 10px;height: 50px;">
+                                                <div class="col-lg-12 col-md-7 col-sm-12 ps-3">
+                                                    <h3 class="role-loc-header m-0 text-start">{{ answer }} </h3>
+
+                                                </div>
+                                            </div>
+
+
+
+                                            {% if weightage != "null" %}
+                                            <div class="col-lg-1 col-md-2 col-sm-6 mb-2">
+                                                <!-- <input type="text" class="form-control input-text" value = "{{weightage}}" style="height: 50px;"> -->
+                                                <input type="text" class="form-control input-text" style="height: 50px;"
+                                                    value="{{weightage}}" />
+                                            </div>
+                                            {% endif %}
+
+                                            {% if sub_branch != "null" %}
+                                            <div class="col-lg-1 col-md-2 col-sm-6">
+                                                <!-- <input type="text" class="form-control input-text" value = "{{sub_branch}}" style="height: 50px;"> -->
+                                                <input type="text" class="form-control input-text" style="height: 50px;"
+                                                    value="{{sub_branch}}" />
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        {% endfor %}
+
+                                        {% endif %}
+
+                                        {% if response.opt_type == "multi_select" %}
+                                        {% for count in range(response.no_opt) %}
+
+                                        {% set count = count + 1 %}
+
+                                        {% set ans_key = 'opt' ~ count %}
+                                        {% set wei_key = 'opt' ~ count ~ '_weight' %}
+                                        {% set sb_key = 'opt' ~ count ~ '_subbranch' %}
+
+
+                                        {% set answer = response[ans_key] %}
+                                        {% set weightage = response[wei_key] %}
+                                        {% set sub_branch = response[sb_key] %}
+
+
+                                        <div class="row mb-2">
+                                            <div class="col-lg-10 col-md-10 col-sm-12 d-flex justify-content-center align-items-center"
+                                                style="border: 1px solid #D1D1D1;border-radius: 10px;height: 50px;">
+                                                <div class="col-lg-12 col-md-7 col-sm-12 ps-3">
+                                                    <h3 class="role-loc-header m-0">{{ answer }}</h3>
+
+                                                </div>
+                                            </div>
+
+                                            {% if weightage != "null" %}
+                                            <div class="col-lg-1 col-md-2 col-sm-12">
+                                                <!-- <input type="text" class="form-control input-text" value = "{{weightage}}" style="height: 50px;"> -->
+                                                <input type="text" class="form-control input-text" style="height: 50px;"
+                                                    value="{{weightage}}" />
+                                            </div>
+                                            {% endif %}
+
+                                            {% if sub_branch != "null" %}
+                                            <div class="col-lg-1 col-md-2 col-sm-12">
+                                                <!-- <input type="text" class="form-control input-text" value = "{{sub_branch}}" style="height: 50px;"> -->
+                                                <input type="text" class="form-control input-text" style="height: 50px;"
+                                                    value="{{sub_branch}}" />
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        {% endfor %}
+
+                                        {% endif %}
+
+                                        {% if response.opt_type == "text" %}
+                                        <!-- <input type="number" id="quantity" name="quantity" class="form-control text-input w-75 h-50 mx-5 g-5"> -->
+
+                                        <div class="row">
+                                            <div class="d-flex d-flex align-items-center justify-content-start">
+                                                <div class="col-lg-1 col-md-1 col-sm-12 m-0 p-0">
+                                                    <h3 class="role-loc-header m-0"></h3>
+                                                </div>
+                                                <div class="col-lg-11 col-md-6 col-sm-12"
+                                                    syle="height:250px !important;">
+                                                    <textarea rows="3" class="form-control" id="text"
+                                                        name="text"></textarea>
+                                                    <!-- <input type="text" id="quantity" name="quantity" class="form-control text-input" > -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if response.opt_type == "numeric" %}
+                                        <!-- <input type="number" id="quantity" name="quantity" class="form-control text-input w-50"> -->
+
+                                        <div class="row">
+                                            <div class="d-flex d-flex align-items-center justify-content-start">
+                                                <div class="col-lg-1 col-md-1 col-sm-12 m-0 p-0">
+                                                    <h3 class="role-loc-header m-0"></h3>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                                    <input type="number" id="numeric" name="numeric"
+                                                        class="form-control text-input w-50">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if response.opt_type == "date" %}
+                                        <div class="row">
+                                            <div class="d-flex d-flex align-items-center justify-content-start">
+                                                <div class="col-lg-1 col-md-1 col-sm-12 m-0 p-0">
+                                                    <h3 class="role-loc-header m-0"></h3>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                                    <input type="date" id="date" name="date" class="form-control w-50">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        <!-- <hr> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card mb-3">
+    <div class="add-button">
+        {% if responses == "No questions available" %}
+        <a href='{{ url_for("addquestionpage", PkId=sur_id) }}'>
+            <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" class="add-btn-img"
+                style="cursor: pointer ;">
+        </a>
+        {% else %}
+        <a href='{{ url_for("addquestionpage", PkId=response["sur_id"]) }}'>
+            <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" class="add-btn-img"
+                style="cursor: pointer ;">
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

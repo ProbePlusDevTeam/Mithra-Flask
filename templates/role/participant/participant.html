@@ -1,0 +1,436 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Coordinator {% endblock %}
+
+{% block content %} 
+
+
+
+<div class="view-coordinator">
+    
+    <div class="container container-p-y">
+        <ul class="breadcrumb inner_roles_breadcrumb d-flex">
+            <li><a href="#">Roles</a></li>
+            <li><a href="/participants">Participant</a></li>
+            <li><a href="#">{{details.full_name}}</a></li>
+          </ul>
+        <div class="card inner_roles">
+         
+            <div class="row">
+                <div class="d-flex">
+                <div class="top-role-image d-flex align-items-center">
+                    
+                </div>
+                </div>
+            </div>
+          
+            <!-- {% for response in responses %}
+            <p>{{response.first_name}}</p>
+            {% endfor %} -->
+            <div class="card-body role-bg">
+                <div class="role-bg p-4 mb-4">
+                    <div class="d-flex col-sm-12 mb-3">
+                        <h5 class="modal-text fs-3">Profile</h5>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Full Name</label>
+                            <div class="card d-flex align-self-center">
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.full_name}}</p>
+                                </div>
+                            </div>
+                            <!-- <input type="text" class="form-control input-text card role-bg" placeholder="First Name" id="participantfirst_name" value="{{details.full_name}}" aria-describedby="emailHelp"> -->
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Phone Number</label>
+                            <div class="card d-flex align-self-center">
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.mobile_number}}</p>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class=" modal-text mb-2">Age</label>
+                              <div class="profile_data  ">
+                                <p class="profile_details m-2">{{details.age}}</p>
+                                </div>                          
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-12 ">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class=" modal-text mb-2">Gender</label>
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.gender}}</p>
+                                </div>    
+                            </div>                        
+                        </div>
+                    </div>
+                        
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class=" modal-text mb-2">Panchayat</label>
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.panchayat}}</p>
+                                </div>    
+                            </div>  
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class=" modal-text mb-2">Village</label>
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.village_name}}</p>
+                                </div>    
+                            </div>
+                          </div>
+                        
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class=" modal-text mb-2">SHG</label>
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.shg}}</p>
+                                </div>    
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class=" modal-text mb-2">Username</label>
+                                <div class="profile_data  ">
+                                    <p class="profile_details m-2">{{details.user_name}}</p>
+                                </div>    
+                            </div>
+                          </div>
+                        
+                    </div>
+                </div>
+
+
+
+                <div class="role-bg p-4 mb-5 mt-5">
+                    <div class="d-flex col-sm-12 ">
+                        <h5 class="modal-text fs-3">Socio Demography</h5>
+                    </div>
+                    <div class="row  ">
+                        <div class="d-flex resp align-items-center justify-content-center p-0">
+                            <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="col-5">
+                                        <label for="exampleInputEmail1" class=" modal-text mb-2">Years of Educations</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="profile_data  ">
+                                            <p class="profile_details m-2">{{social.years_of_education}}</p>
+                                        </div>                                 
+                                    </div>                                 
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="col-5">
+                                        <label for="exampleInputEmail1" class=" modal-text mb-2">Occupation</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="profile_data  ">
+                                            <p class="profile_details m-2">{{social.occupation}}</p>
+                                        </div>                                 
+                                    </div>                                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row  ">
+                        <div class="d-flex resp align-items-center justify-content-center p-0">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Religion</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.religion}}</p>
+                                    </div>                                 
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Caste</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.caste}}</p>
+                                    </div> 
+                                </div>                                 
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row  ">
+                        <div class="d-flex resp align-items-center justify-content-center p-0">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Marital Status</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.marital_status}}</p>
+                                    </div>                                 
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">family Type</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.type_of_family}}</p>
+                                    </div> 
+                                </div>                                 
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row  ">
+                        <div class="d-flex resp align-items-center justify-content-center p-0">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Number of Adult Family</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.number_of_adult_family_members}}</p>
+                                    </div>                                 
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Number of Child Family Members</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.number_of_child_family_members}}</p>
+                                    </div> 
+                                </div>                                 
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row  ">
+                        <div class="d-flex resp align-items-center justify-content-center p-0">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Total Family Income (per month)</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.total_family_income_per_month}}</p>
+                                    </div>                                 
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Total Earning Members</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.total_earning_members_in_the_family}}</p>
+                                    </div> 
+                                </div>                                 
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row  ">
+                        <div class="d-flex resp align-items-center justify-content-center p-0">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">Duration (in Years) of Association with SHG</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.duration_of_association_with_cboshg}}</p>
+                                    </div>                                 
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-5">
+                                    <label for="exampleInputEmail1" class=" modal-text mb-2">SHG Meetings Attended in Last  6 Months?</label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="profile_data  ">
+                                        <p class="profile_details m-2">{{social.number_of_child_family_members}}</p>
+                                    </div> 
+                                </div>                                 
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    </div>
+
+                    <div class="role-bg p-4 mb-5 mt-5">
+
+                <div class="d-flex col-sm-12 ">
+                    <h5 class="modal-text fs-3" style="font-weight: 900;">Disease Profile</h5>
+                </div>
+                
+                {% for res in available_disease %}
+
+                <div class="row mb-3 ">
+                    <div class="  p-0 " >
+                    <div class="col-lg-12 col-md-6 col-sm-6 p-3">
+                        
+                        <div class="">
+                            <div class=" mb-3">
+                                {% if res != "other_diseases" %}
+                                <div class="col-12 ">
+
+                                    <div class="col-lg-6 ">
+                                        <label for="exampleInputEmail1" class=" modal-text mb-2">{{view[
+                                            loop.index - 1 ]}}</label>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">How old
+                                                were you when this was diagnosed?</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].age}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">Do you
+                                                receive treatment for this condition?</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].treatment}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">Does this
+                                                condition limit your activities?
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].activities}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {% else %}
+                                <div class="col-12 ">
+
+                                    <div class="col-lg-6 ">
+                                        <label for="exampleInputEmail1" class=" modal-text mb-2">{{view[
+                                            loop.index - 1 ]}}</label>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">How old
+                                                were you when this was diagnosed?</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].age}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">Do you
+                                                receive treatment for this condition?</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].treatment}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">Does this
+                                                condition limit your activities?
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].activities}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 d-flex align-items-center mb-2 px-4">
+                                        <div class="col-8">
+                                            <label for="exampleInputEmail1" class=" modal-text mb-2">Specify other diseases
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="profile_data  ">
+                                                <p class="profile_details m-2">{{diseases[res].specification}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+                <hr>
+                {% endfor %} 
+
+                </div>
+
+            </div>
+
+               
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

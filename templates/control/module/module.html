@@ -1,0 +1,311 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Modules {% endblock %}
+
+{% block content %}
+
+<!-- Content -->
+<div class="content-wrapper">
+  <!-- Content -->
+  <div class="view-coordinator module_list">
+    <div class="container container-p-y">
+      <ul class="breadcrumb  d-flex">
+        <li><a href="#">Resource</a></li>
+        <li><a href="#">Modules</a></li>
+      </ul>
+      <div class="card">
+
+        <div class="cards-style  card-body role-bg">
+          <div class="role-location">
+
+            <table id="modulesTable" class="display nowrap" style="width:100%">
+              <thead class="tableHead">
+                <tr>
+                  <th class="td_online" style="width: 10px;"></th>
+                  <th class="role-loc-header table_had_content text-center">Survey Name</th>
+                  <th class="role-loc-header table_had_content text-center">Sub Module Name</th>
+                  <th class="role-loc-header  text-center">Sub Module No.</th>
+                  <th class="role-loc-header m-0 text-center">Group</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody style="margin-bottom: 20px;">
+                {% for response in responses %}
+                <tr class="table_body mb-5">
+                  <td>
+                    <div class="d-flex align-items-center justify-content-start online col-lg-1 col-md-2 col-sm-12">
+                      {% if response.active == "yes" %}
+                      <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto" />
+                      {%else%}
+                      <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto" />
+                      {%endif%}
+                    </div>
+                  </td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.survey_name}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.sub_module_name}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.sub_module_number}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.group1}}</td>
+                  <td>
+                    <div class="d-flex align-items-center justify-content-end">
+                      <div id="editB{{response.name}}" value="{{response.name}}">
+                        <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                          id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id" name="{{response.name}}"
+                          style="display: block" onclick="enableEditList(name);" />
+                        <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                          id="full_edit{{response.name}}" name="{{response.name}}" data-bs-toggle="modal"
+                          data-bs-target="#editModal" class="loc_expand_edit_img act_full_img_id" style="display: none"
+                          onclick="editModule(name);" />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+              <!-- <tfoot>
+                                    <tr class="">
+                                        <th class="role-loc-header m-0 text-center">Device ID</th>
+                                        <th class="role-loc-header m-0 text-center">Allot Device (Coordinator)</th>
+                                        <th class="role-loc-header m-0 text-center">Allot Device (Researcher)</th>
+                                        <th class="role-loc-header m-0 text-center">Device Type</th>
+                                        <th class="role-loc-header m-0 text-center">Device Details</th>
+                                    </tr>
+                                </tfoot> -->
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="add-button">
+        <!-- <button class=""> -->
+        <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+          data-bs-target="#addModal" class="add-btn-img" style="cursor: pointer ;">
+        <!-- </button> -->
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+  </div>
+
+  <!-- Add module Modal -->
+
+  <div class="modal fade p-5" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content custom-modal">
+        <!-- <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div> -->
+        <div class="modal-body p-5">
+          <form action="" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="surveyname" class=" modal-text mb-3">Survey Name</label>
+                  <!-- <input type="email" class="form-control input-text" placeholder="" id="surveyname" aria-describedby="emailHelp"> -->
+
+                  <select class="form-select" id="surveyname" aria-label="Default select example">
+                    <option value="Select One">-- Select One --</option>
+                    {% for survey in surveys %}
+                    <option value="{{survey.sur_id}}">{{survey.sur_name}}</option>
+                    {% endfor %}
+                  </select>
+
+                  <div id="surveynameErr" class="text-danger"></div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="modulenumber" class=" modal-text mb-3">Module Number</label>
+                  <input type="text" class="form-control input-text" placeholder="" id="modulenumber"
+                    aria-describedby="emailHelp">
+                  <div id="moduleNumberErr" class="text-danger"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="submodnumber" class=" modal-text mb-3">Sub module Number</label>
+                  <input type="text" class="form-control input-text" placeholder="" id="submodnumber"
+                    aria-describedby="emailHelp">
+                  <div class="invalid-entry text-start mx-2" id="submoduleNumberErr"></div>
+                  <div id="submodNumErr" class="text-danger"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="submodname" class=" modal-text mb-3">Sub module Name</label>
+                  <input type="text" class="form-control input-text" placeholder="" id="submodname"
+                    aria-describedby="emailHelp">
+                  <div id="submodNameErr" class="text-danger"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                <div class="d-flex ">
+                  <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                    <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Group</label>
+                  </div>
+                </div>
+                <div class="location-now ">
+                  <div class="d-flex justify-content-between">
+                    <div class="col-12 d-flex justify-content-between">
+                      <input type="radio" id="locationcontrol" value="control" class="gender" name="group" />
+                      <label for="locationcontrol" id="locationcontrol" class="mx-1">Control</label>
+
+                      <input type="radio" id="locationintervention" value="intervention" class="gender mx-4"
+                        name="group" />
+                      <label for="locationintervention" id="locationintervention" class="mx-1">Intervention</label>
+
+                      <input type="radio" id="locationall" value="all" class="gender" name="group" />
+                      <label for="locationall" id="locationall" class="mx-1">All</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer mt-4">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+              <button type="button" id="add-module-btn" class="btn modal-button" onclick="addModule();">Save </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Module Modal Start -->
+  <div class="modal fade p-5" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content custom-modal">
+        <!-- <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div> -->
+        <div class="modal-body p-5">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <input type="text" class="d-none" id="module_id" value="">
+                <input type="text" class="d-none" id="editsurid" value="">
+                <label for="editSurveyname" class=" modal-text mb-3">Survey Name</label>
+                <input type="text" class="form-control input-text" placeholder="" id="editSurveyname"
+                  aria-describedby="emailHelp" disabled>
+                <div id="edit-surveyname" class="invalid-entry"></div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Module Number</label>
+                <input type="text" class="form-control input-text" placeholder="" id="editModnumber"
+                  aria-describedby="emailHelp">
+                <div id="edit-mod-num" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Sub module Number</label>
+                <input type="text" class="form-control input-text" placeholder="" id="editsmodulenum"
+                  aria-describedby="emailHelp">
+                <div id="edit-submod-num" class="invalid-entry"></div>
+                <div id="edit_submod_exist" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Sub module Name</label>
+                <input type="text" class="form-control input-text" placeholder="" id="editsmodulename"
+                  aria-describedby="emailHelp">
+                <div id="edit-submod-name" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+              <div class="d-flex ">
+                <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                  <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Group</label>
+                </div>
+              </div>
+              <div class="location-now ">
+                <div class="d-flex justify-content-between">
+                  <div class="col-12 d-flex justify-content-between">
+                    <input type="radio" id="groupControl" value="control" class="gender groupSelected"
+                      name="updatedGroup" />
+                    <label for="groupControl" id="groupControl" class="mx-2">Control</label>
+
+                    <input type="radio" id="groupIntervention" value="intervention" class="gender mx-4"
+                      name="updatedGroup" />
+                    <label for="groupIntervention" id="groupIntervention" class="mx-2">Intervention</label>
+
+                    <input type="radio" id="groupAll" value="all" class="gender" name="updatedGroup" />
+                    <label for="groupAll" id="groupAll" class="mx-2">All</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+              <div class="d-flex ">
+                <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                  <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Status</label>
+                </div>
+              </div>
+              <div class="location-now ">
+                <div class="d-flex justify-content-between">
+                  <div class="col-12 d-flex justify-content-between">
+                    <input type="radio" id="statusActive" value="yes" class="gender" name="updatedStatus" />
+                    <label for="statusActive" id="statusActive" class="mx-4">Active</label>
+
+                    <input type="radio" id="statusInactive" value="no" class="gender mx-4" name="updatedStatus" />
+                    <label for="statusInactive" id="statusInactive" class="mx-4">Inactive</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="modal-footer mt-4">
+            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+            <button type="button" class="btn modal-button" id="updatebutton" value=""
+              onclick="update_module();">Update</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Edit Module Modal End -->
+
+  <!-- / Content -->
+
+
+
+
+  {% endblock %}

@@ -1,0 +1,348 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Videos {% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper">
+
+  
+    <div class="view-coordinator">
+        <div class="container container-p-y">
+            <ul class="breadcrumb  d-flex">
+                <li><a href="#">Resource</a></li>
+                <li><a href="#">Videos</a></li>
+            </ul>
+            <div class="card">
+
+                <div class="cards-style  card-body role-bg">
+                    <div class="role-location">
+                        <table id="videosTable" class="display nowrap" style="width:100%">
+                            <thead class="tableHead">
+                                <tr>
+                                    <th class="td_online" style="width: 10px;"></th>
+                                    <th class="role-loc-header table_had_content text-center">Video title (English)</th>
+                                    <th class="role-loc-header table_had_content text-center">Video title (Kannada)</th>
+                                    <th class="role-loc-header  text-center">Survey Name</th>
+                                    <th class="role-loc-header m-0 text-center">Sub Module Number</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody style="margin-bottom: 20px;">
+                                {% for response in responses %}
+                                <tr class="table_body mb-5">
+                                    <td>
+                                        <div
+                                            class="d-flex align-items-center justify-content-start online col-lg-1 col-md-2 col-sm-12">
+                                            {% if response.active == "yes" %}
+                                            <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}"
+                                                class="me-auto" />
+                                            {%else%}
+                                            <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}"
+                                                class="me-auto" />
+                                            {%endif%}
+                                        </div>
+                                    </td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.video_name_e}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.video_name_k}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.survey_name}}</td>
+                                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.sub_module_number}}</td>
+                                    <td id="act_img"> 
+                                        <div class="d-flex align-items-center justify-content-end" >
+                                          <div id="editB{{response.name}}" value="{{response.name}}">
+                                            <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                                              id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id" name="{{response.name}}"
+                                              style="display: block" onclick="enableEditList(name);" />
+                                            <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                                              id="full_edit{{response.name}}" name="{{response.name}}" data-bs-toggle="modal"
+                                              data-bs-target="#editVideo" style="display: none" class="loc_expand_edit_img act_full_img_id" onclick="editVideoData(name);" />
+                                          </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                                
+                              
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="add-button">
+                <!-- <button class=""> -->
+                <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+                    data-bs-target="#addVideo" class="add-btn-img" style="cursor: pointer ;">
+                <!-- </button> -->
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+    <!--Add device Modal -->
+
+    <div class="modal fade" id="addVideo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Add New Video</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form enctype="multipart/form-data" id="video_form" onsubmit="return false;">
+                    <div class="modal-body">
+                        <div class="form-outline mb-3">
+                            <label class="modal-text mb-3" for="form2Example11">Video Title</label>
+                        
+
+                            <div class="row d-flex">
+                                <div class="col-6">
+                                    <input type="text" id="video_english" name="video_english" class="form-control input-text"
+                                        placeholder="english" />
+                                    <div class="invalid-entry" id="engVidError"></div>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" id="video_kannada" name="video_kannada" class="form-control input-text"
+                                        placeholder="Kannada" />
+                                    <div class="invalid-entry" id="kanVidError"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row gx-5">
+                            <div class="col-12 mb-3">
+                                <label class=" modal-text mb-2" for="editdevicetablet" id="editdevicetablet">Surveys</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between ">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 p-1">
+                                            <select class="form-select" id="vidSurveyName" name="vidSurveyName"
+                                                aria-label="Default select example" onchange="getSubModuleNo();">
+                                                <option value="Select One">-- Select Survey --</option>
+                                                {% for response in surveys %}
+                                                <option value="{{response.sur_id}}">{{response.sur_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="invalid-entry" id="surveyError"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row gx-5">
+                            <div class="col-12 mb-3">
+                                <label class=" modal-text mb-2" for="editdevicetablet" id="editdevicetablet">Sub Module
+                                    Number</label>
+                                <div class="donate-now">
+                                    <div class="d-flex justify-content-between ">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 p-1">
+                                            <select class="form-select" id="vidSubModNo" name="vidSubModNo"
+                                                aria-label="Default select example">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="invalid-entry" id="sub_mod_exist"></div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <!-- <div class="col-12 mb-4">
+                                <div class="d-flex justify-content-center mt-4 pt-2">
+                                    <button id="btnsave" type="submit" class="btn modal-button"
+                                        onclick="">Save </button>
+                                </div>
+
+                            </div> -->
+                        </div>
+
+                            <div class="row mb-4 d-flex align-items-center">
+                                <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                    <label for="eng_video" class="modal-text mx-2">Select Video English</label>
+                                    <input type="file" class="form-control btn upload-btn" name="eng_video" id="eng_video" />
+                                    <div class="invalid-entry" id="engFileVidError"></div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                    <label for="kan_video" class="modal-text mx-2">Select Video Kannada</label>
+                                    <input type="file" class="form-control btn upload-btn" name="kan_video" id="kan_video" />
+                                    <div class="invalid-entry" id="kanFileVidError"></div>
+                                </div>
+                               
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <button id="upload-button" class="btn modal-button" onclick="addVideoDetails(); uploadFile(this.form, event)"> Upload </button>
+                                    <!-- <button class="btn add_button" type="submit">Upload</button> -->
+                                </div>
+                            </div>
+                        <div id="static_file_response" clas="invalid-entry"> </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal END-->
+
+    <!--Edit device Modal -->
+
+    <div class="modal fade" id="editVideo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Edit Video</h4>
+                    <input type="tex" id="vid_id" value="" class="d-none">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div></div>
+                        <!-- Button trigger modal -->
+                        <a href="" class="btn more-btn" data-bs-toggle="modal" data-bs-target="#editVideoFiles"> Reupload video</a>
+                      </div>
+                    <div class="form-outline mb-3">
+                        <input type="text" id="vid_eng_title" value="ad" class="d-none">
+                        <input type="text" id="vid_kan_title" value="sd" class="d-none">
+                        <label class="modal-text mb-3" for="form2Example11">Video Title</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" id="editvideo_english" class="form-control input-text"
+                                    placeholder="english" />
+                                <div class="invalid-entry" id="editEngNameError"></div>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" id="editvideo_kannada" class="form-control input-text"
+                                    placeholder="Kannada" />
+                                <div class="invalid-entry" id="editKanNameError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row gx-5">
+                        <div class="col-12 mb-3">
+                            <label class=" modal-text mb-2" for="editdevicetablet" id="editdevicetablet">Surveys</label>
+                            <div class="donate-now">
+                                <div class="d-flex justify-content-between ">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 p-1">
+                                        <select class="form-select" id="editvidSurveyName"
+                                            aria-label="Default select example" onchange="editGetSubModuleNo();">
+                                            {% for response in surveys %}
+                                            <option value="{{response.sur_id}}">{{response.sur_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row gx-5">
+                        <div class="col-12 mb-3">
+                            <label class=" modal-text mb-2" for="editdevicetablet" id="editdevicetablet">Sub Module
+                                Number</label>
+                            <div class="donate-now">
+                                <div class="d-flex justify-content-between ">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 p-1">
+                                        <select class="form-select" id="editvidSubModNo"
+                                            aria-label="Default select example">
+                                            <option value=""></option>
+                                        </select>
+                                        <div class="invalid-entry" id="video_sub_mod_exist"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                            <div class="d-flex ">
+                              <div class="col-lg-6 col-md-6 col-sm-12 pl-2">
+                                <label class=" modal-text mb-3" for="editdevicetablet" id="editdevicetablet">Status</label>
+                              </div>
+                            </div>
+                            <div class="location-now ">
+                                <div class="d-flex justify-content-between">
+                                <div class="col-12 d-flex justify-content-between">
+                                    <input type="radio" id="statusActive" value="yes" class="gender" name="updatedStatus" />
+                                    <label for="statusActive" id="statusActive" class="mx-4">Active</label>
+      
+                                    <input type="radio" id="statusInactive" value="no" class="gender mx-4" name="updatedStatus" />
+                                    <label for="statusInactive" id="statusInactive" class="mx-4">Inactive</label>
+                                </div>                        
+                                </div> 
+                            </div>
+                        </div>
+                      </div>
+
+                    <div class="row">
+                        <div class="text-center pt-1 mb-2 pb-1">
+                            <button type="submit" class="btn modal-button" onclick="editVideoDetails();">Save </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="editVideoFiles" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reupload Videos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form enctype="multipart/form-data" id="editActivityImageForm" onsubmit="return false;">
+                <input type="text" value="" id="editVideoId" class="d-none">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="reuploadImage" class="mb-2 modal-text">English video</label>
+                            <input type="file" class="form-control" id="reuploadEngVideo" name="reuploadEngVideo" />
+                            <div class="invalid-entry" id="reUpEngVidError"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="reuploadImage" class="mb-2 modal-text">Kannada video</label>
+                            <input type="file" class="form-control" id="reuploadKanVideo" name="reuploadKanVideo" />
+                            <div class="invalid-entry" id="reUpKanVidError"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="reupload-button" class="btn modal-button mt-3"
+                                onclick="videoReupload(this.form, event);"> Upload </button>
+                        </div>
+                    </div>
+                    <div id="static_file_response"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Content END-->
+
+
+{% endblock %}

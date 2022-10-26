@@ -1,0 +1,180 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Coordinators {% endblock %}
+
+{% block content %} 
+
+
+  <!-- <div class="container">
+    
+  </div> -->
+
+<div class="container ">
+  <div class="row d-flex justify-content-start align-items-center">
+    <div class="top-bar">
+        <div class=" col-lg-6 col-md-6 col-sm-12">
+            <div class="filter d-flex justify-content-start align-items-center ">
+                <h2 class="show_only mx-3 m-0 p-0">Show Only : </h2>
+                <button class="filter_buttons btn mx-3">All</button>
+                <button class="filter_buttons btn mx-3">Inactive</button>
+            </div>   
+        </div> 
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="add-coordinator d-flex justify-content-start align-items-center">
+                <button class="btn add_button " data-bs-toggle="modal" data-bs-target="#addcoordinator">Add Coordinator</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="coordinators" id="crds">
+
+      <div class="row gx-2">
+        {% for response in responses %}
+
+          <div class="col-lg-4 col-md-6 col-sm-12 ">
+            <a href='{{ url_for("coordinator", PkId=response["name"]) }}'>
+
+            <div class="card main-cards d-flex align-items-center justify-content-center">
+              <input type="text" id="cname" value="{{response.name}}" class="d-none">
+              {% if response.active == "yes" %}
+                <img src="{{ url_for('static', filename='assets/img/icons/active.svg')}}"/>
+                {%else%}
+                <img src="{{ url_for('static', filename='assets/img/icons/inactive.svg')}}"/>
+              {%endif%}
+
+              <img src="{{ url_for('static', filename = '/assets/img/user/user.png')}}" class="cards-img " alt="...">
+
+              <div class="card-body p-3">
+                <div class="d-flex text-center justify-content-center p-0">
+                  <h5 class="card-title card-header text-center p-1">{{response.first_name +" "+ response.last_name}}</h5>
+                  <!-- <h5 class="card-title card-header text-center p-1">{{response.last_name}}</h5> -->
+                </div>
+                <p class="card-text card-sub pt-3">{{response.mobile_number}}</p>
+                <p class="card-text card-sub pt-1 mb-3">{{response.email_id}}</p>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              </div>
+            </div>
+          </a>
+          
+          </div>
+        <!-- </a> -->
+
+          {% endfor %}
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="modal  fade" id="addcoordinator" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Coordinator</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-5">
+
+          <form id="addCoordinators">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">First Name</label>
+                  <input type="text" class="form-control input-text" placeholder="First Name" id="firstName" aria-describedby="emailHelp">
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Last Name</label>
+                  <input type="text" class="form-control input-text" placeholder="Last Name" id="lastName" aria-describedby="emailHelp">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-8 col-md-8 col-sm-12 mb-5">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Gender</label>
+
+                  <div class="gender-now ">
+                      <div class="d-flex justify-content-between">
+                      <div class="col-4 ">
+                          <input type="radio" id="male" value="Male" class="gender" name="gender" />
+                          <label for="male" id="male">Male</label>
+                      </div>
+                      <div class="col-4">
+                          <input type="radio" id="female" value="Female" class="gender" name="gender" />
+                          <label for="female" id="female">Female</label> 
+                      </div>
+                      <div class="col-4"> 
+                          <input type="radio" id="other" value="Other" class="gender" name="gender" />
+                          <label for="other" id="other">Other</label>
+                      </div> 
+                      </div> 
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Date of Birth</label>
+                  <input type="date" class="form-control" id="dob"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Phone Number</label>
+                  <input type="number" class="form-control input-text" placeholder="Phone Number" id="phone" aria-describedby="emailHelp">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Username</label>
+                  <input type="text" class="form-control input-text" placeholder="Username" id="username" aria-describedby="emailHelp">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Email Id</label>
+                  <input type="email" class="form-control input-text" placeholder="Email Id"id="email" aria-describedby="emailHelp">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Password</label>
+                  <input type="password" class="form-control input-text" placeholder="Password" id="password" aria-describedby="emailHelp">
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class=" modal-text mb-3">Confirm Password</label>
+                  <input type="password" class="form-control input-text" placeholder="Confirm Password" id="confirmPass" aria-describedby="emailHelp">
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+          <button type="submit" class="btn modal-button" onclick="addCoordinator(); addcoordinatorCloseModal();">Save </button>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+
+{% endblock %}

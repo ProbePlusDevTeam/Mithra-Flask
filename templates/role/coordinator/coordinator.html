@@ -1,0 +1,303 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Coordinator {% endblock %}
+
+{% block content %} 
+
+<script>
+$(function(){
+    var dtToday = new Date();
+    
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+    $('#editcoage').attr('max', maxDate);
+    });
+</script>
+<div class="view-coordinator">
+    
+    <div class="container container-p-y">
+        <ul class="breadcrumb inner_roles_breadcrumb d-flex">
+            <li><a href="#">Roles</a></li>
+            <li><a href="/coordinators">Coordinator</a></li>
+            <li><a href="#">{{ responses.first_name }}  {{ responses.last_name }} </a></li>
+
+          </ul>
+        <div class="card inner_roles">
+         
+            <div class="row ">
+                <div class="">
+                <div class="top-role-image d-flex align-items-center">
+                    <div class="col-lg-2 col-md-6 col-sm-3">
+                        <img src="{{ url_for('static', filename='assets/img/user/user.png')}}" class="view-role-image">
+                    </div>
+                    <div class="d-flex col-lg-8 col-md-6 col-sm-3 user_name">
+                        <h5 class="modal-text mt-5 mx-2 ">User name :</h5><h5 class="u_name2 mt-5 pt-1"> {{responses.user_name}}</h5>
+                    </div>
+                </div>
+                </div>
+            </div>
+          
+         
+            <div class="card-body role-bg">
+                <div class="role-bg p-4 mb-4">
+                    <div class="row">
+                        <div class="d-flex justify-content-start col-6">
+        
+                            <h5 class="basic-details p-1 mb-3">Basic Details</h5>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center col-6">
+                            <input type="text" id="coname" class="d-none" value="{{responses.name}}">
+                            <a href="" class="text-center px-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Change Password
+                            </a>
+                              
+                              <!-- Modal -->
+                              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col-12 mb-4 flex-column">
+                                            <input type="password" class="form-control input-text mb-3" id="co_update_password" placeholder="New Password">
+                                            <div class="invalid-entry" id="newPassError"></div>
+                                            <input type="password" class="form-control input-text" id="co_update_conf_password" placeholder="Confirm Password">
+                                            <div class="invalid-entry" id="passMatchError"></div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <button type="submit" class="btn add_button text-center" onclick="coordinatorUpdatePassword()">Update</button>
+                                        </div>
+                                    </div>
+                                   
+                                  </div>
+                                </div>
+                              </div>
+                            <img src="{{ url_for('static', filename='assets/img/icons/edit.svg')}}" class="edit-img" onclick="coordinatorEditEnable();">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">First Name</label>
+                            <input type="email" class="form-control input-text" placeholder="First Name" id="editcofirst_name" value="{{responses.first_name}}" disabled aria-describedby="emailHelp">
+                            <div id="edit-cord-fname" class="invalid-entry"></div>
+                            <div id="edit-cord-fnameError" class="invalid-entry"></div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Last Name</label>
+                            <input type="email" class="form-control input-text" placeholder="Last Name" id="editcolast_name" value="{{responses.last_name}}" disabled aria-describedby="emailHelp">
+                            <div id="edit-cord-lname" class="invalid-entry"></div>
+                            <div id="edit-cord-lnameError" class="invalid-entry"></div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Phone Number</label>
+                            <input type="number" class="form-control input-text" placeholder="Phone Number" id="editconumber" value="{{responses.mobile_number}}" onkeyup="editphValidation()" disabled aria-describedby="emailHelp">
+                            <div id="edit-cord-phno" class="invalid-entry"></div>
+                            <div id="coPhError" class="invalid-entry"></div>
+                            <div id="coPhoneNumberExistError" class="invalid-entry"></div>                            
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Email Id</label>
+                            <input type="email" class="form-control input-text" placeholder="Email Id" value="{{responses.email_id}}" id="editcoemail" disabled aria-describedby="emailHelp">
+                            <div id="edit-cord-email" class="invalid-entry"></div>
+                            <div id="userNameError" class="invalid-entry"></div>
+                            
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Date of Birth</label>
+                            <input type="date" class="form-control input-text" placeholder="Date of Birth" id="editcoage" value="{{responses.age}}" disabled aria-describedby="emailHelp">
+                            <div id="edit-cord-age" class="invalid-entry"></div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class=" modal-text mb-2">Gender</label>
+                            <!-- <input type="email" class="form-control input-text" placeholder="Gemder" value="{{responses.gender}}" id="editcogender" disabled aria-describedby="emailHelp"> -->
+                            {% if responses.gender == "Male" %}
+                            <div class="gender-now ">
+                                <div class="d-flex justify-content-between">
+                                <div class="col-4 ">
+                                    <input type="radio" id="male" value="Male" class="gender" name="gender" checked disabled/>
+                                    <label for="male" >Male</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" id="female" value="Female" class="gender" name="gender" disabled/>
+                                    <label for="female" >Female</label> 
+                                </div>
+                                <div class="col-4"> 
+                                    <input type="radio" id="other" value="Other" class="gender" name="gender" disabled/>
+                                    <label for="other" id="other">Other</label>
+                                </div> 
+                                </div> 
+                            </div>
+                            {%endif%}
+                            {% if responses.gender == "Female" %}
+                            <div class="gender-now ">
+                                <div class="d-flex justify-content-between">
+                                <div class="col-4 ">
+                                    <input type="radio" id="male" value="Male" class="gender" name="gender"  disabled/>
+                                    <label for="male" >Male</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" id="female" value="Female" class="gender" name="gender" checked disabled/>
+                                    <label for="female" >Female</label> 
+                                </div>
+                                <div class="col-4"> 
+                                    <input type="radio" id="other" value="Other" class="gender" name="gender" disabled/>
+                                    <label for="other" id="other">Other</label>
+                                </div> 
+                                </div> 
+                            </div>
+                            {%endif%}
+                            {% if responses.gender == "Other" %}
+                            <div class="gender-now ">
+                                <div class="d-flex justify-content-between">
+                                <div class="col-4 ">
+                                    <input type="radio" id="male" value="Male" class="gender" name="gender" disabled/>
+                                    <label for="male" >Male</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" id="female" value="Female" class="gender" name="gender" disabled/>
+                                    <label for="female" >Female</label> 
+                                </div>
+                                <div class="col-4"> 
+                                    <input type="radio" id="other" value="Other" class="gender" name="gender" checked disabled/>
+                                    <label for="other" id="others">Other</label>
+                                </div> 
+                                </div> 
+                            </div>
+                            {%endif%}
+                            <div id="edit-cord-gender" class="invalid-entry"></div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="editEnable" style="display: none;">
+                        <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="d-flex col-lg-6 col-md-6 col-sm-12">
+                                    <!-- <label class="form-label mb-3" for="form2Example22">Gender</label> -->
+                                    {% if responses.active == "yes" %}
+                                    <div class="donate-now">
+                                        <div class="d-flex ">
+                                        <div class="col-6 ">
+                                            <input type="radio" id="editcoactive" value="yes" class="gender" name="editcostatus" checked />
+                                            <label for="editcoactive" id="editcoactive">Active</label>
+                                            </div>
+
+                                            <div class="col-6 ">
+                                        
+                                            <input type="radio" id="editcoinactive" value="no" class="gender" name="editcostatus" />
+                                            <label for="editcoinactive" id="editcoinactive">Inactive</label> 
+                                        </div> 
+                                        </div> 
+                                    </div>
+                                    {%endif%}
+                                    {% if responses.active == "no" %}
+                                    <div class="donate-now">
+                                        <div class="d-flex justify-content-between">
+                                        <div class="col-6 ">
+                                            <input type="radio" id="editcoactive" value="yes" class="gender" name="editcostatus" />
+                                            <label for="editcoactive" id="editcoactive">Active</label>
+                                            </div>
+
+                                            <div class="col-6 ">
+                                        
+                                            <input type="radio" id="editcoinactive" value="no" class="gender" name="editcostatus" checked />
+                                            <label for="editcoinactive" id="editcoinactive">Inactive</label> 
+                                        </div> 
+                                        </div> 
+                                    </div>
+                                    {%endif%}
+                                </div>
+                                <div class="d-flex col-lg-6 col-md-6 col-sm-12 justify-content-end">
+
+                            <!-- </div> -->
+                            <!-- <div class="d-flex justify-content-between align-items-center col-lg-6 col-md-6 col-sm-12"> -->
+                                <button class="btn update_button mx-2" onclick="editCoordinatorData();">Update</button>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                            <!-- Reset Password -->
+
+                    </div>
+
+
+                </div>
+
+                <div class="role-location">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                          <div class="row ">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="col-lg-4 col-md-4 col-sm-4 space">
+                                    <h3 class="role-loc-header m-0">Panchayat</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-3 space">
+                                    <h3 class="role-loc-header m-0">Village</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-5 space">
+                                    <h3 class="role-loc-header m-0">SHG</h3>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    {% for value in values %}
+                    <div class="card mt-3 mb-3">
+                        <div class="card-body">
+                          <div class="row ">
+                            <div class="d-flex align-items-center justify-content-between" style="overflow: auto;">
+                                <div class="col-lg-4 col-md-4 col-sm-4 space">
+                                    <h3 class="role-loc-sub m-0">{{value.panchayat}}</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-3 space">
+                                    <h3 class="role-loc-sub m-0">{{value.village}}</h3>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-5 space">
+                                    <h3 class="role-loc-sub m-0">{{value.shg}}</h3>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

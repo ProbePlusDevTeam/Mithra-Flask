@@ -1,0 +1,455 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Module Mapping {% endblock %}
+
+{% block content %}
+
+<!-- <script type="text/javascript">
+  function editClick(){
+    // alert("clicked")
+    $(document).ready(function() {
+        $('#edit_weeksss').multiselect();
+    });
+  }
+   
+</script>
+
+
+<script type="text/javascript">
+  $('#example-multiple-selected').multiselect();
+</script> -->
+
+
+<!-- <script type="text/javascript">  
+  $(document).ready(function() {  
+      $('#multiple-checkboxes').multiselect();  
+  });  
+</script>   -->
+
+
+    <!-- Content -->
+    <div class="content-wrapper">
+
+        <!-- Content -->
+        <div class="view-coordinator">
+            <div class="container container-p-y">
+             
+                <div class="card">
+                 
+                    <div class="cards-style  card-body role-bg">
+                        <div class="role-location">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                  <div class="row ">
+                                    <div class="d-flex align-items-center justify-content-between"">
+                                        <div class="col-lg-2 col-md-3 col-sm-12">
+                                            <h3 class="role-loc-header m-0">Survey Name</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-12">
+                                            <h3 class="role-loc-header m-0">Week No.</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-12">
+                                          <h3 class="role-loc-header m-0">Description</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-12">
+                                          <h3 class="role-loc-header m-0">Score</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-12">
+                                          <h3 class="role-loc-header m-0">Module no.</h3>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div> 
+                            <!-- {% if responses == []%}
+                            <div class="card mt-3 mb-3">
+                              <div class="card-body">
+                                <div class="row ">
+                                  <div class="d-flex align-items-center justify-content-center">
+                                      <div class="d-flex align-items-center justify-content-center online col-lg-12 col-md-2 col-sm-12">
+                                        <h2 class="text-secondary" >No data available</h2>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {% endif %} -->
+                     
+                            {% for response in responses %}
+                            
+                            <div class="card mt-3 mb-3">
+                              <div class="card-body">
+                                <div class="row ">
+                                  <div class="d-flex align-items-center justify-content-center">
+                                      <div class="d-flex align-items-center justify-content-center online col-lg-2 col-md-2 col-sm-12">
+                                        {% if response.active == "yes"%}
+                                        <div class="side-online m-0"></div>
+                                        {% else %}
+                                        <div class="side-offline m-0"></div>
+                                        {% endif %}
+                                        <h3 class="role-loc-sub m-0 text-center">{{response.survey_name}}</h3>
+                                      </div>
+                                      <div class="col-lg-2 col-md-3 col-sm-12">
+                                          <h3 class="role-loc-sub m-0">{{response.week_no}}</h3>
+                                      </div>
+                                      <div class="col-lg-2 col-md-3 col-sm-12">
+                                        <h3 class="role-loc-sub m-0">{{response.description}}</h3>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-12">
+                                      <h3 class="role-loc-sub m-0">{{response.min_score}} - {{response.max_score}}</h3>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-12">
+                                      <h3 class="role-loc-sub m-0">{{response.module_no}}</h3>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end online col-lg-2 col-md-2 col-sm-12">
+                                      <button class="side-edit-sm" id="updModule" data-bs-toggle="modal" data-bs-target="#EditMapping" name="{{response.name}}"  onclick="editModuleMapping(name);"></button>
+                                      <!-- <input type="text" id="idd" value="{{response.name}}">  -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                              {% endfor %}
+
+                           
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-button">
+                  <!-- <button class=""> -->
+                    <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal" data-bs-target="#addModal" class="add-btn-img" style="cursor: pointer ;">
+                  <!-- </button> -->
+
+                 
+                </div>
+            </div>
+           
+
+       
+     
+     
+       
+        </div>
+
+        <!-- Add module Modal -->
+
+        <div class="modal fade p-5" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+              <!-- <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div> -->
+              <div class="modal-body p-5">
+                <div class="row">
+                  <div class="col-lg-8 col-md-6 col-sm-12">
+                    <div class="mb-3 row align-items-center">
+                      <label for="survey_name" class="col-sm-4  modal-text ">Survey Name</label>
+                      <div class="col-sm-8">
+                        <select class="selectpicker"  id="survey_name" disabled data-live-search="true">
+                          <option value="{{survey_id}}" >{{survey_name}}</option>
+                        </select>
+                      </div>
+                      <div class="invalid-entry" id="sur_nameError"></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12">
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <input type="text" class="form-control" id="survey_description" placeholder="Description">
+                    </div>
+                    <div class="invalid-entry" id="sur_descError"></div>
+                  </div>
+                  </div>
+                </div>
+                <!-- Row2 -->
+                <div class="row">
+                  <div class="col-lg-8 col-md-8 col-sm-12 mb-3">
+                    <div class="mb-3 row d-flex align-items-center">
+                      <label for="score" class="col-sm-4 modal-text ">Score</label>
+                      <div class="col-sm-8">
+                        <div class="">
+                          <div class="d-flex justify-content-between">
+                          <div class="col-12 d-flex justify-content-between">
+                              <input type="number" id="score_min" value="" class="form-control input-text w-50" name="min" placeholder="Min" />
+                              <!-- <label for="score_min" id="score" class="mx-4">Min</label> -->
+                              <br/>
+
+                              <input type="number" id="score_max" value="" class="form-control input-text w-50" name="max" placeholder="Max"/>
+                              <!-- <label for="score_max" id="statusInactive" class="mx-4">Max</label> -->
+                              <br/>
+                              <br/>
+
+                          </div>                       
+                          </div> 
+                          <div class="d-flex ">
+                            <div class="invalid-entry mx-2" id="sur_minError"></div>
+                            <div class="invalid-entry mx-2" id="sur_maxError"></div>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="mb-3 row">
+                      <div class="col-sm-12">
+                        <select class="selectpicker" multiple  id="instance_name" data-live-search="true">
+                          {% for inst in surveyinstancedata %}
+
+                          <option value={{inst.ins_id}}>{{inst.ins}}</option>
+                   
+                          {% endfor %}
+
+                        </select>   
+                      </div>
+                      <div class="invalid-entry mx-2" id="sur_instError"></div>
+                    </div>
+                    </div>
+              </div>
+              <div class="row parentWeeks" id="weeks">
+                <div class="d-flex childWeeks">
+                  <div class="col-lg-8 col-md-8 col-sm-12">
+                    <div class="mb-3 row d-flex align-items-center" id="weekss" style="position: relative;" >
+                      <!-- <label for="inputPassword" class="col-sm-4  modal-text" id="week_no" >Week 1</label> -->
+                      <label for="inputPassword" class="col-sm-4  modal-text" >Week {{length + 1 }}</label>
+                      <input type="text" id="w_no" class="d-none" value="{{length}}">
+                      <!-- <label for="inputPassword" class="col-sm-4  modal-text" id="week_no" style="display: none;"></label> -->
+                     
+                      <div class="col-sm-8">
+                        <!-- {% for week in submoduledata %}
+                        <p>{{week.module_id}}</p>
+                        {% endfor %} -->
+
+                        <select class="selectpicker" multiple  id="module_name" data-live-search="true">
+ 
+                          {% for week in submoduledata %}
+
+   
+                            <option value={{week.module_id}}>{{week.sub_name}}</option>
+                       
+                          {% endfor %}
+                          </select>
+                      </div>
+                      <div class="col-sm-4"></div>
+                      <div class="col-sm-8">
+                      <div class="invalid-entry " id="sur_weekError"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+
+                  {% if length +1 > 1 %}
+
+                  <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12" >
+                      <!-- <input type="text" class="form-control text-input" id="mod1" style="visibility: hidden; position: absolute;"/> -->
+                      <input type="text" class="form-control text-input modAdd" id="mod"  />
+                    </div>
+                  </div>
+                  {% else %}
+                  <input type="text" class="form-control text-input modAdd d-none" id="mod" value="null" />
+
+                  {% endif %}
+                </div>
+              </div>
+              <!-- <div class="row add-week" id="moduleAdd_1">
+                <div class="d-flex">
+                <div class="col-lg-8 col-md-6 col-sm-12 me-3">
+                  <div class="mb-3 row align-items-center">
+                    <div id="weekcount" for="inputPassword" class="col-sm-4  modal-text "></div>
+                    <div class="col-sm-8">
+                      <select class="selectpicker" multiple  id="survey_name" data-live-search="true">
+
+                        {% for week in submoduledata %}
+ 
+                          <option value={{week.module_id}}>{{week.sub_name}}</option>
+                     
+                        {% endfor %}
+                        </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <input type="text" name="data" class="form-control modAdd" id="mod" value="" placeholder="">
+                  </div>
+                </div>
+                </div>
+              </div>
+              </div> -->
+
+              <!-- <div class="row">
+              <div class="d-grid gap-2 mt-3">
+                <button type="button" id="AddMoreBtn" class="btn btn-transparent  btn-lg btn-block border-top border-bottom" onclick="addMoreMapping();">Add more</button>
+                </div>
+              </div> -->
+              </div>
+               
+         
+                <div class="modal-footer mt-3">
+                  <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                  <button type="submit" class="btn modal-button" onclick="addModuleMappingSurvey();">Save </button>
+                </div>
+
+              </div>
+         
+            </div>
+          </div>
+
+          <!-- Edit/Update ModuleMapping -->
+          <div class="modal fade p-5" id="EditMapping" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content custom-modal">
+                <!-- <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> -->
+                <input type="text" id="m_id" value="" class="d-none">
+
+                <div class="modal-body p-5">
+                  <div class="row">
+                    <div class="col-lg-8 col-md-6 col-sm-12">
+                      <div class="mb-3 row align-items-center">
+                        <label for="survey_name" class="col-sm-4  modal-text ">Survey Name</label>
+                        <div class="col-sm-8">
+                          <select class="form-select" id="edit_survey_name" data-live-search="true">
+
+                          <!-- <select class="form-select" id= 'edit_survey_name' aria-label="Default select example"> -->
+                           
+                            <option value=""  id="test" selected></option>
+                            {% for data in surveynamedata %}
+                            <option value={{data.sur_id}} id="survey-name" >{{data.sur_name}}</option>
+                            <!-- <option value="{{data.sur_id}}">{{data.sur_name}}</option> -->
+                            {% endfor %}
+
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="mb-3 row">
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="edit_survey_description" placeholder="Description">
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <!-- Row2 -->
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 mb-3">
+                      <div class="mb-3 row">
+                        <div class="col-4">
+                          <label for="score" class=" modal-text ">Score</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="d-flex justify-content-between">
+                            <div class="col-12 d-flex justify-content-between">
+                                <input type="text" id="edit_score_min" value="" class="form-control input-text w-50 " name="min" placeholder="Min" />
+                                <!-- <label for="score_min" id="score" class="mx-4">Min</label> -->
+ 
+                                <input type="text" id="edit_score_max" value="" class="form-control input-text w-50" name="max" placeholder="Max"/>
+                                <!-- <label for="score_max" id="statusInactive" class="mx-4">Max</label> -->
+                            </div>                       
+                            </div> 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                      <div class="mb-3 row">
+                        <div class="col-sm-10">
+                          <h1 id="zzz" class="d-none"></h1>
+
+                          <select class="selectpicker edit_week" multiple  id="edit_week" data-live-search="true">
+                            <option value=""  id="subinstance" selected></option>
+                            {% for sur_instance in surveyinstancedata %}
+                            <option value="{{sur_instance.module_id}}">{{sur_instance.ins}}</option>
+                            {% endfor %}
+
+                          </select>
+
+                          <!-- <select class="form-select" aria-label="Default select example"  id="edit_instance">
+
+
+                            <option value="instance"  id="edit-instance" selected></option>
+
+
+                            <option value="2">Coordinator 1</option>
+                            <option value="3">Coordinator 2</option>
+                          </select>     -->
+                        </div>
+                      </div>
+                      </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-8 col-md-6 col-sm-12">
+                    <div class="mb-3 row align-items-center">
+                      <label for="inputPassword" class="col-sm-4 modal-text" id="wwww">Week</label>
+                      <!-- <div class="modal-text" id="w2">aa</div> -->
+                      <input type="text" id="edit_week_no" class="d-none" value="{{length}}">
+                      <!-- <label for="inputPassword" class="col-sm-4  modal-text" id="edit-week">Week {{ length + 1}}</label></label> -->
+                      <div class="col-sm-8">
+                        <!-- <div class="col-sm-8">
+                          <select class="form-select" id= 'edit_survey_name' aria-label="Default select example"> -->
+                            <h1 id="sss" class="d-none"></h1>
+
+                          <select class="selectpicker edit_weeksss" aria-label="Default select example" id="edit_weeksss" multiple onclick="editClick();">
+                            <!-- <option value=""  id="submodules" selected></option> -->
+                            {% for submdd in submoduledata %}
+                            <option value="{{submdd.module_id}}" >{{submdd.sub_name}}</option>
+                            {% endfor %}
+
+                          </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="mb-3 row">
+                      <div class="col-sm-10">
+                        <input type="text" name="data" class="form-control edit_modAdd" id="edit-week-interval" value="" placeholder="Interval">
+                      </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="d-flex">
+                    <div class="col-3">
+                      <label for="score" class="modal-text ">Status</label>
+                    </div>
+                    <div class="col-9 d-flex location-now">
+                      <input type="radio" id="statusActive" value="yes" class="gender" name="updatedMappingStatus" />
+                      <label for="statusActive" id="statusActive" class="mx-4">Active</label>
+                      <input type="radio" id="statusInactive" value="yes" class="gender" name="updatedMappingStatus" />
+                      <label for="statusInactive" id="statusInactive" class="mx-4">Inactive</label>            </div>
+                  </div>
+                </div>
+                </div>
+
+                <div class="modal-footer mt-4">
+                  <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                  <button type="submit" class="btn modal-button" onclick="upModuleMapping();">Save </button>
+                </div>
+                             
+                  <div class="modal-footer mt-4">
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                   
+                  </div>
+ 
+                </div>
+           
+              </div>
+            </div>
+            <!-- Edit/Update ModuleMapping -->
+        </div>
+
+       
+        <!-- / Content -->
+
+
+
+
+{% endblock %}

@@ -1,0 +1,124 @@
+<aside id="layout-menu" class="layout-menu menu-vertical sidebar menu ">
+    <div class="m-3">
+      <a href="index.html" class="app-brand-link">
+        <img src="{{ url_for('static', filename = '/assets/img/logo/MithraLogo.svg')}}" class="logo">
+      </a>
+
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+      </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+      <!-- Dashboard -->
+      <li class="menu-item active">
+        <a href="index.html" class="menu-link menu-main">
+          <!-- <i class="menu-icon tf-icons bx bx-home-circle"></i> -->
+          <div data-i18n="Analytics">Home</div>
+        </a>
+      </li>
+
+      <!-- Layouts -->
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-main menu-toggle">
+          <!-- <i class="menu-icon tf-icons bx bx-layout"></i> -->
+          <div data-i18n="Layouts">Role</div>
+        </a>
+
+        <ul class="">
+          <li class="menu-item ">
+            <a href="/coordinators" class="menu-link ">
+              <div data-i18n="" class="sidemenu">Coordinators</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/researchers" class="menu-link ">
+              <div data-i18n="Without navbar" class="sidemenu">Researchers</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/Studyinvestigators" class="menu-link">
+              <div data-i18n="Container" class="sidemenu">Study Investigator</div>
+            </a>
+        </li>
+          <li class="menu-item">
+            <a href="/participants" class="menu-link">
+              <div data-i18n="Container" class="sidemenu">Participants</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-main menu-toggle">
+          <!-- <i class="menu-icon tf-icons bx bx-layout"></i> -->
+          <div data-i18n="Layouts">Resource</div>
+        </a>
+
+        <ul class="">
+          <li class="menu-item ">
+            <a href="layouts-without-menu.html" class="menu-link ">
+              <div data-i18n="" class="sidemenu">Videos</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/surveys" class="menu-link ">
+              <div data-i18n="Without navbar" class="sidemenu">Survey Create</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/Surveylist" class="menu-link ">
+              <div data-i18n="Without navbar" class="sidemenu">Survey Questions</div>
+            </a>
+          </li>
+
+
+          <li class="menu-item">
+            <a href="/Modules" class="menu-link ">
+              <div data-i18n="Without navbar" class="sidemenu">Modules</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/module_surveylist" class="menu-link ">
+              <div data-i18n="Without navbar" class="sidemenu">Module Mapping</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="" class="menu-link">
+              <div data-i18n="Container" class="sidemenu">Activities</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-main menu-toggle">
+          <!-- <i class="menu-icon tf-icons bx bx-layout"></i> -->
+          <div data-i18n="Layouts" >Control</div>
+        </a>
+
+        <ul class="">
+          <li class="menu-item ">
+            <a href="/devices" class="menu-link ">
+              <div data-i18n="" class="sidemenu">Devices</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/locations" class="menu-link ">
+              <div data-i18n="Without navbar" class="sidemenu">Locations</div>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+      <li class="menu-item active">
+        <a href="index.html" class="menu-link menu-main">
+          <!-- <i class="menu-icon tf-icons bx bx-home-circle"></i> -->
+          <div data-i18n="Analytics" class="logout">Logout</div>
+        </a>
+      </li>
+    </ul>
+  </aside>

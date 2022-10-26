@@ -1,0 +1,199 @@
+{% extends 'partial/m_base.html' %}
+
+{% block title %} Locations {% endblock %}
+
+{% block content %} 
+
+    <!-- Content -->
+    <div class="container mt-5" style="min-height: 90vh">
+        <div class="card">
+            <div class="">
+                <div class="col-lg-12">
+                    <div class="card-body text-center card--heading">
+                        <div class="row">
+                            <div class="d-flex justify-content-center align-items-center ">
+                                <div class="col-1"><p class="card__text__head m-0">IDflkmelkmd</p></div>
+                                <div class="col-3 "><p class="card__text__head m-0">Panchayat</p></div>
+                                <div class="col-3"><p class="card__text__head m-0">Village</p></div>
+                                <div class="col-3"><p class="card__text__head m-0">SHG</p></div>
+                                <div class="col-2"><p class="card__text__head m-0">Action</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        {% for response in responses %}
+        <!-- <a href="/coordinator/{{ response.user_name }}"> -->
+            <div class="card mt-4" id="locations">
+                <div class="">
+                    <div class="col-lg-12">
+                        <!-- For loop logic of jinja template -->
+                        <!-- table rows -->
+
+                            <div class="card-body text-center ">
+                                <div class="row">
+                                    <div class="d-flex justify-content-center align-items-center ">
+                                        <div class="col-1"><p class="card__text__body m-0" >{{ response.name }}</p></div>
+                                        <div class="col-3"><p class="card__text__body m-0">{{ response.panchayat }}</p></div>
+                                        <div class="col-3"><p class="card__text__body m-0">{{ response.village }}</p></div>
+                                        <div class="col-3"><p class="card__text__body m-0">{{ response.shg }}</p></div>
+                                        <div class="col-2"><p class="card__text__body m-0">
+                                            <button type="button" class="coodinator__add__button btn btn-primary" 
+                                                data-bs-toggle="modal" data-bs-target="#edit__location" name={{ response.name }} onclick="editLocationId(name);">
+                                                Edit
+                                            </button>
+                                        </p>
+                                        </div>
+                                        <input type="text" class="d-none" id="editLocName" value={{ response.name }} />
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        <!-- </a> -->
+        {% endfor %}
+        <div class="row">
+
+        </div>
+        <div class="coodinator__add">
+            <!-- <button type="button" class="coodinator__add__button" data-bs-toggle="modal" data-bs-target="#exampleModal"> -->
+                <img src="{{ url_for('static', filename='mithraf/images/Add button.png')}}" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" />
+            <!-- </button> -->
+        </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Add New Location</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              <form id="addLocation"  >
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form2Example11">Panjayat</label>
+                            <input type="text" id="panjayat" class="form-control"
+                              placeholder="Panjayat" />
+                        </div>
+                        <span id="nameError" class="pt-2 text-danger"></span>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form2Example22">Village</label>
+                            <input type="text" id="village" class="form-control" placeholder="Village"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form2Example22">SHG</label>
+                            <input type="text" id="shg" class="form-control" placeholder="SHG"/>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="text-center mb-3 pb-1">
+                  <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" onclick="addLocation(); closeModal();">Submit</button>
+                  </a>
+                </div>
+
+               
+
+              </form>                     
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Modal END-->
+
+
+
+    <!-- edit location -->
+    {% for result in result_responses %}
+    <div class="row">
+        <p></p>
+    </div>
+    {% endfor %}
+
+    <div class="modal fade" id="edit__location" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Edit Location</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              <form id="editLocation"  >
+
+                {% for result in res %}
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form2Example11">Panjayat</label>
+                            <input type="text" id="panjayat" class="form-control" 
+                            value={{result.panchayat}}
+                              placeholder="Panjayat" />
+                        </div>
+                        <span id="nameError" class="pt-2 text-danger"></span>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form2Example22">Village</label>
+                            <input type="text" id="village" class="form-control"  
+                            placeholder="Village"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form2Example22">SHG</label>
+                            <input type="text" id="shg" class="form-control" 
+                            placeholder="SHG"/>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="text-center mb-3 pb-1">
+                  <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" id="location-add-btn"type="submit" onclick="addLocation(); closeModal();">Submit</button>
+                  </a>
+                </div>
+
+               
+                {% endfor %}
+              </form>     
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Modal END-->
+
+    </div> 
+    <!-- Content END-->
+
+
+{% endblock %}

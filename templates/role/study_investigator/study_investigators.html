@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon/favicon.ico')}}" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    function allstatus() {
+      $("#allstatus").show()
+      $("#inactivestatus").hide()
+      $("#activestatus").hide()
+
+      var a = document.getElementById("allactive")
+      var b = document.getElementById("active")
+      var c = document.getElementById("inactive")
+
+      a.style.backgroundColor = "#8BC34A"
+      b.style = "none"
+      c.style = "none"
+    }
+  
+    function activeStatus() {
+      $("#activestatus").show()
+      $("#allstatus").hide()
+      $("#inactivestatus").hide()
+
+      var a = document.getElementById("allactive")
+      var b = document.getElementById("active")
+      var c = document.getElementById("inactive")
+      b.style.backgroundColor = "#8BC34A"
+      c.style = "none"
+      a.style = "none"
+      
+    }
+
+    function inactivestatus() {
+      $("#inactivestatus").show()
+      $("#allstatus").hide()
+      $("#activestatus").hide()
+
+      var a = document.getElementById("allactive")
+      var b = document.getElementById("active")
+      var c = document.getElementById("inactive")
+      c.style.backgroundColor = "#8BC34A"
+      b.style = "none"
+      a.style = "none"
+     
+    }
+    $(function(){
+    var dtToday = new Date();
+    
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+    $('#dob').attr('max', maxDate);
+    });
+  </script>
+</head>
+<body>
+  {% extends 'partial/base.html' %}
+
+{% block title %} Studyinvestigators {% endblock %}
+
+{% block content %} 
+
+<div class="container">
+  <ul class="breadcrumb roles_breadcrumb d-flex">
+    <li><a href="#">Roles</a></li>
+    <li><a href="#">Study investigators</a></li>
+  </ul>
+    <div class="row d-flex justify-content-start align-items-center">
+        <!-- <div class=" d-flex justify-content-start align-items-center"> -->
+        <div class="row d-flex top-bar">
+            <div class=" col-lg-6 col-md-12 col-sm-12">
+                <div class="filter d-flex justify-content-start align-items-center ">
+                    <h2 class="show_only mx-3 m-0 p-0">Show Only : </h2>
+                    <button id="allactive" class="filter_buttons btn mx-2" onclick="allstatus();" style="background-color:#8BC34A">All</button>
+                    <button id="active" class="filter_buttons btn mx-2" onclick="activeStatus();">Active</button>
+                    <button id="inactive" class="filter_buttons btn mx-2" onclick="inactivestatus();">Inactive</button>
+                </div>   
+            </div> 
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="add-coordinator d-flex justify-content-start align-items-center">
+                    <button class="btn add_button " data-bs-toggle="modal" data-bs-target="#addInvestigator">Add Investigator</button>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+  </div>
+  <!-- <div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="filter d-flex justify-content-center align-items-center">
+                <h2 class="show_only mx-3 m-0 p-0">Show Only : </h2>
+                <button class="filter_buttons btn mx-3">All</button>
+                <button class="filter_buttons btn mx-3">Inactive</button>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="add-coordinator">
+                <button class="btn add_button " data-bs-toggle="modal" data-bs-target="#addcoordinator">Add Coordinator</button>
+            </div>
+        </div>
+      </div>
+  </div> -->
+
+
+<!-- </div> -->
+
+<!-- </nav> -->
+
+<!-- / Navbar -->
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+<!-- Content -->
+
+<div class="container ">
+  <div class="coordinators">
+    <!-- <a href="../coordinator/view_coordinator.html"> -->
+
+    <div class="row gx-5" id="allstatus">
+      {% for response in responses %}
+        <div class="col-lg-4 col-md-6 col-sm-12 ">
+          <a href='{{ url_for("Studyinvestigator", PkId=response["name"]) }}'>
+          <div class="card main-cards d-flex align-items-center justify-content-center card_align">   
+            {% if response.active == "yes" %}
+            <img src="{{ url_for('static', filename='assets/img/icons/active.svg')}}" class="active_img"/>
+            {%else%}
+            <img src="{{ url_for('static', filename='assets/img/icons/inactive.svg')}}" class="active_img"/>
+            {%endif%}
+            <img src="{{ url_for('static', filename='assets/img/user/user.png')}}" class="cards-img " alt="...">
+
+            <div class="card-body">
+              <h5 class="card-title card-header">{{response.first_name}} {{response.last_name}} </h5>
+              <p class="card-text card-sub">{{response.mobile_number}}</p>
+              <p class="card-text card-sub">{{response.email_id}}</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="row gx-5" id="inactivestatus" style = "display:none">
+      {% for response in responses %}
+      {% if response.active == "no" %}
+        <div class="col-lg-4 col-md-6 col-sm-12 ">
+          <a href='{{ url_for("Studyinvestigator", PkId=response["name"]) }}'>
+          <div class="card main-cards d-flex align-items-center justify-content-center card_align">   
+            {% if response.active == "yes" %}
+            <img src="{{ url_for('static', filename='assets/img/icons/active.svg')}}" class="active_img"/>
+            {%else%}
+            <img src="{{ url_for('static', filename='assets/img/icons/inactive.svg')}}" class="active_img"/>
+            {%endif%}
+            <img src="{{ url_for('static', filename='assets/img/user/user.png')}}" class="cards-img " alt="...">
+
+            <div class="card-body">
+              <h5 class="card-title card-header">{{response.first_name}} {{response.last_name}} </h5>
+              <p class="card-text card-sub">{{response.mobile_number}}</p>
+              <p class="card-text card-sub">{{response.email_id}}</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </a>
+        </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+
+    <div class="row gx-5" id="activestatus" style = "display:none">
+      {% for response in responses %}
+      {% if response.active == "yes" %}
+        <div class="col-lg-4 col-md-6 col-sm-12 ">
+          <a href='{{ url_for("Studyinvestigator", PkId=response["name"]) }}'>
+          <div class="card main-cards d-flex align-items-center justify-content-center card_align">   
+            {% if response.active == "yes" %}
+            <img src="{{ url_for('static', filename='assets/img/icons/active.svg')}}" class="active_img"/>
+            {%else%}
+            <img src="{{ url_for('static', filename='assets/img/icons/inactive.svg')}}" class="active_img"/>
+            {%endif%}
+            <img src="{{ url_for('static', filename='assets/img/user/user.png')}}" class="cards-img " alt="...">
+
+            <div class="card-body">
+              <h5 class="card-title card-header">{{response.first_name}} {{response.last_name}} </h5>
+              <p class="card-text card-sub">{{response.mobile_number}}</p>
+              <p class="card-text card-sub">{{response.email_id}}</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </a>
+        </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+    <!-- </a> -->
+</div>
+
+</div>
+
+<!-- Add coordinator Modal -->
+<div class="modal  fade" id="addInvestigator" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content custom-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Investigator</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-5">
+
+        <form>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">First Name</label>
+                <input type="text" class="form-control input-text" id="firstName" placeholder="First Name"  aria-describedby="emailHelp">
+                <div id="investigator-fname" class="invalid-entry"></div>
+                <div id="investFnameError" class="invalid-entry"></div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Last Name</label>
+                <input type="text" class="form-control input-text" id="lastName" placeholder="Last Name" aria-describedby="emailHelp">
+                <div id="investigator-lname" class="invalid-entry"></div>
+                <div id="investLnameError" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 mb-5">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Gender</label>
+
+                <div class="gender-now ">
+                    <div class="d-flex justify-content-between">
+                    <div class="col-4 ">
+                        <input type="radio" id="male" value="Male" class="gender" name="gender" checked/>
+                        <label for="male" id="male" class="add-gender">Male</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="radio" id="female" value="Female" class="gender" name="gender" />
+                        <label for="female" id="female" class="add-gender">Female</label> 
+                    </div>
+                    <div class="col-4"> 
+                        <input type="radio" id="other" value="Other" class="gender" name="gender" />
+                        <label for="other" id="other" class="add-gender">Other</label>
+                    </div> 
+                    </div> 
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Date of Birth</label>
+                <!-- <input type="date" class="form-control" data-date-end-date="0d"> -->
+                <input type="date" class="form-control " id="dob"/>
+                <div id="investigator-dob" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Phone Number</label>
+                <input type="number" class="form-control input-text" id="number" placeholder="Phone Number" onkeyup="invPhValidation()"  aria-describedby="emailHelp">
+                <div id="investigator-phno" class="invalid-entry"></div>
+                <div id="insPhError" class="invalid-entry"></div>
+                <div id="invPhoneNumberExistError" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-none">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Username</label>
+                <input type="text" class="form-control input-text" id="username" placeholder="Username"  aria-describedby="emailHelp">
+                <div id="investigator-username" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Email Id</label>
+                <input type="email" class="form-control input-text" id="email" placeholder="Email Id" aria-describedby="emailHelp">
+                <div id="investigator-email" class="invalid-entry"></div>
+                <div id="investUsernameError" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Password</label>
+                <input type="password" class="form-control input-text" placeholder="Password" id="password" aria-describedby="emailHelp">
+                <div id="investigator-pwd" class="invalid-entry"></div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class=" modal-text mb-3">Confirm Password</label>
+                <input type="password" class="form-control input-text" id="confirm" placeholder="Confirm Password" aria-describedby="emailHelp" onchange="investigatorpwdcheck();">
+                <div id="investigator-confpwd" class="invalid-entry"></div>
+                <div id="investigator-confpwd-match" class="invalid-entry"></div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button type="button" class="btn modal-button" onclick="addInvestigator();">Save </button>
+      </div>
+    </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,358 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Create Survey Question {% endblock %}
+
+{% block content %}
+
+<!-- Content -->
+<div class="container content-wrapper">
+  <div class="col-6">
+    <ul class="breadcrumb roles_breadcrumb ques_create_list d-flex">
+      <li><a href="#">Reources</a></li>
+      <li><a href="/que_Surveylist">Survey questions</a></li>
+      <li><a href="#" id="brd">
+
+        </a></li>
+    </ul>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Content -->
+    <div class="view-coordinator ques_create_card">
+      <div class="mt-4">
+        <div class="card">
+
+          <div class="cards-style  card-body role-bg">
+            <div class="">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row mb-4">
+                    <div class="d-flex  justify-content-center ">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-2 px-2 flex-column">
+                        <input type="text" class="form-control input-text" value="Q: English" disabled>
+                      </div>
+                      <div class="col-lg-1 col-md-1 col-sm-1 col-1 flex-column">
+                        <input type="number" class="form-control input-text" placeholder="No" max="99" maxlength="2"
+                          id="question-number">
+                        <div class="invalid-entry" id="qNumError"></div>
+                        <div class="invalid-entry" id="qNumExist"></div>
+                        <div class="invalid-entry" id="qNumLimitError"></div>
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-8 px-2 flex-column">
+                        <textarea rows="3" class="form-control input-text" placeholder="English Question"
+                          id="english-question"></textarea>
+                        <!-- <input type="text" class="form-control input-text" placeholder="Question"> -->
+                        <div class="invalid-entry" id="engQuesError"></div>
+
+                      </div>
+                      <div class="col-lg-1 col-md-1 col-sm-1 col-1">
+                        <input type="number" class="form-control input-text" placeholder="Q/B" id="question-branch">
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="d-flex justify-content-center ">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-2 px-2">
+                        <input type="text" class="form-control input-text" value="Q: Kannada" disabled>
+                      </div>
+                      <div class="col-lg-1 col-md-1 col-sm-1 col-1">
+                        <input type="text" class="form-control input-text" placeholder="No" style="display: none;">
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-8 px-2 flex-column">
+                        <textarea rows="3" class="form-control input-text" placeholder="Kannada Question"
+                          id="kannada-question"></textarea>
+                        <div class="invalid-entry" id="kanQuesError"></div>
+                      </div>
+                      <div class="col-lg-1 col-md-1 col-sm-1 col-1">
+                        <input type="text" class="form-control input-text" placeholder="Q/B" style="display: none;">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                      <div class="col-lg-2 col-md-2 col-sm-2 ">
+                        <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Section</label>
+                      </div>
+                      <div class="col-lg-1 col-md-2 col-sm-2">
+                        <input type="checkbox" id="question-section">
+                      </div>
+                      <div class="col-lg-2 col-md-4 col-sm-4 mt-1">
+                        <label for="exampleInputEmail1" class=" modal-text mb-3 px-3">Section Name</label>
+                      </div>
+                      <div class="col-lg-7 col-md-4 col-sm-4 d-flex">
+                        <input type="text" class="form-control input-text mx-2" id="question-sectionName" placeholder="English">
+                        <input type="text" class="form-control input-text" id="question-sectionNameKannada" placeholder="Kannada">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="d-flex ">
+                      <div class="col-lg-2 col-md-6 col-sm-6 col-6">
+                        <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Type</label>
+                      </div>
+                      <div class="d-flex col-lg-9 col-md-6 col-sm-6 col-6 type_direction">
+                        <div class="form-check px-4 pad-5 pad-2">
+                          <input class="form-check-input" type="radio" name="type" id="single_q"
+                            onclick="viewQuesOptions1()" value="single_select" checked>
+                          <label class="form-check-label " for="type">
+                            Single
+                          </label>
+                        </div>
+
+                        <div class="form-check px-5 pad-2">
+                          <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions2()"
+                            id="multiple_q" value="multi_select">
+                          <label class="form-check-label" for="type">
+                            Multiple
+                          </label>
+                        </div>
+
+                        <div class="form-check px-5 pad-2">
+                          <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions3()"
+                            id="text_q" value="text">
+                          <label class="form-check-label" for="type">
+                            Text
+                          </label>
+                        </div>
+
+                        <div class="form-check px-5 pad-2">
+                          <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions4()"
+                            id="date_q" value="date">
+                          <label class="form-check-label" for="type">
+                            Date
+                          </label>
+                        </div>
+
+                        <div class="form-check px-4 pad-5 pad-2">
+                          <input class="form-check-input" type="radio" name="type" onclick="viewQuesOptions5()"
+                            id="numeric_q" value="numeric">
+                          <label class="form-check-label" for="type">
+                            Numeric
+                          </label>
+                        </div>
+
+                      </div>
+
+                    </div>
+                    <div class="invalid-entry" id="qTypeError"></div>
+                  </div>
+
+                  <div class="parent_all_ques" id="parent_all_ques" style="display: block;">
+                    <div class="row mb-4 g-5">
+                      <div class="d-flex">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                          <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">English</label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 flex-column">
+                          <input type="text" class="form-control input-text ques_e" id="opt1_e" placeholder="Options">
+                          <div class="invalid-entry" id="engOptError1"></div>
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-sm-2 px-2 col-2">
+                          <input type="number" class="form-control input-text w_e" placeholder="W">
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-sm-2 px-1 col-2">
+                          <input type="number" class="form-control input-text ob_e" id="ob_eng1" placeholder="O/B">
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="eparentQues">
+                      <div class="echildQues">
+                        <div class="row mb-4 g-5">
+
+                          <div class="d-flex">
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-2">
+                              <label for="exampleInputEmail1" class=" modal-text mb-3 px-2"></label>
+                            </div>
+
+                            <div class="col-lg-8 col-md-6 col-sm-6 col-6 flex-column">
+                              <input type="text" class="form-control input-text ques_e" id="opt2_e"
+                                placeholder="Options">
+                              <div class="invalid-entry" id="engOptError2"></div>
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-2 px-2 ">
+                              <input type="number" class="form-control input-text w_e" id="w_e" placeholder="W"
+                                style="display: block;">
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-2 px-1">
+                              <input type="number" class="form-control input-text ob_e" id="ob_eng2" placeholder="O/B">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4 g-5">
+                      <div class="d-flex">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-2 flex-column">
+                          <label for="exampleInputEmail1" class=" modal-text mb-3 px-2">Kannada</label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 ">
+                          <input type="text" class="form-control input-text ques_k" id="opt1_k" placeholder="Options">
+                          <div class="invalid-entry" id="kanOptError1"></div>
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-sm-2 col-2 px-2 ">
+                          <!-- <input type="text" class="form-control input-text w_k" placeholder="W"> -->
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-sm-2 col-2 px-1">
+                          <!-- <input type="text" class="form-control input-text ob_k" placeholder="O/B"> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="kparentQues">
+                      <div class="kchildQues">
+                        <div class="row mb-4 g-5">
+
+                          <div class="d-flex">
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-2 px-3">
+                              <label for="exampleInputEmail1" class=" modal-text mb-3 "></label>
+                            </div>
+
+                            <div class="col-lg-8 col-md-6 col-sm-6 col-6 flex-column">
+                              <input type="text" class="form-control input-text ques_k me-auto" id="opt2_k"
+                                placeholder="Options">
+                              <div class="invalid-entry" id="kanOptError2"></div>
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-2 px-2 ">
+                              <!-- <input type="text" class="form-control input-text w_k" placeholder="W"> -->
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-2 px-1">
+                              <!-- <input type="text" class="form-control input-text ob_k" placeholder="O/B"> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-lg-2 col-md-2 col-sm-2">
+
+                      </div>
+                      <div class="d-grid col-lg-8 col-md-8 col-sm-8">
+                        <button type="button" class="btn more-btn" onclick="addMoreQuesOptions();">Create More
+                          Option</button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="d-flex">
+                      <div class="col-lg-2 col-sm-2 col-sm-2"></div>
+                      <div class="col-lg-8 col-sm-8 col-sm-8">
+                        <input type="text" class="d-none" id="qq_id" value="{{response.sur_id}}">
+                        <button id="btnsave" class="btn add_button" type="submit" onclick="AddQuestion();">Add</button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <form action = "/Uploadfile" method = "POST" enctype = "multipart/form-data" id="form_audio_upload" style="display: none;">
+                    <input type="text" id="ques_audioid" name = "ques_audioid" value="" class="d-none">
+                    <input type="text" id="survey_audioid" name = "survey_audioid" value="" class="d-none">
+                    <div class="row mb-4 d-flex align-items-center" >
+                      <div class="col-lg-2 col-md-2 col-sm-12">
+
+                      </div>
+                      <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <label for="eng_audio" class="mx-2">Upload English Audio</label>
+                        <input type="file" class="form-control btn upload-btn" name="eng_audio" id="eng_audio"/>
+                         <label for="eng_audio" class="btn upload-btn">Upload English Audio</label> 
+                         
+                      </div>
+                      <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <label for="eng_audio" class="mx-2">Upload Kannada Audio</label>
+                        <input type="file" class="form-control btn upload-btn" name="kan_audio" id="kan_audio"/>
+                      </div>
+                      <div class="col-lg-2 col-md-4 col-sm-12">
+                        <button class="btn add_button" type="submit">Upload</button>
+                      </div>
+                    </div>
+                  </form> -->
+                  <form method="POST" enctype="multipart/form-data" id="form_audio_upload" onsubmit="return false;"
+                    style="display: none;">
+                    <input type="text" id="ques_audioid" name="ques_audioid" value="" class="d-none">
+                    <input type="text" id="survey_audioid" name="survey_audioid" value="" class="d-none">
+                    <div class="row mb-4 d-flex align-items-center">
+                      <div class="col-lg-2 col-md-2 col-sm-12">
+
+                      </div>
+                      <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <label for="eng_audio" class="mx-2">Upload English Audio</label>
+                        <input type="file" class="form-control btn upload-btn" name="eng_audio" id="eng_audio" />
+                        <!-- <label for="eng_audio" class="btn upload-btn">Upload English Audio</label> -->
+
+                      </div>
+                      <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <label for="eng_audio" class="mx-2">Upload Kannada Audio</label>
+                        <input type="file" class="form-control btn upload-btn" name="kan_audio" id="kan_audio" />
+                      </div>
+                      <div class="col-lg-2 col-md-4 col-sm-12">
+                        <button id="btn_upload" class="btn add_button" type="submit"
+                          onclick="uploadAudio(this.form, event)">Upload</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- <div class="row mb-4">
+                                      <div class="d-flex">
+                                          <div class="col-lg-2 col-sm-2 col-sm-12"></div>
+                                          <div class="col-lg-8 col-sm-8 col-sm-12">
+                                              <button class="btn add_button" type="submit" onclick="AddAudio();">Add</button>
+                                          </div>
+                                      </div>
+                                    </div> -->
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<form enctype="multipart/form-data" id="form_audio_upload_test" style="display: none;" onsubmit="return false;">
+  <input type="text" id="ques_audioid" name="ques_audioid" value="" class="d-none">
+  <input type="text" id="survey_audioid" name="survey_audioid" value="" class="d-none">
+  <div class="row mb-4 d-flex align-items-center">
+    <div class="col-lg-2 col-md-2 col-sm-12">
+
+    </div>
+    <div class="col-lg-4 col-md-3 col-sm-12 ">
+      <label for="eng_audio" class="mx-2">Upload English Audio</label>
+      <input type="file" class="form-control btn upload-btn" name="eng_audio" id="eng_audio" />
+      <!-- <label for="eng_audio" class="btn upload-btn">Upload English Audio</label> -->
+
+    </div>
+    <div class="col-lg-4 col-md-3 col-sm-12 ">
+      <label for="eng_audio" class="mx-2">Upload Kannada Audio</label>
+      <input type="file" class="form-control btn upload-btn" name="kan_audio" id="kan_audio" />
+    </div>
+    <div class="col-lg-2 col-md-4 col-sm-12">
+      <button id="upload-button" class="btn add_button" onclick="uploadAudio(this.form, event)"> Upload
+      </button>
+    </div>
+  </div>
+  <div id="static_file_response"> </div>
+</form>
+
+
+<!-- / Content -->
+
+<!-- </div> -->
+
+
+{% endblock %}

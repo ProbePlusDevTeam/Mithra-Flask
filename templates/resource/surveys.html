@@ -1,0 +1,214 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Survey {% endblock %}
+
+{% block content %} 
+
+    <!-- Content -->
+    <div class="container">
+    <div class="content-wrapper">
+        <!-- Content -->
+        <div class="view-coordinator">
+            <div class="container container-p-y">
+                <div class="card">
+                  
+                    <div class="cards-style  card-body role-bg">
+                        <div class="role-location">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                  <div class="row ">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <h3 class="role-loc-header m-0">Survey Name</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <h3 class="role-loc-header m-0">Cycle</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-header m-0">Filled by</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-header m-0">Days</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-header m-0">Group</h3>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                            {% for response in responses %}
+                            <div class="card mt-3 mb-3">
+                                <div class="card-body">
+                                  <div class="row ">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="d-flex align-items-center justify-content-center online col-lg-2 col-md-2 col-sm-12">
+                                          {% if response.active == "yes" %}
+                                          <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto"/>
+                                          {%else%}
+                                          <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto"/>
+                                          {%endif%}
+                                          <h3 class="role-loc-sub mx-2 m-0">{{response.survey_name}}</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <h3 class="role-loc-sub m-0">{{response.cycle}}</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-sub m-0">{{response.filled_by}}</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-sub m-0">{{response.group1}}</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-sub m-0">{{response.days}}</h3>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center col-lg-2 col-md-2 col-sm-12">
+                                          <h3 class="role-loc-sub w-100 text-center" id="loc-edit-dis{{response.name}}" style="display:block">{{response.researcher}}</h3>
+                                          <div id="editB{{response.sur_ins_id}}" value="{{response.sur_ins_id}}">
+                                            <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}" id="side_edit{{response.sur_ins_id}}" class="ms-auto" name="{{response.sur_ins_id}}" style="display: block" onclick="enableEditList(name);"/>
+                                            <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}" id="full_edit{{response.sur_ins_id}}" data-bs-toggle="modal" data-bs-target="#editSurvey" name = "{{response.sur_ins_id}}" onclick="editSurveyModal(name);" style="display: none"/>
+                                          </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-button">
+                  <!-- <button class=""> -->
+                    <a href="/create_survey">
+                    <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal" data-bs-target="#addLocation" class="add-btn-img" style="cursor: pointer ;">
+                    </a>
+                    <!-- </button> -->
+
+                 
+                </div>
+            </div>
+            
+
+        
+      
+      
+        
+        </div>
+
+        <!-- Edit Survey Modal -->
+        <div class="modal fade" id="editSurvey" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Survey</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row mb-3">
+                  <div class="d-flex">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label for="surveyName" class=" modal-text mb-3">Survey Name</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12">
+                            <input type="email" class="form-control input-text" placeholder="" id="surveyName" aria-describedby="emailHelp">
+                        </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="d-flex">
+                          <div class="col-lg-4 col-md-4 col-sm-12">
+                              <label for="filledBy" class=" modal-text mb-3">Filled By</label>
+                          </div>
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <select class="form-select" id="filledBy" aria-label="Default select example">
+                                <option value="coordinator">Coordinator</option>
+                                <option value="researcher">Researcher</option>
+                                <option value="participant">Participant</option>
+                            </select>                           
+                            </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="col-lg-2 col-md-2 col-sm-12 ">
+                            <label for="exampleInputEmail1" class="modal-text mb-3 align-self-center mt-2">Days</label>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                            <input type="text" id="days" class="form-control input text">
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                            <label for="exampleInputEmail1" class=" modal-text mt-2 mx-3 mb-3">Plus</label>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                            <input type="text" id="plus" class="form-control input text">
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                            <label for="exampleInputEmail1" class=" modal-text mt-2 mx-3 mb-3">Minus</label>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+                            <input type="text" id="minus" class="form-control input text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="d-flex">
+                          <div class="col-lg-4 col-md-4 col-sm-12">
+                              <label for="editgroup" class=" modal-text mb-3">Group</label>
+                          </div>
+                          <div class="col-lg-8 col-md-8 col-sm-12">
+                            <select class="form-select" id="editgroup">
+                                <option value="control">Control</option>
+                                <option value="Intervention">Intervention</option>
+                                <option value="[control , intervention]">All</option>
+                                
+                            </select>                           
+                            </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="d-flex">
+                          <div class="col-lg-4 col-md-4 col-sm-12">
+                              <label for="status" class=" modal-text mb-3">Status</label>
+                          </div>
+                          <div class="location-now ">
+                            <div class="d-flex justify-content-between">
+                                <div class="col-8 d-flex justify-content-between">
+                                    <input type="radio" id="editSurveyActive" value="yes" class="gender" name="editSurveyStatus" />
+                                    <label for="editSurveyActive">Active</label> 
+                                    <input type="radio" id="statusDisabled" value="no" class="gender" name="editSurveyStatus" />
+                                    <label for="statusDisabled" >Disabled</label> 
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>               
+
+                <div class="modal-footer mt-4">
+                  <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                  <button type="button" class="btn modal-button" id="updatesurveybutton" value="" onclick="updateSurvey();">Save </button>
+                </div>
+
+              </div>
+         
+            </div>
+          </div>
+        </div>
+        <!--Edit Survey Modal end -->
+        </div>
+        </div>
+        
+        
+
+
+
+
+{% endblock %}

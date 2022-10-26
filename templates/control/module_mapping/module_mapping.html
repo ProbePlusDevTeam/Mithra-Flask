@@ -1,0 +1,486 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Module Mapping {% endblock %}
+
+{% block content %}
+
+<!-- <script type="text/javascript">
+  function editClick(){
+    // alert("clicked")
+    $(document).ready(function() {
+        $('#edit_weeksss').multiselect();
+    });
+  }
+   
+</script>
+
+
+<script type="text/javascript">
+  $('#example-multiple-selected').multiselect();
+</script> -->
+
+
+<!-- <script type="text/javascript">  
+  $(document).ready(function() {  
+      $('#multiple-checkboxes').multiselect();  
+  });  
+</script>   -->
+
+<script>
+  var inputBox = document.getElementById("weekNumber");
+
+  var invalidChars = [
+    "+",
+    "e",
+  ];
+
+  inputBox.addEventListener("keydown", function (e) {
+    if (invalidChars.includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+</script>
+
+<!-- Content -->
+<div class="content-wrapper">
+
+  <!-- Content -->
+
+  <div class="view-coordinator">
+    <div class="container container-p-y">
+      <ul class="breadcrumb  d-flex">
+        <li><a href="#">Reources</a></li>
+        <li><a href="/mod_map_surveylist">ModuleMapping</a></li>
+        <li><a href="#" id="brd">
+            {% for response in responses[0:1] %}
+            {{sur_name}}
+            {% endfor %}
+          </a></li>
+      </ul>
+      <div class="card">
+
+        <div class="cards-style  card-body role-bg">
+          <div class="role-location">
+            <table id="modMapTable" class="display nowrap" style="width:100%">
+              <thead class="tableHead">
+                <tr>
+                  <th class="td_online" style="width: 10px;"></th>
+                  <th class="role-loc-header table_had_content text-center">Survey Name</th>
+                  <th class="role-loc-header table_had_content text-center">Week No.</th>
+                  <th class="role-loc-header table_had_content text-center">Description</th>
+                  <th class="role-loc-header table_had_content m-0 text-center">Score</th>
+                  <th class="role-loc-header table_had_content m-0 text-center">Module No.</th>
+
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody style="margin-bottom: 20px;">
+                {% if length != 0 %}
+                {% for response in responses %}
+                <tr class="table_body mb-5">
+                  <td>
+                    <div class="d-flex align-items-center justify-content-center online col-lg-1 col-md-2 col-sm-12">
+                      {% if response.active == "yes" %}
+                      <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto" />
+                      {%else%}
+                      <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto" />
+                      {%endif%}
+                    </div>
+                  </td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.survey_name}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.week_no}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.description}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.min_score}} - {{response.max_score}}</td>
+                  <td class="role-loc-sub mx-2 m-0 mt-5">{{response.mod_num}}</td>
+                  <td>
+                    <div class="d-flex align-items-center justify-content-end">
+                      <div id="editB{{response.name}}" value="{{response.name}}">
+                        <div id="editB{{response.name}}" value="{{response.name}}">
+                          <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                            id="side_edit{{response.name}}" class="ms-auto edit_hover act_img_id" name="{{response.name}}"
+                            style="display: block" onclick="enableEditList(name);" />
+                          <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                            id="full_edit{{response.name}}" name="{{response.name}}" style="display: none"
+                            data-bs-toggle="modal" data-bs-target="#EditMapping"  class="loc_expand_edit_img act_full_img_id" onclick="editModuleMapping(name);" />
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+
+              </tbody>
+              <!-- <tfoot>
+                                    <tr class="">
+                                        <th class="role-loc-header m-0 text-center">Device ID</th>
+                                        <th class="role-loc-header m-0 text-center">Allot Device (Coordinator)</th>
+                                        <th class="role-loc-header m-0 text-center">Allot Device (Researcher)</th>
+                                        <th class="role-loc-header m-0 text-center">Device Type</th>
+                                        <th class="role-loc-header m-0 text-center">Device Details</th>
+                                    </tr>
+                                </tfoot> -->
+            </table>
+
+
+          </div>
+        </div>
+      </div>
+
+      <div class="add-button">
+        <!-- <button class=""> -->
+        <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" data-bs-toggle="modal"
+          data-bs-target="#addModal" class="add-btn-img" style="cursor: pointer ;">
+        <!-- </button> -->
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+  </div>
+
+  <!-- Add module Modal -->
+
+  <div class="modal fade p-5" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content custom-modal">
+        <!-- <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div> -->
+        <div class="modal-body p-5">
+          <div class="row">
+            <div class="col-lg-8 col-md-6 col-sm-12">
+              <div class="mb-3 row align-items-center">
+                <label for="survey_name" class="col-sm-4  modal-text ">Survey Name</label>
+                <div class="col-sm-8">
+                  <select class="selectpicker" id="survey_name" disabled data-live-search="true">
+                    <option value="{{survey_id}}">{{survey_name}}</option>
+                  </select>
+
+
+                </div>
+                <div class="invalid-entry" id="sur_nameError"></div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" id="survey_description" placeholder="Description">
+                </div>
+                <div class="invalid-entry" id="sur_descError"></div>
+
+              </div>
+            </div>
+          </div>
+          <!-- Row2 -->
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 mb-3">
+              <div class="mb-3 row">
+                <label for="score" class="col-sm-4 modal-text ">Score</label>
+                <div class="col-sm-8">
+                  <div class="">
+                    <div class="d-flex justify-content-between">
+                      <div class="col-12 d-flex justify-content-between">
+                        <input type="number" id="score_min" value="" class="form-control input-text w-50" name="min"
+                          placeholder="Min" />
+                        <!-- <label for="score_min" id="score" class="mx-4">Min</label> -->
+
+                        <input type="number" id="score_max" value="" class="form-control input-text w-50" name="max"
+                          placeholder="Max" />
+                        <!-- <label for="score_max" id="statusInactive" class="mx-4">Max</label> -->
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="col-6">
+                        <div class="invalid-entry mx-2" id="sur_minError"></div>
+                      </div>
+                      <div class="col-6">
+                        <div class="invalid-entry mx-2" id="sur_maxError"></div>
+                        <div class="invalid-entry mx-2" id="scoreValidError"></div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <select class="selectpicker" multiple id="instance_name" data-live-search="true">
+
+                    {% for inst in surveyinstancedata %}
+
+                    <option value={{inst.ins_id}}>{{inst.ins}}</option>
+
+                    {% endfor %}
+
+                  </select>
+                </div>
+                <div class="invalid-entry mx-2" id="sur_instError"></div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row parentWeeks" id="weeks">
+            <div class="d-flex childWeeks">
+              <div class="col-lg-8 col-md-8 col-sm-8">
+                <div class="mb-3 row d-flex align-items-center" id="weekss" style="position: relative;">
+                  <!-- <label for="inputPassword" class="col-sm-4  modal-text" id="week_no" >Week 1</label> -->
+                  <div class="d-flex ">
+
+                    <label for="inputPassword" class="col-sm-2  modal-text">Week </label>
+                    <input type="number" id="weekNumber" class="form-control w-25 col-sm-1 " placeholder="Number">
+                    <input type="text" id="w_no" class="d-none" value="{{length}}">
+                    <!-- <label for="inputPassword" class="col-sm-4  modal-text" id="week_no" style="display: none;"></label> -->
+
+                    <div class="col-sm-8 mx-3">
+                      <!-- {% for week in submoduledata %}
+                          <p>{{week.module_id}}</p>
+                          {% endfor %} -->
+
+                      <select class="selectpicker" multiple id="module_name" data-live-search="true">
+
+                        {% for week in submoduledata %}
+
+
+                        <option value={{week.module_id}}>{{week.sub_name}}</option>
+
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-2"></div>
+                  <div class="col-sm-5 flex-column">
+                    <div class="invalid-entry" id="weekNoError"></div>
+                    <div class="invalid-entry" id="week_num_error"></div>
+                  </div>
+                  <div class="col-sm-5">
+                    <div class="invalid-entry " id="sur_weekError"></div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+              {% if length +1 > 1 %}
+
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <!-- <input type="text" class="form-control text-input" id="mod1" style="visibility: hidden; position: absolute;"/> -->
+                  <input type="number" class="form-control text-input modAdd" id="mod" placeholder="Interval" />
+                </div>
+                <div class="invalid-entry" id="modError"></div>
+              </div>
+              {% else %}
+              <input type="text" class="form-control text-input modAdd d-none" id="mod" value="null"
+                placeholder="Interval" />
+              <div class="invalid-entry" id="modError"></div>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+          <button type="submit" class="btn modal-button" onclick="addModuleMappingSurvey();">Save </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Edit/Update ModuleMapping -->
+  <div class="modal fade p-5" id="EditMapping" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content custom-modal">
+        <!-- <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> -->
+        <input type="text" id="m_id" value="" class="d-none">
+
+        <div class="modal-body p-5">
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+              <div class="mb-3 row align-items-center">
+                <label for="survey_name" class="col-sm-4  modal-text ">Survey Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="edit_s_name" value="" disabled>
+
+                  <input type="text" class="d-none" id="edit_s_id" value="">
+                  <!-- <select class="form-select" id="edit_survey_name" data-live-search="true" disabled>
+                            <select class="form-select"  name="survey_select" id="survey_select" data-live-search="true">
+
+                          <select class="form-select" id= 'edit_survey_name' aria-label="Default select example">
+                           
+                            <option value=""  id="test_survey" selected></option>
+                            {% for data in surveynamedata %}
+                            <option value={{data.survey_pri_id}} >{{data.sur_name}}</option>
+                            {% endfor %}
+
+                          </select> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+              <div class="mb-3 row">
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="edit_survey_description" placeholder="Description">
+                </div>
+                <div class="invalid-entry" id="editSurDescError"></div>
+
+              </div>
+            </div>
+          </div>
+          <!-- Row2 -->
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-4 mb-3">
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-4">
+                  <label for="score" class=" modal-text ">Score</label>
+                </div>
+                <div class="col-sm-8">
+                  <div class="d-flex justify-content-between">
+                    <div class="col-12 d-flex justify-content-between">
+                      <input type="text" id="edit_score_min" value="" class="form-control input-text w-50 " name="min"
+                        placeholder="Min" />
+                      <!-- <label for="score_min" id="score" class="mx-4">Min</label> -->
+
+                      <input type="text" id="edit_score_max" value="" class="form-control input-text w-50" name="max"
+                        placeholder="Max" />
+                      <!-- <label for="score_max" id="statusInactive" class="mx-4">Max</label> -->
+                    </div>
+                    <div class="invalid-entry" id="scoreInvalidError"></div>
+                    <div class="invalid-entry" id="scoreMinError"></div>
+                    <div class="invalid-entry" id="scoreMaxError"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+              <div class="mb-3 row">
+                <div class="col-sm-10">
+                  <h1 id="zzz" class="d-none"></h1>
+
+
+                  <select class="selectpicker edit_week" multiple name="edit_week" id="edit_week"
+                    data-live-search="true">
+                    <!-- <option value=""  id="subinstance" selected></option> -->
+                    {% for sur_instance in surveyinstancedata %}
+                    <option value="{{sur_instance.ins_id}}">{{sur_instance.ins}}</option>
+                    {% endfor %}
+
+                  </select>
+
+                  <!-- <select class="form-select" aria-label="Default select example"  id="edit_instance">
+
+
+                            <option value="instance"  id="edit-instance" selected></option>
+
+
+                            <option value="2">Coordinator 1</option>
+                            <option value="3">Coordinator 2</option>
+                          </select>     -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-lg-8 col-md-6 col-sm-8">
+              <div class="mb-3 row align-items-center">
+                <div class="d-flex align-items-center">
+                  <!-- <label for="inputPassword" class="col-sm-2 modal-text" id="wwww">Week</label> -->
+                  <label for="inputPassword" class="col-sm-2 modal-text" id="wwwww">Week</label>
+                  <!-- <div class="modal-text" id="w2">aa</div> -->
+                  <input type="text" id="editWeekNumber" class="form-control w-25 col-sm-1 " placeholder="Number">
+                  <div clas="invalid-entry" id="week_no_error"></div>
+                  <div clas="invalid-entry" id="week_no_exist_error"></div>
+                  <div class="invalid-entry" id="edit_week_num_error"></div>
+
+                  <div class="col-sm-4 col-4 mx-3">
+                    <!-- <div class="col-sm-8">
+                          <select class="form-select" id= 'edit_survey_name' aria-label="Default select example"> -->
+                    <h1 id="sss" class="d-none"></h1>
+
+                    <select class="selectpicker edit_weeksss mod_map_select_picker" name="edit_weeksss" id="edit_weeksss" multiple
+                      data-live-search="true">
+                      <!-- <option value=""  id="submodules" selected></option> -->
+                      {% for submdd in submoduledata %}
+                      <option value="{{submdd.module_id}}">{{submdd.sub_name}}</option>
+                      {% endfor %}
+
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="mb-3 row">
+                      <div class="col-sm-10">
+                        <input type="text" name="data" class="form-control edit_modAdd" id="edit-week-interval" value=""
+                          placeholder="Interval">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-sm-4">
+                <div class="invalid-entry" id="editweekNoError"></div>
+              </div>
+              <div class="col-sm-8">
+                <div class="invalid-entry " id="editsur_weekError"></div>
+                <div class="invalid-entry " id="editsur_IntError"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="d-flex">
+              <div class="col-3">
+                <label for="score" class="modal-text ">Status</label>
+              </div>
+              <div class="col-9 d-flex location-now">
+                <input type="radio" id="statusActive" value="yes" class="gender" name="updatedMappingStatus" />
+                <label for="statusActive" id="statusActiv" class="mx-4">Active</label>
+                <input type="radio" id="statusInactive" value="no" class="gender" name="updatedMappingStatus" />
+                <label for="statusInactive" id="statusInactiv" class="mx-4">Inactive</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer mt-4">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+          <button type="submit" class="btn modal-button" onclick="upModuleMapping();">Save </button>
+        </div>
+
+        <div class="modal-footer mt-4">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- Edit/Update ModuleMapping -->
+</div>
+
+
+<!-- / Content -->
+
+
+
+
+{% endblock %}

@@ -1,0 +1,185 @@
+    .dataTables{
+        /* width: 700px !important; */
+        /* overflow-x: hidden; */
+    }
+    .tableHead{
+        background: #FFFFFF;
+        box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.15), 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 1px 3px rgba(50, 50, 93, 0.15);
+        border-radius: 6px 6px 0px 0px;
+        height: 100px !important;
+        /* width: 500px !important; */
+        border-bottom: #dbdbdb54 5px solid;
+    }
+
+    .table_had_content{
+      padding-top: 20px;
+    }
+
+    .table_body{
+        background: #FFFFFF;
+        box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 1px 3px rgba(50, 50, 93, 0.15);
+        border-radius: 0px 6px 6px 0px;
+        width: 100%;
+        height: 100px !important;
+        border-bottom: #f5f5f5 15px solid;
+    }
+
+    table, tr{
+        padding: 20px;
+    }
+
+    #example {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #example td,
+      #example th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      #participants {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #participants td,
+      #participants th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      #locationsTable {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #locationsTable td,
+      #locationsTable th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      #modulesTable {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #modulesTable td,
+      #modulesTable th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      #videosTable {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #videosTable td,
+      #videosTable th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      
+
+      #modMapTable {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #modMapTable td,
+      #modMapTable th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      #activityTable {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #activityTable td,
+      #activityTable th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+
+      #surveyInstanceTable {
+        table-layout: fixed;
+        width: 100% !important;
+      }
+      #surveyInstanceTable td,
+      #surveyInstanceTable th{
+        width: auto !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 3px;
+        margin-top: 30px;
+        padding-top: 15px;
+      }
+     
+
+      .dataTables_info{
+        margin-top: 20px;
+        text-align: start;
+      }
+
+      .pagination{
+        margin-top: 20px;
+        text-align: end;
+        display: flex;
+        justify-content: end;
+      }
+
+      .filters{
+        padding: 10px !important;
+        margin-left: 10px !important;
+      }
+
+      .dataTables_length{
+        display: flex;
+        justify-content: start;
+        margin-bottom: 10px;
+      }
+
+      .dataTables_filter{
+        display: flex;
+        justify-content: end;
+      }
+
+      th .td_online{
+        width: 20% !important;
+        -ms-grid-row-span: .5;
+      }

@@ -1,0 +1,255 @@
+{% extends 'partial/base.html' %}
+
+{% block title %} Surveys {% endblock %}
+
+{% block content %}
+
+<!-- Content -->
+<div class="container">
+  <div class="content-wrapper">
+    <!-- Content -->
+    <div class="view-coordinator">
+      <ul class="breadcrumb d-flex">
+
+        <li><a href="#">Resources</a></li>
+        <li><a href="/surveylist">Survey Create</a></li>
+        <li><a href="#" id="brd">
+            {% if responses == "No survey instance available" %}
+            {{survey_name}}
+            {% else %}
+            {% for response in responses[0:1] %}
+            {{response.survey_name}}
+            {% endfor %}
+            {% endif %}
+          </a></li>
+      </ul>
+
+
+      <script>
+        var url_id = window.location.pathname.split("/").pop()
+            // document.getElementById("brd").innerText = url_id
+      </script>
+      <div class="container container-p-y">
+        <div class="card">
+
+          <div class="cards-style  card-body role-bg">
+            <div class="role-location">
+              <!-- <div class="card mb-3">
+                                
+                            </div> -->
+
+
+
+
+
+              <table id="surveyInstanceTable" class="display nowrap" style="width:100%">
+                <thead class="tableHead">
+                  <tr>
+                    <th class="td_online" style="width: 10px;"></th>
+                    <th class="role-loc-header table_had_content text-center">Survey Name</th>
+                    <th class="role-loc-header table_had_content text-center">Cycle</th>
+                    <th class="role-loc-header table_had_content text-center">Filled By</th>
+                    <th class="role-loc-header table_had_content m-0 text-center">Group</th>
+                    <th class="role-loc-header table_had_content m-0 text-center">Days</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody style="margin-bottom: 20px;">
+
+                  {% if responses == "No survey instance available" %}
+                  {% else %}
+                  {% for response in responses %}
+                  <tr class="table_body mb-5">
+                    <td>
+                      <div class="d-flex align-items-center justify-content-center online col-lg-1 col-md-2 col-sm-12">
+                        {% if response.active == "yes" %}
+                        <img src="{{ url_for('static', filename='assets/img/icons/act.svg')}}" class="me-auto" />
+                        {%else%}
+                        <img src="{{ url_for('static', filename='assets/img/icons/inact.svg')}}" class="me-auto" />
+                        {%endif%}
+                      </div>
+                    </td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.survey_name}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.cycle}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.filled_by}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.group1}}</td>
+                    <td class="role-loc-sub mx-2 m-0 mt-5">{{response.days}}</td>
+                    <td>
+                      <div class="d-flex align-items-center justify-content-end">
+                        <div class="d-flex align-items-center justify-content-end" id="editB{{response.sur_ins_id}}"
+                          value="{{response.sur_ins_id}}">
+                          <img src="{{ url_for('static', filename='assets/img/icons/side_edit.svg')}}"
+                            id="side_edit{{response.sur_ins_id}}" class="ms-auto edit_hover act_img_id" name="{{response.sur_ins_id}}"
+                            style="display: block" onclick="enableEditList(name);" />
+                          <img src="{{ url_for('static', filename='assets/img/icons/edit_button.svg')}}"
+                            id="full_edit{{response.sur_ins_id}}" data-bs-toggle="modal" data-bs-target="#editSurvey"
+                            name="{{response.sur_ins_id}}" class="loc_expand_edit_img act_full_img_id" onclick="editSurveyModal(name);"
+                            style="display: none" />
+                          <input type="text" class="d-none" value="{{response.survey_pri_id}}" id="sur_in_id">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  {% endif %}
+
+                </tbody>
+              </table>
+
+              <div class="add-button">
+                <!-- <button class=""> -->
+                <!-- <a href="/create_survey"> -->
+                <a href='{{ url_for("create_survey", PkId=survey_pri_id) }}' style="width: fit-content">
+
+                  <img src="{{ url_for('static', filename='assets/img/icons/Add button.png')}}" class="add-btn-img"
+                    style="cursor: pointer ;">
+                </a>
+                <!-- </button> -->
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <!-- Edit Survey Modal -->
+    <div class="modal fade" id="editSurvey" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content custom-modal">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Survey</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="" value="d-none" id="s_p_id" style="display: none;">
+            <div class="row mb-3">
+              <div class="d-flex">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                  <label for="surveyName" class=" modal-text mb-3">Survey Name</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 flex-column">
+                  <input type="email" class="form-control input-text" placeholder="" id="surveyName"
+                    aria-describedby="emailHelp">
+                  <div class="invalid-entry animated bounce" id="surveyNameExistError"></div>
+                </div>
+                <div class="invalid-entry text-start mx-2" id="editSurveyName"></div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="d-flex">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                  <label for="filledBy" class=" modal-text mb-3">Filled By</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                  <select class="form-select" id="filledBy" aria-label="Default select example">
+                    <option value="coordinator">Coordinator</option>
+                    <option value="researcher">Researcher</option>
+                    <option value="participant">Participant</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="col-lg-1 col-md-2 col-sm-12 ">
+                  <label for="exampleInputEmail1" class="modal-text mb-3 align-self-center mt-3">Days</label>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12 flex-column">
+                  <input type="number" id="days" class="form-control input text" min="0">
+                  <div class="invalid-entry text-start mx-2" id="daysExistError"></div>
+                </div>
+                <div class="invalid-entry text-start mx-2" id="editDaysError"></div>
+                <div class="invalid-entry text-start mx-2" id="editInvalidDaysName"></div>
+
+                <div class="col-lg-1 col-md-2 col-sm-12">
+                  <label for="exampleInputEmail1" class=" modal-text mt-3 mx-3 mb-3">Plus</label>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12">
+                  <input type="number" id="plus" class="form-control input text mx-2">
+                </div>
+                <div class="invalid-entry text-start mx-2" id="editPlusName"></div>
+                <div class="invalid-entry text-start mx-2" id="editInvalidPlusName"></div>
+                <div class="invalid-entry text-start mx-2" id="daysCountPlusError"></div>
+
+                <div class="col-lg-1 col-md-2 col-sm-12">
+                  <label for="exampleInputEmail1" class=" modal-text mt-3 mx-3 mb-3">Minus</label>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12">
+                  <input type="number" id="minus" class="form-control input text mx-4">
+                </div>
+                <div class="invalid-entry text-start mx-2" id="editMinusName"></div>
+                <div class="invalid-entry text-start mx-2" id="editMinusName"></div>
+                <div class="invalid-entry text-start mx-2" id="editInvalidMinusName"></div>
+                <div class="invalid-entry text-start mx-2" id="daysCountMinusError"></div>
+
+
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="d-flex">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                  <label for="editgroup" class=" modal-text mb-3">Group</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                  <select class="form-select" id="editgroup">
+                    <option value="control">Control</option>
+                    <option value="intervention">Intervention</option>
+                    <!-- <option value="[control , intervention]">All</option> -->
+                    <option value="all">All</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="d-flex">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                  <label for="status" class=" modal-text mb-3">Status</label>
+                </div>
+                <div class="location-now ">
+                  <div class="d-flex justify-content-between">
+                    <div class="col-8 d-flex justify-content-between">
+                      <input type="radio" id="editSurveyActive" value="yes" class="gender" name="editSurveyStatus" />
+                      <label for="editSurveyActive">Active</label>
+                      <input type="radio" id="statusDisabled" value="no" class="gender" name="editSurveyStatus" />
+                      <label for="statusDisabled">Disabled</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer mt-4">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+              <button type="button" class="btn modal-button" id="updatesurveybutton" value=""
+                onclick="updateSurvey();">Save </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--Edit Survey Modal end -->
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
