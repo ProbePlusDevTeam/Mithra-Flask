@@ -2668,56 +2668,63 @@ def editreason(PkId):
 @app.route('/downloadexcel/<Report>' , methods = ["POST", "GET"])
 def downloadexcel(Report):
     if request.method == "POST":
-        files = ""
+        #files = ""
         folder = ""
 
-        now = datetime.now()
-        now  = str(now)
-        now = now.replace(" ", "_")
-        now = now.replace(":", "_")
-        now = now.replace(".", "_")
+        #now = datetime.now()
+        #now  = str(now)
+        #now = now.replace(" ", "_")
+        #now = now.replace(":", "_")
+        #now = now.replace(".", "_")
 
         if Report == "all":
-            url = "api/method/mithra.mithra.doctype.report.api.report"
+            #url = "api/method/mithra.mithra.doctype.report.api.report"
             folder = "All_Report"
-            files = "Reports_" + now.strip() + ".xlsx"
+            #files = "Reports_" + now.strip() + ".xlsx"
         if Report == "video":
-            url = "api/method/mithra.mithra.doctype.report.api.report_video"
+            #url = "api/method/mithra.mithra.doctype.report.api.report_video"
             folder = "Video_Report"
-            files = "Video_" + now.strip() + ".xlsx"
+            #files = "Video_" + now.strip() + ".xlsx"
         if Report == "activity":
-            url = "api/method/mithra.mithra.doctype.report.api.report_activity"
+            #url = "api/method/mithra.mithra.doctype.report.api.report_activity"
             folder = "Activity_Report"
-            files = "Activity_" + now.strip() + ".xlsx"
+            #files = "Activity_" + now.strip() + ".xlsx"
         if Report == "question":
-            url = "api/method/mithra.mithra.doctype.report.api.report_question_option"
+            #url = "api/method/mithra.mithra.doctype.report.api.report_question_option"
             folder = "Question_Report"
-            files = "Question_" + now.strip() + ".xlsx"
+            #files = "Question_" + now.strip() + ".xlsx"
         if Report == "participant_context":
-            url = "api/method/mithra.mithra.doctype.report.api.report_participant_context"
+            #url = "api/method/mithra.mithra.doctype.report.api.report_participant_context"
             folder = "Context_Report"
-            files = "Context_" + now.strip() + ".xlsx"
+            #files = "Context_" + now.strip() + ".xlsx"
         if Report == "login_logout":
-            url = "api/method/mithra.mithra.doctype.report.api.report_login_logout"
+            #url = "api/method/mithra.mithra.doctype.report.api.report_login_logout"
             folder = "Login_logout_Report"
-            files = "Login_logout_" + now.strip() + ".xlsx"
+            #files = "Login_logout_" + now.strip() + ".xlsx"
         
-        list_of_files = glob.glob(os.path.join(app.config['REPORT_FOLDER'] + "/" + "All_Report" + "/*"))
+        list_of_files = glob.glob(os.path.join(app.config['REPORT_FOLDER'] + "/" + folder + "/*"))
         latest_file = max(list_of_files, key=os.path.getctime)
 
-        data = {}
-        role = "admin"
-        method = "GET"
-        responses = {}
-        responses = apicall(method, url, data, role)
-        responses = responses["message"]
-        con = json.dumps(responses)
-        df = pd.DataFrame(eval(con))
-        df.to_excel(os.path.join(app.config['REPORT_FOLDER'] + "/" + folder + "/" + files))
+        #data = {}
+        #role = "admin"
+        #method = "GET"
+        #responses = {}
+        #responses = apicall(method, url, data, role)
+        #responses = responses["message"]
+        #con = json.dumps(responses)
+        #df = pd.DataFrame(eval(con))
+        #df.to_excel(os.path.join(app.config['REPORT_FOLDER'] + "/" + folder + "/" + files))
 
 
-        return jsonify(["success", folder , files])
-
+        #return jsonify(["success", folder , files])
+##############################################################################
+        ##Converting the string to list
+        latest_file = str(latest_file)
+        split_str = latest_file.split("/")
+        ##Getting the file name from the list
+        split_str.reverse()
+        return jsonify(["success", folder , split_str[0]])
+##############################################################################
 ###################### End of Report excel download APIs ######################
 
 
@@ -2971,9 +2978,111 @@ def Failed_APIs():
         now = now.replace(".", "_")
         file_name ="sync_failed_" + now.strip() + ".json"
 
-        with open((app.config['FailedAPI'] + '/' + file_name), "w") as outfile:
+        with open((app.config['Failed_APIs'] + '/' + file_name), "w") as outfile:
             outfile.write(dict_request_body)
+        
+        result = {}
+        result["message"] = "success"
+        return jsonify(result)
+    except:
+        return "An exception occurred"
 
+
+# API to sync manually the json file
+@app.route('/offlineAPI_old' , methods=["POST","GET"])
+def offlineAPI_old():
+    try:        
+        xl = open ("data.csv")        
+        
+        for i in xl:
+            store_ids = {}
+            st = i.strip()
+            test = open((app.config['SYNC_FOLDER'] + '/' + st))
+            data1 = json.load(test)
+            dict_request_body = json.dumps(data1)
+            server_pk_id = ""
+            android_pk_id = ""
+            failed_api = []
+            result = {}
+            key_list = list(data1.keys())
+            for key in key_list:
+                
+                full_value = data1[key]
+                for api in full_value:
+                    ic = ic + 1
+                    act_url = api["url"]
+                    act_data = json.loads(api["body"])
+                    act_role = "participant"
+                    pkid = ""
+                    
+                    if api["method"] == "PUT":
+                        
+                        if api["table"] == "par_video_data":
+                            id_key = store_ids.keys()
+                            id_key = list(id_key)
+                            length_data = len(id_key)
+                            id_key_string = str(id_key)
+                           
+                            if "PVD" in act_data["name"]:
+                                # if length_data == 0:
+                                act_method = api["method"]
+                                act_responses = {}
+                                act_responses = apicall(act_method, act_url, act_data, act_role)
+                               
+                                
+                            elif act_data["name"] not in id_key_string:
+                                act_responses = "unable to find the server primary key for this android primary id in dictionary"
+                            
+                            else:
+                                act_data["name"] = store_ids[act_data["name"]]
+                                act_method = api["method"]
+                                act_responses = {}
+                                act_responses = apicall(act_method, act_url, act_data, act_role)
+                            
+                    else:
+                        if api["table"] == "par_video_data":
+                            split_date = api["api_pri_key"]
+                            split_date = str(split_date)
+                            split_date = split_date.split("2022")
+                            t = str(split_date[1])
+                            t = "2022" + t
+                            act_data["creation"] = t
+                        act_method = api["method"]
+                        act_responses = {}
+                        act_responses = apicall(act_method, act_url, act_data, act_role)
+                            
+
+                    if "message" in act_responses:
+                        #if post save the server primary id
+                        if api["table"] == "par_video_data":
+                            if api["method"] == "POST":
+                                store_ids[act_data["name"]] = act_responses["message"]["name"]
+                        #to save the success message in api sync table
+                        if act_responses["message"] == "success" or act_responses["message"]["status"] == "success":
+                            sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
+                            sync_role = "admin"
+                            sync_method = api["method"]
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "pass",  "error_log": "no error log"}
+                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
+                    else:
+                        failed_api.append(api["api_pri_key"])
+                        sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
+                        sync_role = "admin"
+                        sync_method = api["method"]
+                        sync_data = {}
+                        if "exception" in act_responses:
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses["exception"]}
+                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
+                            
+                        else:
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses}
+                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
+        if len(failed_api) == 0:
+            result["message"] = "success"
+            return jsonify(result)
+        else:
+            result["message"] = failed_api
+            return jsonify(result)
     except:
         return "An exception occurred"
 
@@ -2982,8 +3091,6 @@ def offlineAPI():
     try:
 
         file_data = request.get_data()
-        address = request.remote_addr
-        header = request.headers
         body = request.content_type
      
         data = []
@@ -3009,53 +3116,68 @@ def offlineAPI():
 
 
         store_ids = {}
-        server_pk_id = ""
-        android_pk_id = ""
         failed_api = []
         result = {}
-
         for key in key_list:
-            full_value = data1[key]
-            for api in full_value:
-                act_url = api["url"]
-                act_data = json.loads(api["body"])
-                act_role = "participant"
-                pkid = ""
-                if api["method"] == "PUT":
-                    if "PVD" not in act_data["name"]:
-                        act_data["name"] = store_ids[act_data["name"]]
-
-                act_method = api["method"]
-                act_responses = {}
-                act_responses = apicall(act_method, act_url, act_data, act_role)
-                if api["table"] == "par_video_data":
-                    if api["method"] == "POST":
-                        store_ids[act_data["name"]] = act_responses["message"]["name"]
-                if "message" in act_responses:
-                    if act_responses["message"] == "success" or act_responses["message"]["status"] == "success":
-                        sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
-                        sync_role = "coordinator"
-                        sync_method = "POST"
-                        sync_data = {"api_device_pri_id": api["api_pri_key"], "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "pass",  "error_log": "no error log"}
-                        now = datetime.now()
-                        now  = str(now)
-                        sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
-                else:
-                    failed_api.append(api["api_pri_key"])
-                    sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
-                    sync_role = "coordinator"
-                    sync_method = "POST"
-                    sync_data = {}
-                    now = datetime.now()
-                    now  = str(now)
-                    if "exception" in act_responses:
-                        sync_data = {"api_device_pri_id": api["api_pri_key"], "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses["exception"]}
-                        sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
-
+                full_value = data1[key]
+                for api in full_value:
+                    act_url = api["url"]
+                    act_data = json.loads(api["body"])
+                    act_role = "participant"
+                    pkid = ""
+                    
+                    if api["method"] == "PUT":                        
+                        if api["table"] == "par_video_data":
+                            id_key = store_ids.keys()
+                            id_key = list(id_key)
+                            length_data = len(id_key)
+                            id_key_string = str(id_key)
+                           
+                            if "PVD" in act_data["name"]:
+                                act_method = api["method"]
+                                act_responses = {}
+                                act_responses = apicall(act_method, act_url, act_data, act_role)
+                                
+                            elif act_data["name"] not in id_key_string:
+                                # or length_data == 0
+                                act_responses = "unable to find the server primary key for this android primary id in dictionary"
+                            
+                            else:
+                                act_data["name"] = store_ids[act_data["name"]]
+                                act_method = api["method"]
+                                act_responses = {}
+                                act_responses = apicall(act_method, act_url, act_data, act_role)
+                            
                     else:
-                        sync_responses = {"api_device_pri_id": api["api_pri_key"], "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses}
-                        sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
-
+                        act_method = api["method"]
+                        act_responses = {}
+                        act_responses = apicall(act_method, act_url, act_data, act_role)
+                            
+                    if "message" in act_responses:
+                        #if post save the server primary id
+                        if api["table"] == "par_video_data":
+                            if api["method"] == "POST":
+                                store_ids[act_data["name"]] = act_responses["message"]["name"]
+                        #to save the success message in api sync table
+                        if act_responses["message"] == "success" or act_responses["message"]["status"] == "success":
+                            sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
+                            sync_role = "admin"
+                            sync_method = api["method"]
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "pass",  "error_log": "no error log"}
+                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
+                    else:
+                        failed_api.append(api["api_pri_key"])
+                        sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
+                        sync_role = "admin"
+                        sync_method = api["method"]
+                        sync_data = {}
+                        if "exception" in act_responses:
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses["exception"]}
+                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
+                            
+                        else:
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses}
+                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
 
         if len(failed_api) == 0:
             result["message"] = "success"
