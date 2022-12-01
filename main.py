@@ -3192,16 +3192,31 @@ def offlineAPI():
 
 ###################### Dashboard API's ######################
 
-@app.route('/survey_status')
+@app.route('/dashboard')
+def dashboard():
+    try:
+        if g.user:
+            return render_template('dashboard.html')
+    except:
+        return "An exception occurred" 
+
+@app.route('/survey_status', methods=["POST","GET"])
 def Survey_Status():
     try:
-        url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
-        data = {"login_id": "UT-49-2022-10-16-22:59:07-ASHAvoiceover@stjohns.in"}
-        role = "admin"
-        method = "GET"
-        users = apicall(method, url, data, role)
-        users = users["message"]
-        return users
+        if g.user:
+            print('---')            
+            url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
+            data = {"login_id": "UT-49-2022-10-16-22:59:07-ASHAvoiceover@stjohns.in"}
+            role = "admin"
+            method = "GET"
+            responses = {}
+            responses = apicall(method, url, data, role)
+            responses = responses["message"]
+            
+            # print(len(responses))
+            # for i in len(responses):
+            #     prinbt
+            return responses
     except:
         return "An exception occurred"
 
@@ -3212,7 +3227,7 @@ def Survey_Status():
 
 
 if __name__=="__main__":
-    # app.debug = True
+    app.debug = True
     # app.run() #for apache
     app.run(host ="0.0.0.0", port=5000, debug=True)
     #app.run(host="0.0.0.0")#for nginx
