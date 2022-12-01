@@ -10,12 +10,12 @@ from cryptography.fernet import Fernet
 
 ###################### App Configuration ######################
 
-UPLOAD_FOLDER = "/home/ubuntu/Uploads"
-DOWNLOAD_FOLDER = "/home/ubuntu/Downloads"
-REPORT_FOLDER = "/home/ubuntu/Reports"
-SYNC_FOLDER = "/home/ubuntu/Sync_Datas"
-FailedAPI = "/home/ubuntu/Failed_Offline"
-Tokens = "/home/ubuntu/Token"
+UPLOAD_FOLDER = "static/Uploads"
+DOWNLOAD_FOLDER = "static/Downloads"
+REPORT_FOLDER = "static/Reports"
+SYNC_FOLDER = "static/Sync_Datas"
+FailedAPI = "static/Failed_Offline"
+Tokens = "static/Token"
 
 # app = Flask(__name__, static_folder="static", template_folder="templates")
 app = Flask(__name__)
@@ -42,8 +42,7 @@ Login_user_role = ""
 
 ###################### Configuration Setup ######################
 
-#base_url = "http://43.205.146.90:80/"
-base_url = "https://www.mithraapp.co.in/"
+base_url = "http://10.10.2.65:80"
 ###################### End of Configuration Setup ######################
 
 
@@ -3189,6 +3188,27 @@ def offlineAPI():
         return "An exception occurred"
 
 ###################### End of offline fuctions ######################
+
+
+###################### Dashboard API's ######################
+
+@app.route('/survey_status')
+def Survey_Status():
+    try:
+        url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
+        data = {"login_id": "UT-49-2022-10-16-22:59:07-ASHAvoiceover@stjohns.in"}
+        role = "admin"
+        method = "GET"
+        users = apicall(method, url, data, role)
+        users = users["message"]
+        return users
+    except:
+        return "An exception occurred"
+
+
+###################### End of Dashboard API's ######################
+
+
 
 
 if __name__=="__main__":
