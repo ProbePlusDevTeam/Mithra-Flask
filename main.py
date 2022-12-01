@@ -242,7 +242,7 @@ def login_check():
                 time_responses = apicall(time_method, time_url, time_data, time_role)
 
                 if time_responses["message"] == "success":
-                    return redirect (url_for('coordinators'))
+                    return redirect (url_for('dashboard'))
                 else:
                     return redirect (url_for('login'))
 
@@ -3192,13 +3192,6 @@ def offlineAPI():
 
 ###################### Dashboard API's ######################
 
-@app.route('/dashboard')
-def dashboard():
-    try:
-        if g.user:
-            return render_template('dashboard.html')
-    except:
-        return "An exception occurred" 
 
 @app.route('/survey_status', methods=["POST","GET"])
 def Survey_Status():
