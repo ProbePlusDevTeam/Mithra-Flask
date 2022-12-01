@@ -3192,6 +3192,13 @@ def offlineAPI():
 
 ###################### Dashboard API's ######################
 
+@app.route('/dashboard')
+def dashboard():
+    try:
+        if g.user:
+            return render_template('dashboard.html')
+    except:
+        return "An exception occurred" 
 
 @app.route('/survey_status', methods=["POST","GET"])
 def Survey_Status():
