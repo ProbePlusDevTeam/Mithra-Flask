@@ -42,7 +42,7 @@ Login_user_role = ""
 
 ###################### Configuration Setup ######################
 
-base_url = "http://10.10.2.65:80"
+base_url = "http://10.10.2.65:80/"
 ###################### End of Configuration Setup ######################
 
 
@@ -3212,7 +3212,7 @@ def Survey_Status():
 
 
 if __name__=="__main__":
-    app.debug = True
-    app.run() #for apache
-    #app.run(host ="0.0.0.0", port=5000)
+    # app.debug = True
+    # app.run() #for apache
+    app.run(host ="0.0.0.0", port=5000)
     #app.run(host="0.0.0.0")#for nginx
