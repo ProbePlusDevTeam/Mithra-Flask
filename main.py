@@ -3200,25 +3200,111 @@ def dashboard():
     except:
         return "An exception occurred" 
 
-@app.route('/survey_status', methods=["POST","GET"])
-def Survey_Status():
+@app.route('/dashboard_participant')
+def dashboard_participant():
     try:
         if g.user:
-            print('---')            
-            url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
-            data = {"login_id": "UT-49-2022-10-16-22:59:07-ASHAvoiceover@stjohns.in"}
-            role = "admin"
-            method = "GET"
-            responses = {}
-            responses = apicall(method, url, data, role)
-            responses = responses["message"]
-            
-            # print(len(responses))
-            # for i in len(responses):
-            #     prinbt
-            return responses
+            return render_template('dashboard_participant.html')
     except:
         return "An exception occurred"
+
+@app.route('/survey_status', methods=["POST","GET"])
+def Survey_Status():
+    # try:
+        if g.user:
+                      
+            survey_status_url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
+            survey_status_data = {"login_id": session['user_id']}
+            survey_status_role = "admin"
+            survey_status_method = "GET"
+            survey_status_responses = {}
+            survey_status_responses = apicall(survey_status_method, survey_status_url, survey_status_data, survey_status_role)
+            survey_status_responses = survey_status_responses["message"]
+            
+            complete_status = 0
+            notcomplete_status = 0 
+            high_priority = 0
+            medium_priority = 0
+            low_priority = 0
+            user_survey = {}
+            user_completed = 0
+            user_notcompleted = 0
+            users_list = []
+            
+            for i in survey_status_responses:
+
+                #calculation for each users
+                users_list =  list(user_survey.keys())
+                if i["user_pri_id"] not in users_list:
+                    users = {}
+                    users["no_of_surveys"] = "1"
+                    print(list(str(i["survey_name"])))
+                    #calculating completed and not completed for each users
+                    if i["completed"] == "yes":
+                        if "completed" in users:
+                            users["completed"] = str( int( users["completed"] ) + 1 )
+                            # users["completed_survey"] = list.append(str(i["survey_name"]))
+                        else:
+                            users["completed"] = "1"
+                            # users["completed_survey"] = list(str(i["survey_name"]))
+                    else:
+                        if "notcompleted" in users:
+                            users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
+                            # users["notcompleted_survey"] = list.append(str(i["survey_name"]))
+                        else:
+                            users["notcompleted"] = "1"
+                            # users["notcompleted_survey"] = list(str(i["survey_name"]))
+                            
+                    user_survey[i["user_pri_id"]] = users
+                else:
+                    users = user_survey[i["user_pri_id"]]
+                    users["no_of_surveys"] = str( int( users["no_of_surveys"] ) + 1)
+                    
+                    #calculating completed and not completed for each users
+                    if i["completed"] == "yes":
+                        if "completed" in users:
+                            users["completed"] = str( int( users["completed"] ) + 1 )
+                            # users["completed_survey"] = list.append(str(i["survey_name"]))
+                        else:
+                            users["completed"] = "1"
+                            # users["completed_survey"] = list(str(i["survey_name"]))
+                    else:
+                        if "notcompleted" in users:
+                            users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
+                            # users["notcompleted_survey"] = list.append(str(i["survey_name"]))
+                        else:
+                            users["notcompleted"] = "1"
+                            # users["notcompleted_survey"] = list(str(i["survey_name"]))
+                    
+                
+                #calculating completed and not completed status for all users
+                if i["completed"] == "yes":
+                    complete_status = complete_status + 1
+                else:
+                    notcomplete_status = notcomplete_status + 1
+                
+                #calculating priority for all user
+                if i["high"]:
+                    if i["high"]["days_remaining"]:
+                        high_priority = high_priority + 1
+                elif i["low"]:
+                    if i["low"]["days_remaining"]:
+                        low_priority = low_priority + 1
+                elif i["medium"]:
+                    if i["medium"]["days_remaining"]:
+                        low_priority = low_priority + 1
+                else:
+                    print("No priority for this user ==  " + i["user_pri_id"])
+                
+            print("user_survey == " + str(user_survey))
+            print("complete_status == " + str(complete_status))
+            print("notcomplete_status == " + str(notcomplete_status))
+            print("high_priority == " + str(high_priority))
+            print("medium_priority == " + str(medium_priority))
+            print("low_priority == " + str(low_priority))
+            return survey_status_responses
+    # except:
+    #     return "An exception occurred"
 
 
 ###################### End of Dashboard API's ######################
