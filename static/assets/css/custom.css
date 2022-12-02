@@ -1637,6 +1637,120 @@ input[type=number] {
   }
 }
 
+/* updated */
 
+.dashboard_top_card{
+  position: relative;
+  width: 95%;
+  /* height: 277.33px; */
+  top: -130.25px;
+  /* left: 70px; */
+  background: #FFFFFF;
+  border: 1px solid rgba(65, 64, 64, 0.3);
+  border-radius: 20px;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  text-align: center;
+}
 
+.dashboard_shg{
+  margin-top: -100px;
+}
 
+.dashboard_card_box{
+  /* border: 1px solid rgb(182, 182, 182); */
+  box-shadow: 5px 5px 5px 5px rgb(67 89 113 / 12%);
+  border-radius: 5px;
+  /* padding: 10px; */
+  margin: 10px;
+}
+
+.dashboard_shg_card_header{
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #414040;
+}
+
+.dashboard_inner_card{
+  box-shadow: 5px 5px 5px 5px rgb(67 89 113 / 12%);
+  border-radius: 5px;
+  /* padding: 10px; */
+  margin: 10px;
+}
+
+.dashboard_innercard_sub{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #414040;
+}
+
+.progress_card{
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  margin-top: -50% !important; 
+  /* margin-left: 15%; */
+  margin: 0 auto;
+}
+
+.progress_card .percent {
+  position: relative;
+}
+
+.progress_card svg {
+  position: static;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  margin-left: 27%;
+}
+
+.progress_card svg circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #f0f0f0;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.progress_card svg circle:last-of-type {
+  stroke-dasharray: 240px;
+  stroke-dashoffset: calc(240px - (240px * var(--percent)) / 100);
+  stroke: #3498db; 
+}
+
+.progress_card .number {
+  position: absolute;
+  /* top: 50%;
+  left: 50%; */
+  /* transform: translate(-50%, -50%); */
+  margin-left: 50%;
+  margin-top: -12%;
+}
+
+.progress_card .number h3 {
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.progress_card .number h3 span {
+  font-size: 2rem;
+}
+
+.progress_card .title h2 {
+  margin: 25px 0 0;
+}
+
+.progress_card:nth-child(1) svg circle:last-of-type {
+  stroke: #f39c12;
+}
+
+.progress_card:nth-child(2) svg circle:last-of-type {
+  stroke: #2ecc71;
+}
