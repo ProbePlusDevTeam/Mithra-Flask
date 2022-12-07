@@ -1689,12 +1689,18 @@ input[type=number] {
   color: #414040;
 }
 
-.progress_card{
+.days_number{
+  margin-left: -15px;
+  padding-top: 20px !important;
+  font-size: 14px;
+  position: absolute;
+}
+
+/* .progress_card{
   display: flex;
   justify-content: center;
   justify-self: center;
   margin-top: -50% !important; 
-  /* margin-left: 15%; */
   margin: 0 auto;
 }
 
@@ -1727,9 +1733,6 @@ input[type=number] {
 
 .progress_card .number {
   position: absolute;
-  /* top: 50%;
-  left: 50%; */
-  /* transform: translate(-50%, -50%); */
   margin-left: 50%;
   margin-top: -12%;
 }
@@ -1753,4 +1756,65 @@ input[type=number] {
 
 .progress_card:nth-child(2) svg circle:last-of-type {
   stroke: #2ecc71;
+} */
+
+.progress_container_enroll{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.circular_progress_enroll{
+  position: relative;
+  border-radius: 50%;
+  height:75px;
+  width:75px;
+  background: conic-gradient(#ffffff 3.6deg, #fcfcfc 0deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circular_progress_enroll::before{
+  content: "";
+  position: absolute;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.progress_value_enroll{
+  position: relative;
+}
+
+.progress_container_survey{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.circular_progress_survey{
+  position: relative;
+  border-radius: 50%;
+  height:75px;
+  width:75px;
+  background: conic-gradient(#ffffff 3.6deg, #fcfcfc 0deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circular_progress_survey::before{
+  content: "";
+  position: absolute;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.progress_value_survey{
+  position: relative;
+}
+

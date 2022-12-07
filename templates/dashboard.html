@@ -194,25 +194,41 @@
             </div>
 
             <div class="dashboard_inner_card mt-3">
-                <div class="card">
-                    <div class="row">
-                        <div class="d-flex align-items-center">
-                            <div class="card-body d-flex">
-                                <div class="col-2">
-                                    <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">asdsadsadsada</h5>
+                <a href="/dashboard_participant">
+                    <div class="card">
+                        <div class="row">
+                            <div class="d-flex ">
+                                <div class="card-body d-flex">
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub">asvx12165</h5>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-2">
-                                    <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">Amaravathi</h5>
-                                        <h5 class="dashboard_innercard_sub">34</h5>
-                                        <h5 class="dashboard_innercard_sub">Shri Anjaneya swami shg</h5>
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub">Amaravathi</h5>
+                                            <h5 class="dashboard_innercard_sub">34</h5>
+                                            <h5 class="dashboard_innercard_sub">Shri Anjaneya swami shg</h5>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-2">
+                                    <div class="col-2">
+                                        <div class="progress_container_enroll">
+                                            <div class="circular_progress_enroll">
+                                                <span class="progress_value_enroll"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="progress_container_survey">
+                                            <div class="circular_progress_survey">
+                                                <span class="progress_value_survey"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-2">
                                     <div class="progress_card">
                                         <div class="percent">
                                           <svg>
@@ -238,26 +254,62 @@
                                           </div>
                                         </div>
                                       </div>
-                                </div>
+                                </div> -->
 
-                                <div class="col-2">
-                                    <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub text-center">100%</h5>
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub text-center">100%</h5>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-2">
-                                    <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub text-center">N/A</h5>
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub text-center">N/A</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
+
+    <script>
+        let circular_progress = document.querySelector(".circular_progress_enroll")
+        let progress_value = document.querySelector(".progress_value_enroll")
+
+        let progress_start_value = 0
+        let progress_end_value = 80
+        let speed = 20
+
+        let progress = setInterval(() => {
+            progress_start_value++;
+            progress_value.textContent = `${progress_start_value}%`;
+            circular_progress.style.background = `conic-gradient(#db6f30 ${progress_start_value * 3.6}deg, #e9e6e6  0deg)`;
+            if (progress_start_value == progress_end_value) {
+                clearInterval(progress)
+            }
+        }, speed)
+
+        let circular_progress_survey = document.querySelector(".circular_progress_survey")
+        let progress_value_survey = document.querySelector(".progress_value_survey")
+
+        let progress_start_value_survey = 0
+        let progress_end_value_survey = 50
+        let speed_survey = 20
+
+        let progress_survey = setInterval(() => {
+            progress_start_value_survey++;
+            progress_value_survey.textContent = `${progress_start_value_survey}%`;
+            circular_progress_survey.style.background = `conic-gradient(blue ${progress_start_value_survey * 3.6}deg, #e9e6e6  0deg)`;
+            if (progress_start_value_survey == progress_end_value_survey) {
+                clearInterval(progress_survey)
+            }
+        }, speed_survey)
+
+    </script>
 </div>
 
 
