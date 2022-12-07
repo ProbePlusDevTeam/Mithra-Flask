@@ -3194,7 +3194,7 @@ def offlineAPI():
 def dashboard():
     try:
         if g.user:
-            return render_template('dashboard.html')
+            return render_template('dashboard.html', cards_details = card_status())
     except:
         return "An exception occurred" 
 
@@ -3202,7 +3202,7 @@ def dashboard():
 def dashboard_participant():
     try:
         if g.user:
-            return render_template('dashboard_participant.html', cards_details = card_status())
+            return render_template('dashboard_participant.html')
     except:
         return "An exception occurred"
 
