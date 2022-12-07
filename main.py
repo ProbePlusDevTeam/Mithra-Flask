@@ -3231,18 +3231,18 @@ def dashboard_participant():
 
 @app.route('/dashboard_status', methods=["POST","GET"])
 def dashboard_status():
-    try:
+    # try:
         if g.user:
     
             Survey = User_list()
             
             return Survey
-    except:
-        return "An exception occurred"
+    # except:
+    #     return "An exception occurred"
 
 
 def User_list():
-    try:
+    # try:
         survey_status_url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
         survey_status_data = {"login_id": session['user_id']}
         survey_status_role = "admin"
@@ -3259,6 +3259,8 @@ def User_list():
         user_survey = {}
         
         enroll = enroll_status()
+        module = module_status()
+        refer = refer_status()
         
         for i in survey_status_responses:
             users = {}
@@ -3348,6 +3350,33 @@ def User_list():
                         li_not.append(i["survey_name"])
                         users["notcompleted_survey"] = li_not
             
+            #Modual status and percentage calculation
+            users["module_completed"] = "no"
+            users["module_pending"] = "no"
+            users["module_status"] = ""
+            test = module[i["user_pri_id"]]
+            if test["group"] == "intervention":
+                
+                allotted = int(test["allotted"])
+                pending = int(test["pending"])
+                comp = eval( 'allotted - pending' )
+                comp_per = eval ( 'comp / allotted' )
+                if allotted == comp:
+                    users["module_completed"] = "yes"
+                if pending > 0:
+                    users["module_pending"] = "yes"
+                users["module_status"] = str(comp_per)
+            else:
+                users["module_status"] = "This person does not belong to intervention group"
+            
+            #Refer status
+            users["refer_status"] = "N/A"
+            refer_user = list(refer.keys())
+            if i["user_pri_id"] in refer_user:
+                test = refer[i["user_pri_id"]]
+                if test:
+                    users["refer_status"] = test["context"]
+            
             user_survey[i["user_pri_id"]] = users
                 
             #calculating completed and not completed status for all users
@@ -3370,8 +3399,8 @@ def User_list():
                 print("No priority for this user ==  " + i["user_pri_id"])
 
         return user_survey
-    except:
-        return "An exception occurred"
+    # except:
+    #     return "An exception occurred"
     
 def Survey_Status_old():
     # try:
@@ -3596,6 +3625,7 @@ def module_status():
         module = {}
         module["allotted"] = str(len(i["total_module_number_allotted"]))
         module["pending"] = str(len(i["module_number_list_pending"]))
+        module["group"] = i["group1"]
         user_module[i["user_pri_id"]] = module
         user_module["module_completed"] = "0"
         user_module["module_pending"] = "0"
@@ -3616,7 +3646,6 @@ def module_status():
             if pending > 0:
                 user_module["module_pending"] = str(int(user_module["module_pending"]) + 1)
                 user_module["module_total"] = str(int(user_module["module_total"]) + 1)
-   
     return user_module
     
 # except:
