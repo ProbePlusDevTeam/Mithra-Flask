@@ -3217,36 +3217,32 @@ def dashboard():
             module["pending"] = module_response["module_pending"]
             module["total"] = module_response["module_total"]
             
-            return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module)
+            return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list())
     # except:
     #     return "An exception occurred" 
 
 @app.route('/dashboard_participant')
 def dashboard_participant():
     try:
-<<<<<<< HEAD
-        if g.user:
-=======
         if g.user:            
->>>>>>> db3dec022d55336a62cc1483fad97366e984bcd9
             return render_template('dashboard_participant.html')
     except:
         return "An exception occurred"
 
 @app.route('/dashboard_status', methods=["POST","GET"])
 def dashboard_status():
-    # try:
+    try:
         if g.user:
     
-            Survey = Survey_Status()
+            Survey = User_list()
             
             return Survey
-    # except:
-    #     return "An exception occurred"
+    except:
+        return "An exception occurred"
 
 
-def Survey_Status():
-    # try:
+def User_list():
+    try:
         survey_status_url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
         survey_status_data = {"login_id": session['user_id']}
         survey_status_role = "admin"
@@ -3298,7 +3294,7 @@ def Survey_Status():
                         users["notcompleted_survey"] = []
                         com = int(users["completed"])
                         notcom = int(users["no_of_surveys"])
-                        users["survey percentage"] = str(eval(' (com / notcom) * 100'))
+                        users["survey_percentage"] = str(eval(' (com / notcom) * 100'))
                     else:
                         users["completed"] = str( int( users["completed"] ) + 1 )
                         users["completed_survey"] = [i["survey_name"]]
@@ -3312,7 +3308,7 @@ def Survey_Status():
                         users["completed_survey"] = []
                         com = int(users["completed"])
                         notcom = int(users["no_of_surveys"])
-                        users["survey percentage"] = str(eval(' (com / notcom) * 100'))
+                        users["survey_percentage"] = str(eval(' (com / notcom) * 100'))
                     else:
                         users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
                         users["notcompleted_survey"] = [i["survey_name"]]
@@ -3374,8 +3370,8 @@ def Survey_Status():
                 print("No priority for this user ==  " + i["user_pri_id"])
 
         return user_survey
-    # except:
-    #     return "An exception occurred"
+    except:
+        return "An exception occurred"
     
 def Survey_Status_old():
     # try:
