@@ -3194,15 +3194,27 @@ def offlineAPI():
 def dashboard():
     try:
         if g.user:
-            return render_template('dashboard.html')
+            enroll_response = enroll_status()
+            enroll = {}
+            enroll["completed"] = enroll_response["total_completed"]
+            enroll["pending"] = enroll_response["total_notcompleted"]
+            enroll["total"] = enroll_response["total"]
+
+            survey_response = survey_priority_status()
+            survey = {}
+            survey["completed"] = survey_response["survey"]["completed"]
+            survey["pending"] = survey_response["survey"]["pending"]
+            survey["total"] = survey_response["survey"]["total"]
+            
+            return render_template('dashboard.html', enroll_status = enroll, survey_status = survey)
     except:
         return "An exception occurred" 
 
 @app.route('/dashboard_participant')
 def dashboard_participant():
     try:
-        if g.user:
-            return render_template('dashboard_participant.html', cards_details = card_status())
+        if g.user:            
+            return render_template('dashboard_participant.html')
     except:
         return "An exception occurred"
 
@@ -3211,7 +3223,7 @@ def dashboard_status():
     # try:
         if g.user:
     
-            Survey = card_status()
+            Survey = Survey_Status()
             
             return Survey
     # except:
@@ -3347,11 +3359,12 @@ def enroll_status():
         responses = {}
         responses = apicall(method, url, data, role)
         responses = responses["message"]
-        
-        enroll_percentage = 0
+
         enroll_completed = 0
         enroll_notcompleted = 0
+        enroll_total = 0
         enroll_user = {}
+        
         for i in responses:
             dict_user = {}
             dict_user["full_name"] = i["full_name"]
@@ -3371,6 +3384,17 @@ def enroll_status():
             if i["disease_profile"] != "" or "DIS" not in i["disease_profile"]:
                 dict_user["enroll_status"] = str( int( dict_user["enroll_status"] ) + 34)
             enroll_user[i["user_pri_id"]] = dict_user
+            
+            #calculating enrollment ststus
+            if i["enroll"] == "yes":
+                enroll_completed = enroll_completed + 1
+                enroll_total = enroll_total + 1
+            else:
+                enroll_notcompleted = enroll_notcompleted + 1
+                enroll_total = enroll_total + 1
+        enroll_user["total_completed"] = enroll_completed
+        enroll_user["total_notcompleted"] = enroll_notcompleted
+        enroll_user["total"] = enroll_total
         return enroll_user
         
     # except:
@@ -3428,7 +3452,7 @@ def module_status():
 #     return "An exception occurred"
     
 
-def card_status():
+def survey_priority_status():
     # try:
         
         url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
@@ -3446,37 +3470,8 @@ def card_status():
         high_priority = 0
         medium_priority = 0
         low_priority = 0
-        enroll_completed = 0
-        enroll_notcompleted = 0
-        enroll_total = 0
-        enroll = enroll_status()
-        module_completed = 0
-        module_notcompleted = 0
-        module_total =0
-        module = module_status()
         
-        for i in responses:
-            
-            #calculating module status
-            if module[i["user_pri_id"]]:
-                test = module[i["user_pri_id"]]
-                alloted = int(test["allotted"])
-                pending = int(test["pending"])
-                comp = eval( 'alloted - pending' )
-                if comp > 0:
-                    module_completed = module_completed + 1
-                    module_total = module_total + 1
-                if pending > 0:
-                    module_notcompleted = module_notcompleted + 1
-                    module_total = module_total + 1
-            
-            #calculating enrollment ststus
-            if enroll[i["user_pri_id"]]["enroll"] == "yes":
-                enroll_completed = enroll_completed + 1
-                enroll_total = enroll_total + 1
-            else:
-                enroll_notcompleted = enroll_notcompleted + 1
-                enroll_total = enroll_total + 1
+        for i in responses:          
             
             #calculating completed and not completed status for all users
             if i["completed"] == "yes":
@@ -3500,8 +3495,6 @@ def card_status():
         card_details = {}
         card_details["survey"] = {"completed" : complete_status , "pending" : notcomplete_status, "total" : total}
         card_details["priority"] = {"low" : low_priority, "medium" : medium_priority, "high" : high_priority}
-        card_details["enroll"] = {"completed" : enroll_completed , "pending" : enroll_notcompleted, "total" : enroll_total}
-        card_details["module"] = {"completed" : module_completed , "pending" : module_notcompleted, "total" : module_total}
         
         return card_details
         
