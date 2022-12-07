@@ -2363,7 +2363,6 @@ def editModulemapping(PkId):
             if request.method == "PUT":
                 cfdata = request.get_json()
                 cfdata = cfdata[0]
-                print(cfdata)
                 min_score = cfdata["min_score"]
                 max_score = cfdata["max_score"]
                 week_no = cfdata["week_no"]
@@ -2383,7 +2382,6 @@ def editModulemapping(PkId):
                 method = "PUT"
                 responses = {}
                 responses = apicall(method, url, data, role)
-                print(responses)
                 responses = responses["message"]
                 result = {}
                 if "success" in responses:
@@ -3204,108 +3202,311 @@ def dashboard():
 def dashboard_participant():
     try:
         if g.user:
-            return render_template('dashboard_participant.html')
+            return render_template('dashboard_participant.html', cards_details = card_status())
     except:
         return "An exception occurred"
 
-@app.route('/survey_status', methods=["POST","GET"])
-def Survey_Status():
+@app.route('/dashboard_status', methods=["POST","GET"])
+def dashboard_status():
     # try:
         if g.user:
-                      
-            survey_status_url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
-            survey_status_data = {"login_id": session['user_id']}
-            survey_status_role = "admin"
-            survey_status_method = "GET"
-            survey_status_responses = {}
-            survey_status_responses = apicall(survey_status_method, survey_status_url, survey_status_data, survey_status_role)
-            survey_status_responses = survey_status_responses["message"]
+    
+            Survey = card_status()
             
-            complete_status = 0
-            notcomplete_status = 0 
-            high_priority = 0
-            medium_priority = 0
-            low_priority = 0
-            user_survey = {}
-            user_completed = 0
-            user_notcompleted = 0
-            users_list = []
-            
-            for i in survey_status_responses:
-
-                #calculation for each users
-                users_list =  list(user_survey.keys())
-                if i["user_pri_id"] not in users_list:
-                    users = {}
-                    users["no_of_surveys"] = "1"
-                    print(list(str(i["survey_name"])))
-                    #calculating completed and not completed for each users
-                    if i["completed"] == "yes":
-                        if "completed" in users:
-                            users["completed"] = str( int( users["completed"] ) + 1 )
-                            # users["completed_survey"] = list.append(str(i["survey_name"]))
-                        else:
-                            users["completed"] = "1"
-                            # users["completed_survey"] = list(str(i["survey_name"]))
-                    else:
-                        if "notcompleted" in users:
-                            users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
-                            # users["notcompleted_survey"] = list.append(str(i["survey_name"]))
-                        else:
-                            users["notcompleted"] = "1"
-                            # users["notcompleted_survey"] = list(str(i["survey_name"]))
-                            
-                    user_survey[i["user_pri_id"]] = users
-                else:
-                    users = user_survey[i["user_pri_id"]]
-                    users["no_of_surveys"] = str( int( users["no_of_surveys"] ) + 1)
-                    
-                    #calculating completed and not completed for each users
-                    if i["completed"] == "yes":
-                        if "completed" in users:
-                            users["completed"] = str( int( users["completed"] ) + 1 )
-                            # users["completed_survey"] = list.append(str(i["survey_name"]))
-                        else:
-                            users["completed"] = "1"
-                            # users["completed_survey"] = list(str(i["survey_name"]))
-                    else:
-                        if "notcompleted" in users:
-                            users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
-                            # users["notcompleted_survey"] = list.append(str(i["survey_name"]))
-                        else:
-                            users["notcompleted"] = "1"
-                            # users["notcompleted_survey"] = list(str(i["survey_name"]))
-                    
-                
-                #calculating completed and not completed status for all users
-                if i["completed"] == "yes":
-                    complete_status = complete_status + 1
-                else:
-                    notcomplete_status = notcomplete_status + 1
-                
-                #calculating priority for all user
-                if i["high"]:
-                    if i["high"]["days_remaining"]:
-                        high_priority = high_priority + 1
-                elif i["low"]:
-                    if i["low"]["days_remaining"]:
-                        low_priority = low_priority + 1
-                elif i["medium"]:
-                    if i["medium"]["days_remaining"]:
-                        low_priority = low_priority + 1
-                else:
-                    print("No priority for this user ==  " + i["user_pri_id"])
-                
-            print("user_survey == " + str(user_survey))
-            print("complete_status == " + str(complete_status))
-            print("notcomplete_status == " + str(notcomplete_status))
-            print("high_priority == " + str(high_priority))
-            print("medium_priority == " + str(medium_priority))
-            print("low_priority == " + str(low_priority))
-            return survey_status_responses
+            return Survey
     # except:
     #     return "An exception occurred"
 
+
+def Survey_Status():
+    # try:
+        survey_status_url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
+        survey_status_data = {"login_id": session['user_id']}
+        survey_status_role = "admin"
+        survey_status_method = "GET"
+        survey_status_responses = {}
+        survey_status_responses = apicall(survey_status_method, survey_status_url, survey_status_data, survey_status_role)
+        survey_status_responses = survey_status_responses["message"]
+        
+        complete_status = 0
+        notcomplete_status = 0 
+        high_priority = 0
+        medium_priority = 0
+        low_priority = 0
+        user_survey = {}
+        
+        
+        
+        for i in survey_status_responses:
+            users = {}
+            
+            #calculation for each users
+            users_list =  list(user_survey.keys())
+            if i["user_pri_id"] not in users_list:
+               
+                users["no_of_surveys"] = "1"
+                users["completed"] = "0"
+                users["notcompleted"] = "0"
+
+                #calculating completed and not completed for each users
+                if i["completed"] == "yes":
+                    if "completed" in users:
+                        users["completed"] = str( int( users["completed"] ) + 1 )
+                        users["completed_survey"] = [i["survey_name"]]
+                        users["notcompleted_survey"] = []
+                        com = int(users["completed"])
+                        notcom = int(users["no_of_surveys"])
+                        users["survey percentage"] = str(eval(' (com / notcom) * 100'))
+                    else:
+                        users["completed"] = str( int( users["completed"] ) + 1 )
+                        users["completed_survey"] = [i["survey_name"]]
+                        users["notcompleted_survey"] = []
+                    
+                        
+                else:
+                    if "notcompleted" in users:
+                        users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
+                        users["notcompleted_survey"]= [i["survey_name"]]
+                        users["completed_survey"] = []
+                        com = int(users["completed"])
+                        notcom = int(users["no_of_surveys"])
+                        users["survey percentage"] = str(eval(' (com / notcom) * 100'))
+                    else:
+                        users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
+                        users["notcompleted_survey"] = [i["survey_name"]]
+                        users["completed_survey"] = []
+                        
+            else:
+
+                users = user_survey[i["user_pri_id"]]
+                li_not = list(users["notcompleted_survey"])
+                li = list(users["completed_survey"])                
+                users["no_of_surveys"] = str( int( users["no_of_surveys"] ) + 1)
+
+                #calculating completed and not completed for each users
+                if i["completed"] == "yes":
+                    
+                    if "completed" in users:
+                        
+                        users["completed"] = str( int( users["completed"] ) + 1 )
+                        li.append(i["survey_name"])
+                        users["completed_survey"] = li
+                    else:
+                        
+                        users["completed"] = str( int( users["completed"] ) + 1 )
+                        li.append(i["survey_name"])
+                        users["completed_survey"] = li
+                        
+                else:
+                    
+                    if "notcompleted" in users:
+                        
+                        users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
+                        li_not.append(i["survey_name"])
+                        users["notcompleted_survey"]= li_not
+                    else:
+                        
+                        users["notcompleted"] = str( int( users["notcompleted"] ) + 1 )
+                        li_not.append(i["survey_name"])
+                        users["notcompleted_survey"] = li_not
+            
+            user_survey[i["user_pri_id"]] = users
+                
+            #calculating completed and not completed status for all users
+            if i["completed"] == "yes":
+                complete_status = complete_status + 1
+            else:
+                notcomplete_status = notcomplete_status + 1
+            
+            #calculating priority for all user
+            if i["high"]:
+                if i["high"]["days_remaining"]:
+                    high_priority = high_priority + 1
+            elif i["low"]:
+                if i["low"]["days_remaining"]:
+                    low_priority = low_priority + 1
+            elif i["medium"]:
+                if i["medium"]["days_remaining"]:
+                    low_priority = low_priority + 1
+            else:
+                print("No priority for this user ==  " + i["user_pri_id"])
+
+        
+        return user_survey
+    # except:
+    #     return "An exception occurred"
+    
+
+def enroll_status():
+    # try:
+        
+        url = "api/method/mithra.mithra.doctype.tracking.api.admin_par_enroll"
+        data = {"logged_in": session['user_id']}
+        role = "admin"
+        method = "GET"
+        responses = {}
+        responses = apicall(method, url, data, role)
+        responses = responses["message"]
+        
+        enroll_percentage = 0
+        enroll_completed = 0
+        enroll_notcompleted = 0
+        enroll_user = {}
+        for i in responses:
+            dict_user = {}
+            dict_user["full_name"] = i["full_name"]
+            dict_user["age"] = i["age"]
+            dict_user["mobile_number"] = i["mobile_number"]
+            dict_user["village_name"] = i["village_name"]
+            dict_user["shg_associate"] = i["shg_associate"]
+            dict_user["panchayat"] = i["panchayat"]
+            dict_user["enroll"] = i["enroll"]
+            dict_user["enroll_status"] = "0"
+            dict_user["part_id"] = i["registration"]
+            
+            if i["registration"] != "" or "PAR" not in i["registration"]:
+                dict_user["enroll_status"] = str( int( dict_user["enroll_status"] ) + 33)
+            if i["socio_demography"] != "" or "SD" not in i["socio_demography"]:
+                dict_user["enroll_status"] = str( int( dict_user["enroll_status"] ) + 33)
+            if i["disease_profile"] != "" or "DIS" not in i["disease_profile"]:
+                dict_user["enroll_status"] = str( int( dict_user["enroll_status"] ) + 34)
+            enroll_user[i["user_pri_id"]] = dict_user
+        return enroll_user
+        
+    # except:
+    #     return "An exception occurred"
+    
+def refer_status():
+    # try:
+        
+        url = "api/method/mithra.mithra.doctype.participant_status.api.par_andr_refer"
+        data = {"user_pri_id": session['user_id']}
+        role = "admin"
+        method = "GET"
+        responses = {}
+        responses = apicall(method, url, data, role)
+        responses = responses["message"]
+        
+        refered_user = {}
+        if len(responses) >= 0:
+            for i in responses:
+                refer = {}
+                refer["coordinator_name"] = i ["coordinator_name"]
+                refer["date_time"] = i["date_time"]
+                refer["context"] = i["context"]
+                refer["reason_id"] = i["reason_id"]
+                refer["status_update"] = i["status_update"]
+                refered_user[i["user_pri_id"]] = refer
+        return refered_user
+        
+    # except:
+    #     return "An exception occurred"
+    
+    
+def module_status():
+# try:
+    
+    url = "api/method/mithra.mithra.doctype.tracking.api.participant_module_count"
+    data = {"user_pri_id": session['user_id']}
+    role = "admin"
+    method = "GET"
+    responses = {}
+    responses = apicall(method, url, data, role)
+    responses = responses["message"]
+    
+    user_module = {}
+    
+    for i in responses:
+        module = {}
+        module["allotted"] = str(len(i["total_module_number_allotted"]))
+        module["pending"] = str(len(i["module_number_list_pending"]))
+        user_module[i["user_pri_id"]] = module
+        
+    return user_module
+    
+# except:
+#     return "An exception occurred"
+    
+
+def card_status():
+    # try:
+        
+        url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
+        data = {"login_id": session['user_id']}
+        role = "admin"
+        method = "GET"
+        responses = {}
+        responses = apicall(method, url, data, role)
+        responses = responses["message"]
+        
+        
+        complete_status = 0
+        notcomplete_status = 0 
+        total = 0
+        high_priority = 0
+        medium_priority = 0
+        low_priority = 0
+        enroll_completed = 0
+        enroll_notcompleted = 0
+        enroll_total = 0
+        enroll = enroll_status()
+        module_completed = 0
+        module_notcompleted = 0
+        module_total =0
+        module = module_status()
+        
+        for i in responses:
+            
+            #calculating module status
+            if module[i["user_pri_id"]]:
+                test = module[i["user_pri_id"]]
+                alloted = int(test["allotted"])
+                pending = int(test["pending"])
+                comp = eval( 'alloted - pending' )
+                if comp > 0:
+                    module_completed = module_completed + 1
+                    module_total = module_total + 1
+                if pending > 0:
+                    module_notcompleted = module_notcompleted + 1
+                    module_total = module_total + 1
+            
+            #calculating enrollment ststus
+            if enroll[i["user_pri_id"]]["enroll"] == "yes":
+                enroll_completed = enroll_completed + 1
+                enroll_total = enroll_total + 1
+            else:
+                enroll_notcompleted = enroll_notcompleted + 1
+                enroll_total = enroll_total + 1
+            
+            #calculating completed and not completed status for all users
+            if i["completed"] == "yes":
+                complete_status = complete_status + 1
+            else:
+                notcomplete_status = notcomplete_status + 1
+            
+            #calculating priority for all user
+            if i["high"]:
+                if i["high"]["days_remaining"]:
+                    high_priority = high_priority + 1
+            elif i["low"]:
+                if i["low"]["days_remaining"]:
+                    low_priority = low_priority + 1
+            elif i["medium"]:
+                if i["medium"]["days_remaining"]:
+                    medium_priority = medium_priority + 1
+            else:
+                print("No priority for this user ==  " + i["user_pri_id"])
+            total = total + 1
+        card_details = {}
+        card_details["survey"] = {"completed" : complete_status , "pending" : notcomplete_status, "total" : total}
+        card_details["priority"] = {"low" : low_priority, "medium" : medium_priority, "high" : high_priority}
+        card_details["enroll"] = {"completed" : enroll_completed , "pending" : enroll_notcompleted, "total" : enroll_total}
+        card_details["module"] = {"completed" : module_completed , "pending" : module_notcompleted, "total" : module_total}
+        
+        return card_details
+        
+    # except:
+    #     return "An exception occurred"
 
 ###################### End of Dashboard API's ######################
 
