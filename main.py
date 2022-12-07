@@ -3213,11 +3213,7 @@ def dashboard():
 @app.route('/dashboard_participant')
 def dashboard_participant():
     try:
-<<<<<<< HEAD
         if g.user:
-=======
-        if g.user:            
->>>>>>> db3dec022d55336a62cc1483fad97366e984bcd9
             return render_template('dashboard_participant.html')
     except:
         return "An exception occurred"
