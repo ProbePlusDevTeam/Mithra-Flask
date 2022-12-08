@@ -3216,7 +3216,7 @@ def dashboard():
             module["completed"] = module_response["module_completed"]
             module["pending"] = module_response["module_pending"]
             module["total"] = module_response["module_total"]
-            
+                        
             return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list(), userlist = list(User_list().keys()))
     # except:
     #     return "An exception occurred" 
@@ -3397,6 +3397,8 @@ def User_list():
                     medium_priority = medium_priority + 1
             else:
                 print("No priority for this user ==  " + i["user_pri_id"])
+
+        print(user_survey)
 
         return user_survey
     # except:

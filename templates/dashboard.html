@@ -11,7 +11,7 @@
     <div class=" ">
         <!-- <div class="row"> -->
         <div class="d-flex">
-          
+
             <div class="col-3">
                 <div class="card dashboard_top_card">
                     <div class="card-body p-3">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="col-3">
                 <div class="card dashboard_top_card">
@@ -88,19 +88,19 @@
                                 <div class="col-5">
                                     <div class="flex-column">
                                         <p class="role-loc-sub">Low</p>
-                                        <p class="role-loc-sub">5</p>
+                                        <p class="role-loc-sub">{{priority_status.low}}</p>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="flex-column">
                                         <p class="role-loc-sub">Medium</p>
-                                        <p class="role-loc-sub">5</p>
+                                        <p class="role-loc-sub">{{priority_status.medium}}</p>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <p class="role-loc-sub">High</p>
-                                        <p class="role-loc-sub">5</p>
+                                        <p class="role-loc-sub">{{priority_status.high}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -120,19 +120,19 @@
                                 <div class="col-5">
                                     <div class="flex-column">
                                         <p class="role-loc-sub">Completed</p>
-                                        <p class="role-loc-sub">5</p>
+                                        <p class="role-loc-sub">{{module_status.completed}}</p>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="flex-column">
                                         <p class="role-loc-sub">Pending</p>
-                                        <p class="role-loc-sub">5</p>
+                                        <p class="role-loc-sub">{{module_status.pending}}</p>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <p class="role-loc-sub">Total</p>
-                                        <p class="role-loc-sub">5</p>
+                                        <p class="role-loc-sub">{{module_status.total}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -195,123 +195,102 @@
                 </div>
             </div>
 
-            <div class="dashboard_inner_card mt-3">
-                <a href="/dashboard_participant">
-                    <div class="card">
+            <div class="dashboard_inner_card">
+                    {% for response in userlist %}
+
+                    <a href='{{ url_for("dashboard_participant", PkId=response["response"]) }}' style="width: fit-content">
+
+                    <div class="card mt-4">
+
                         <div class="row">
+
                             <div class="d-flex ">
                                 <div class="card-body d-flex">
+
                                     <div class="col-2">
                                         <div class="flex-column">
-                                            <h5 class="dashboard_innercard_sub">asvx12165</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].part_id}}</h5>
                                         </div>
                                     </div>
 
                                     <div class="col-2">
                                         <div class="flex-column">
-                                            <h5 class="dashboard_innercard_sub">Amaravathi</h5>
-                                            <h5 class="dashboard_innercard_sub">34</h5>
-                                            <h5 class="dashboard_innercard_sub">Shri Anjaneya swami shg</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].full_name}}</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].age}}</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].shg_associate}}
+                                            </h5>
                                         </div>
                                     </div>
 
                                     <div class="col-2">
                                         <div class="progress_container_enroll">
                                             <div class="circular_progress_enroll">
-                                                <span class="progress_value_enroll"></span>
+                                                <!-- <p>{{responses[response].enroll_percentage}}</p> -->
+                                                <!-- <h5 class="dashboard_innercard_sub">{{responses[response].enroll_percentage}}</h5> -->
+                                                
+
+                                                <!-- window ['progress_start_value'] = 80
+                                                console.log(progress_start_value) -->
+                                                
+                                                <span class="progress_value_enroll">{{responses[response].enroll_percentage}}</span>
+                                                <!-- <script>
+                                                    window ['progress_start_value'] = 80
+                                                    document.querySelector(".progress_value_enroll").textContent = 80
+                                                    document.querySelector(".circular_progress_enroll").style.background = `conic-gradient(#db6f30 ${progress_start_value * 3.6}deg, #e9e6e6  0deg)`;
+                                                </script> -->
+                                                <!-- <script type="text/javascript">
+                                                    window['countriess']= `{{responses[response].enroll_percentage}}`
+                                                  </script> -->
                                             </div>
                                         </div>
                                     </div>
+
+
+
+                                    
 
                                     <div class="col-2">
                                         <div class="progress_container_survey">
                                             <div class="circular_progress_survey">
-                                                <span class="progress_value_survey"></span>
+                                                <span class="progress_value_survey">{{responses[response].survey_percentage}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-2">
-                                    <div class="progress_card">
-                                        <div class="percent">
-                                          <svg>
-                                            <circle cx="40" cy="40" r="35"></circle>
-                                            <circle cx="40" cy="40" r="35" style="--percent: 80"></circle>
-                                          </svg>
-                                          <div class="number">
-                                            <h3>80 %<span></span></h3>
-                                          </div>
-                                        </div>
-                                      </div>
-                                </div>
-
-                                <div class="col-2">
-                                    <div class="progress_card">
-                                        <div class="percent">
-                                          <svg>
-                                            <circle cx="40" cy="40" r="35"></circle>
-                                            <circle cx="40" cy="40" r="35" style="--percent: 100"></circle>
-                                          </svg>
-                                          <div class="number">
-                                            <h3>100 %<span></span></h3>
-                                          </div>
-                                        </div>
-                                      </div>
-                                </div> -->
 
                                     <div class="col-2">
                                         <div class="flex-column">
-                                            <h5 class="dashboard_innercard_sub text-center">100%</h5>
+                                            <h5 class="dashboard_innercard_sub text-center">{{responses[response].module_status}}</h5>
                                         </div>
                                     </div>
 
                                     <div class="col-2">
                                         <div class="flex-column">
-                                            <h5 class="dashboard_innercard_sub text-center">N/A</h5>
+                                            <h5 class="dashboard_innercard_sub text-center">{{responses[response].refer_status}}</h5>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
+
+                       
+
+
+                                
+
                         </div>
+
                     </div>
+                    <!-- <hr/> -->
                 </a>
+
+                    {% endfor %}
+
             </div>
         </div>
     </div>
 
-    <script>
-        let circular_progress = document.querySelector(".circular_progress_enroll")
-        let progress_value = document.querySelector(".progress_value_enroll")
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="async: true"></script> -->
 
-        let progress_start_value = 0
-        let progress_end_value = 80
-        let speed = 20
-
-        let progress = setInterval(() => {
-            progress_start_value++;
-            progress_value.textContent = `${progress_start_value}%`;
-            circular_progress.style.background = `conic-gradient(#db6f30 ${progress_start_value * 3.6}deg, #e9e6e6  0deg)`;
-            if (progress_start_value == progress_end_value) {
-                clearInterval(progress)
-            }
-        }, speed)
-
-        let circular_progress_survey = document.querySelector(".circular_progress_survey")
-        let progress_value_survey = document.querySelector(".progress_value_survey")
-
-        let progress_start_value_survey = 0
-        let progress_end_value_survey = 50
-        let speed_survey = 20
-
-        let progress_survey = setInterval(() => {
-            progress_start_value_survey++;
-            progress_value_survey.textContent = `${progress_start_value_survey}%`;
-            circular_progress_survey.style.background = `conic-gradient(blue ${progress_start_value_survey * 3.6}deg, #e9e6e6  0deg)`;
-            if (progress_start_value_survey == progress_end_value_survey) {
-                clearInterval(progress_survey)
-            }
-        }, speed_survey)
-
-    </script>
 </div>
 
 
