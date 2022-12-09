@@ -198,7 +198,7 @@
             <div class="dashboard_inner_card">
                     {% for response in userlist %}
 
-                    <a href='{{ url_for("dashboard_participant", PkId=response["response"]) }}' style="width: fit-content">
+                    <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
                     <div class="card mt-4">
 

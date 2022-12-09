@@ -3221,7 +3221,7 @@ def dashboard():
     # except:
     #     return "An exception occurred" 
 
-@app.route('/dashboard_participant/<pkid>')
+@app.route('/dashboard_participant/<pkid>', methods=["POST","GET"])
 def dashboard_participant(pkid):
     try:
         if g.user:
