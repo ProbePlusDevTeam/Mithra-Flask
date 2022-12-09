@@ -3238,7 +3238,7 @@ def dashboard():
             module["pending"] = module_response["module_pending"]
             module["total"] = module_response["module_total"]
                         
-            return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list(), userlist = list(User_list().keys()))
+            return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list(), userlist = list(User_list().keys()), shg_list = shg_dd())
     # except:
     #     return "An exception occurred" 
 
