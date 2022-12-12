@@ -3249,6 +3249,7 @@ def dashboard_participant(pkid):
         if g.user:
             all_user = User_list()
             response = all_user[pkid]
+            print(response)
             return render_template('dashboard_participant.html', responses = response)
     except:
         return "An exception occurred"
