@@ -104,17 +104,24 @@
                                         <h5 class="dashboard_shg_card_header">Survey Status</h5>
                                     </div>
                                 </div>
-                                {% if responses.priority_high_survey|length > 0 %}
+                                <h5 class="dashboard_innercard_sub">{{responses.priority_high}}</h5>
+                                <h5 class="dashboard_innercard_sub">list</h5>
+                                <h5 class="dashboard_innercard_sub">{{responses.priority_low_filled}}</h5>
+                                <h5 class="dashboard_innercard_sub">list completed</h5>
+                                {% if responses.priority_high == "no" %}
+                                <h5 class="dashboard_innercard_sub">{{responses.priority_high_survey}}</h5>
                                 {% for list in responses.priority_high_survey %}
+                                <h5 class="dashboard_innercard_sub">{{list}}</h5>
+
 
                                 <div class="col-3">
                                     <div class="flex-column ">
-                                        <h5 class="dashboard_innercard_sub">{{list}}</h5>
+                                        <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/yellow_day.png')}}"
                                             class="mx-auto "
                                             style="height: 50px; width:50px; filter: brightness(150%);"><span
-                                            class="days_number">{{status}} days</span>
-                                        <h5 class="dashboard_innercard_sub pt-2">Filled by : Coordinator</h5>
+                                            class="days_number">{{list.days_remaining}} days</span>
+                                        <h5 class="dashboard_innercard_sub pt-2">Filled by : {{list.filled_by}}</h5>
                                     </div>
                                 </div>
                                 {% endfor %}
