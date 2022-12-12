@@ -54,24 +54,39 @@
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Registration</h5>
+                                        {% if responses.Registration == "yes" %}
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
                                             class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
+                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% endif %}
                                     </div>
                                 </div>
 
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Socio Demography</h5>
+                                        {% if responses.Socio_Demography == "yes" %}
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
                                             class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
+                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% endif %}
                                     </div>
                                 </div>
 
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Disease Profile</h5>
+                                        {% if responses.Disease_Profile == "yes" %}
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
                                             class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
+                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +94,7 @@
                     </div>
                 </div>
 
-                <div class="card mt-4">
+                <div class="card mt-4" style="overflow-x: scroll; overflow-y: hidden;">
                     <div class="row">
                         <div class="d-flex align-items-center">
                             <div class="card-body d-flex">
@@ -89,24 +104,22 @@
                                         <h5 class="dashboard_shg_card_header">Survey Status</h5>
                                     </div>
                                 </div>
+                                {% if responses.priority_high_survey|length > 0 %}
+                                {% for list in responses.priority_high_survey %}
 
                                 <div class="col-3">
-                                    <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">Sus</h5>
+                                    <div class="flex-column ">
+                                        <h5 class="dashboard_innercard_sub">{{list}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/yellow_day.png')}}"
-                                            class="mx-auto" style="height: 50px; width:50px; filter: brightness(150%);"><span class="days_number">10days</span>
+                                            class="mx-auto "
+                                            style="height: 50px; width:50px; filter: brightness(150%);"><span
+                                            class="days_number">{{status}} days</span>
                                         <h5 class="dashboard_innercard_sub pt-2">Filled by : Coordinator</h5>
                                     </div>
                                 </div>
+                                {% endfor %}
+                                {% endif %}
 
-                                <div class="col-3">
-                                    <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">Digital Literacy</h5>
-                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        <h5 class="dashboard_innercard_sub pt-2">Filled by : Coordinator</h5>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
