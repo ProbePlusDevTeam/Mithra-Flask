@@ -3239,6 +3239,7 @@ def dashboard():
             module["total"] = module_response["module_total"]
                         
             return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list(), userlist = list(User_list().keys()), shg_list = shg_dd())
+            # return jsonify( enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list(), userlist = list(User_list().keys()), shg_list = shg_dd())
     # except:
     #     return "An exception occurred" 
 
@@ -3282,9 +3283,29 @@ def dashboard_status():
             # module["total"] = module_response["module_total"]
 
             return Surveyies
+            # return jsonify( enroll_status), jsonify(survey), jsonify(priority), jsonify(module), jsonify(User_list())
+            
     # except:
     #     return "An exception occurred"
 
+def test():
+    # try:
+        survey_status_url = "api/method/mithra.mithra.doctype.tracking.api.update_data"
+        survey_status_data = {"login_id": session['user_id']}
+        survey_status_role = "admin"
+        survey_status_method = "GET"
+        survey_status_responses = {}
+        survey_status_responses = apicall(survey_status_method, survey_status_url, survey_status_data, survey_status_role)
+        survey_status_responses = survey_status_responses["message"]
+        
+        for i in survey_status_responses:
+            test = {}
+            test = dict(i)
+            print(test)
+            print("=-===========-=---=--")
+            test = dict(i).keys()
+            print(test)
+        return test
 
 def User_list():
     # try:
@@ -3332,7 +3353,7 @@ def User_list():
                         
                 #calculating completed and not completed for each users
                 if i["completed"] == "yes":
-                    if "completed" in users:
+                    if "completed" in list(dict(users).keys()):
                         users["completed"] = str( int( users["completed"] ) + 1 )
                         users["completed_survey"] = [i["survey_name"]]
                         users["survey_completed"] = "yes"
@@ -3343,7 +3364,9 @@ def User_list():
                         users["survey_percentage"] = str(eval(' (com / notcom) * 100'))
                     else:
                         users["completed"] = str( int( users["completed"] ) + 1 )
-                        users["completed_survey"] = [i["survey_name"]]
+                        li = list(i["survey_name"])
+                        li.append(i["survey_name"])
+                        users["completed_survey"] = li
                         users["survey_completed"] = "yes"
                         users["survey_status"] = ["completed"]
                         users["notcompleted_survey"] = []
@@ -3396,7 +3419,7 @@ def User_list():
                 #calculating completed and not completed for each users
                 if i["completed"] == "yes":
                     
-                    if "completed" in users:
+                    if "completed" in list(dict(users).keys()):
                         
                         users["completed"] = str( int( users["completed"] ) + 1 )
                         li.append(i["survey_name"])
@@ -3405,6 +3428,7 @@ def User_list():
                     else:
                         
                         users["completed"] = str( int( users["completed"] ) + 1 )
+                        li = list(users["completed_survey"])
                         li.append(i["survey_name"])
                         users["completed_survey"] = li
                         users["survey_completed"] = "yes"
@@ -3476,20 +3500,21 @@ def User_list():
             users["module_completed"] = "no"
             users["module_pending"] = "no"
             users["module_status"] = ""
-            test = module[i["user_pri_id"]]
-            if test["group"] == "intervention":
-                
-                allotted = int(test["allotted"])
-                pending = int(test["pending"])
-                comp = eval( 'allotted - pending' )
-                comp_per = eval ( 'comp / allotted' )
-                if allotted == comp:
-                    users["module_completed"] = "yes"
-                if pending > 0:
-                    users["module_pending"] = "yes"
-                users["module_status"] = str(comp_per)
-            else:
-                users["module_status"] = "This person does not belong to intervention group"
+            if i["user_pri_id"] in list(module.keys()):
+                test = module[i["user_pri_id"]]
+                if test["group"] == "intervention":
+                    
+                    allotted = int(test["allotted"])
+                    pending = int(test["pending"])
+                    comp = eval( 'allotted - pending' )
+                    comp_per = eval ( 'comp / allotted' )
+                    if allotted == comp:
+                        users["module_completed"] = "yes"
+                    if pending > 0:
+                        users["module_pending"] = "yes"
+                    users["module_status"] = str(comp_per)
+                else:
+                    users["module_status"] = "This person does not belong to intervention group"
             
             #Refer status
             users["refer_status"] = "N/A"
@@ -3849,30 +3874,37 @@ def module_status():
     user_module = {}
     
     for i in responses:
-        module = {}
-        module["allotted"] = str(len(i["total_module_number_allotted"]))
-        module["pending"] = str(len(i["module_number_list_pending"]))
-        module["group"] = i["group1"]
-        user_module[i["user_pri_id"]] = module
-        user_module["module_completed"] = "0"
-        user_module["module_pending"] = "0"
-        user_module["module_total"] = "0"
-        
+        if i["group1"] == "intervention":
+            module = {}
+            module["allotted"] = str(len(i["total_module_number_allotted"]))
+            module["pending"] = str(len(i["module_number_list_pending"]))
+            module["group"] = i["group1"]
+            user_module[i["user_pri_id"]] = module
+            user_module["module_completed"] = "0"
+            user_module["module_pending"] = "0"
+            user_module["module_total"] = "0"
+    
+    print("============")
+    print(user_module)
     enroll = enroll_status()
     enroll_list = list(enroll.keys())
+    user_module_list = list(user_module.keys())
     for i in enroll_list:
-        if i != "total_completed" and i != "total_notcompleted" and i != "total":
-            test = user_module[i]
-            allotted = int(test["allotted"])
-            pending = int(test["pending"])
-            comp = eval( 'allotted - pending' )
-            
-            if allotted == comp:
-                user_module["module_completed"] = str(int(user_module["module_completed"]) + 1)
-                user_module["module_total"] = str(int(user_module["module_total"]) + 1)
-            if pending > 0:
-                user_module["module_pending"] = str(int(user_module["module_pending"]) + 1)
-                user_module["module_total"] = str(int(user_module["module_total"]) + 1)
+        if i in user_module_list:
+            if enroll[i]["enroll"] == "yes":
+                if i != "total_completed" and i != "total_notcompleted" and i != "total":
+                    test = user_module[i]
+                    allotted = int(test["allotted"])
+                    pending = int(test["pending"])
+                    comp = eval( 'allotted - pending' )
+                    
+                    if allotted == comp:
+                        user_module["module_completed"] = str(int(user_module["module_completed"]) + 1)
+                        user_module["module_total"] = str(int(user_module["module_total"]) + 1)
+                    if pending > 0:
+                        user_module["module_pending"] = str(int(user_module["module_pending"]) + 1)
+                        user_module["module_total"] = str(int(user_module["module_total"]) + 1)
+                
     return user_module
     
 # except:
@@ -3898,8 +3930,9 @@ def survey_priority_status():
         low_priority = 0
         user_list = {}
         
+        
         for i in responses:          
-            
+
             #calculating completed and not completed status for all users
             if i["user_pri_id"] not in list(user_list.keys()):
                 users = {}
@@ -3939,41 +3972,36 @@ def survey_priority_status():
                     if i["completed"] == "yes":
                         complete_status = complete_status + 1
                         li_enroll.append("completed")
-                        users["enroll"] = li_enroll
-                    else:
+
+                if "pending" not in users["enroll"]:
+                    if i["completed"] == "no":
                         notcomplete_status = notcomplete_status + 1
                         li_enroll.append("pending")
-                        users["enroll"] = li_enroll 
-                else:
-                    
-                    notcomplete_status = notcomplete_status + 1
-                    li_enroll.append("pending")
-                    users["enroll"] = li_enroll 
+                         
                 
 
                 #calculating priority for all user
-                if "high" not in users["priority"]:
-                    if i["high"]:
-                        if i["high"]["days_remaining"]:
+                if i["completed"] == "no":
+                    if "high" not in users["priority"]:
+                        if "days_remaining" in i["high"]:
                             high_priority = high_priority + 1
                             li_priority.append("high")
-                            users["priority"] = li_priority
-                if "low" not in users["priority"]:
-                    if i["low"]:
-                        if i["low"]["days_remaining"]:
+
+                    if "low" not in users["priority"]:
+                        if "days_remaining" in i["low"]:
                             low_priority = low_priority + 1
                             li_priority.append("low")
-                            users["priority"] = li_priority
-                if "medium" not in users["priority"]:
-                    if i["medium"]:
-                        if i["medium"]["days_remaining"]:
+
+                    if "medium" not in users["priority"]:
+                        if "days_remaining" in i["medium"]:
                             medium_priority = medium_priority + 1
                             li_priority.append("medium")
-                            users["priority"] = li_priority
-                # else:
-                #     print("No priority for this user ==  " + i["user_pri_id"])
+                            
+                users["enroll"] = li_enroll
+                users["priority"] = li_priority
                 user_list[i["user_pri_id"]] = users
-                    
+                print("=========================================")
+                
         card_details = {}
         card_details["survey"] = {"completed" : complete_status , "pending" : notcomplete_status, "total" : total_status}
         card_details["priority"] = {"low" : low_priority, "medium" : medium_priority, "high" : high_priority}
