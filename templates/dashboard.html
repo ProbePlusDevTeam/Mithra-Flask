@@ -3,6 +3,7 @@
 {% block title %} Dashboard {% endblock %}
 
 {% block content %}
+
 <div class="container mt-5">
     <ul class="breadcrumb roles_breadcrumb d-flex">
         <li><a href="#">Dashboard</a></li>
@@ -154,10 +155,9 @@
                     </div>
                     <div class="col-6 px-3">
                         <select class="form-select" aria-label="Default select example">
-                            <option selected>All SHGs</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {% for response in shg_list %}
+                            <option value="{{response}}">{{response}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -195,12 +195,14 @@
                 </div>
             </div>
 
-            <div class="dashboard_inner_card">
+                        <div class="dashboard_inner_card">
                     {% for response in userlist %}
 
                     <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
-                    <div class="card mt-4">
+                    <div class="card mt-4" id="dashboard_data">
+
+                       
 
                         <div class="row">
 
@@ -224,24 +226,12 @@
 
                                     <div class="col-2">
                                         <div class="progress_container_enroll">
-                                            <div class="circular_progress_enroll">
-                                                <!-- <p>{{responses[response].enroll_percentage}}</p> -->
-                                                <!-- <h5 class="dashboard_innercard_sub">{{responses[response].enroll_percentage}}</h5> -->
-                                                
-
-                                                <!-- window ['progress_start_value'] = 80
-                                                console.log(progress_start_value) -->
-                                                
+                                         
+                                            {% set circle =  responses[response].enroll_percentage|int * 3.6 %}
+                                            <div class="circular_progress_enroll" style="background: conic-gradient(#f05d5d {{circle}}deg, #eeeded  0deg)">                                                
                                                 <span class="progress_value_enroll">{{responses[response].enroll_percentage}}</span>
-                                                <!-- <script>
-                                                    window ['progress_start_value'] = 80
-                                                    document.querySelector(".progress_value_enroll").textContent = 80
-                                                    document.querySelector(".circular_progress_enroll").style.background = `conic-gradient(#db6f30 ${progress_start_value * 3.6}deg, #e9e6e6  0deg)`;
-                                                </script> -->
-                                                <!-- <script type="text/javascript">
-                                                    window['countriess']= `{{responses[response].enroll_percentage}}`
-                                                  </script> -->
-                                            </div>
+                                                  <script src="{{ url_for('static', filename = 'assets/js/dashboard.js')}}"></script>
+                                                </div>
                                         </div>
                                     </div>
 
@@ -251,8 +241,9 @@
 
                                     <div class="col-2">
                                         <div class="progress_container_survey">
-                                            <div class="circular_progress_survey">
-                                                <span class="progress_value_survey">{{responses[response].survey_percentage}}</span>
+                                            {% set circle =  responses[response].survey_percentage|int * 3.6 %}
+                                            <div class="circular_progress_survey" style="background: conic-gradient(#7c47fa {{circle}}deg, #eeeded  0deg)">
+                                                <span class="progress_value_survey" >{{responses[response].survey_percentage}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -290,6 +281,7 @@
     </div>
 
     <!-- <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="async: true"></script> -->
+    <script src="{{ url_for('static', filename = 'assets/js/dashboard.js')}}"></script>
 
 </div>
 

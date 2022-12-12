@@ -3211,7 +3211,7 @@ def offlineAPI():
 
 ###################### Dashboard API's ######################
 
-@app.route('/dashboard')
+@app.route('/dashboard',methods=['GET'])
 def dashboard():
     # try:
         if g.user:

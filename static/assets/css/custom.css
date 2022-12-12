@@ -1769,7 +1769,7 @@ input[type=number] {
   border-radius: 50%;
   height:75px;
   width:75px;
-  background: conic-gradient(#ffffff 3.6deg, #fcfcfc 0deg);
+  background: conic-gradient(#ec5252 3.6deg, #fcfcfc 0deg);
   display: flex;
   justify-content: center;
   align-items: center;
