@@ -4019,34 +4019,34 @@ def module_status():
     user_module = {}
     
     for i in responses:
-        if i["group1"] == "intervention":
-            module = {}
-            module["allotted"] = str(len(i["total_module_number_allotted"]))
-            module["pending"] = str(len(i["module_number_list_pending"]))
-            module["group"] = i["group1"]
-            user_module[i["user_pri_id"]] = module
-            user_module["module_completed"] = "0"
-            user_module["module_pending"] = "0"
-            user_module["module_total"] = "0"
+        module = {}
+        module["allotted"] = str(len(i["total_module_number_allotted"]))
+        module["pending"] = str(len(i["module_number_list_pending"]))
+        module["group"] = i["group1"]
+        user_module[i["user_pri_id"]] = module
+        user_module["module_completed"] = "0"
+        user_module["module_pending"] = "0"
+        user_module["module_total"] = "0"
     
     enroll = enroll_status()
     enroll_list = list(enroll.keys())
     user_module_list = list(user_module.keys())
     for i in enroll_list:
         if i in user_module_list:
-            if enroll[i]["enroll"] == "yes":
-                if i != "total_completed" and i != "total_notcompleted" and i != "total":
-                    test = user_module[i]
-                    allotted = int(test["allotted"])
-                    pending = int(test["pending"])
-                    comp = eval( 'allotted - pending') 
-                    
-                    if allotted == comp:
-                        user_module["module_completed"] = str(int(user_module["module_completed"]) + 1)
-                        user_module["module_total"] = str(int(user_module["module_total"]) + 1)
-                    if pending > 0:
-                        user_module["module_pending"] = str(int(user_module["module_pending"]) + 1)
-                        user_module["module_total"] = str(int(user_module["module_total"]) + 1)
+            if user_module[i]["group"] == "intervention":
+                if enroll[i]["enroll"] == "yes":
+                    if i != "total_completed" and i != "total_notcompleted" and i != "total":
+                        test = user_module[i]
+                        allotted = int(test["allotted"])
+                        pending = int(test["pending"])
+                        comp = eval( 'allotted - pending') 
+                        
+                        if allotted == comp:
+                            user_module["module_completed"] = str(int(user_module["module_completed"]) + 1)
+                            user_module["module_total"] = str(int(user_module["module_total"]) + 1)
+                        if pending > 0:
+                            user_module["module_pending"] = str(int(user_module["module_pending"]) + 1)
+                            user_module["module_total"] = str(int(user_module["module_total"]) + 1)
                 
     return user_module
     
