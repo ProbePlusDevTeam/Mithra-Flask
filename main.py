@@ -3343,13 +3343,12 @@ def test():
                         users["enroll_pending"] = "yes"
                     users["enroll_percentage"] = test["enroll_status"]
                     users["part_id"] = test["part_id"]
-                    users["priority_low_list"] = []
-                    users["priority_low_status"] = []
-                    users["priority_medium_list"] = []
-                    users["priority_medium_status"] = []
-                    users["priority_low_filled"] = []
-                    users["priority_medium_filled"] = []
                     users["priority_high_survey"] = []
+                    users["priority_low_survey"] = []
+                    users["priority_medium_survey"] = []
+                    users["priority_low"] = "no"
+                    users["priority_medium"] = "no"
+                    users["priority_high"] = "no"
                             
                     #calculating completed and not completed for each users
                     if i["completed"] == "yes":
@@ -3371,20 +3370,22 @@ def test():
                             
                         if i["high"]:
                             if i["high"]["days_remaining"]:
-                                high = [i["high"]]
+                                high = i["high"]
                                 high["filled_by"] = i["filled_by"]
                                 users["priority_high_survey"] = [high]
-
+                                users["priority_high"] = "yes"
                         if i["low"]:
                             if i["low"]["days_remaining"]:
-                                users["priority_low_list"] = [i["survey_name"]]
-                                users["priority_low_filled"] =[i["filled_by"]]
-                                users["priority_low_status"] = [i["low"]["days_remaining"]]
+                                low = i["low"]
+                                low["filled_by"] = i["filled_by"]
+                                users["priority_high_survey"] = [low]
+                                users["priority_low"] = "yes"
                         if i["medium"]:
                             if i["medium"]["days_remaining"]:
-                                users["priority_medium_list"] = [i["survey_name"]]
-                                users["priority_medium_filled"] =[i["filled_by"]]
-                                users["priority_medium_status"] = [i["medium"]["days_remaining"]]
+                                medium = i["medium"]
+                                medium["filled_by"] = i["filled_by"]
+                                users["priority_medium_survey"] = [medium]
+                                users["priority_medium"] = "yes"
                 
                 else:
 
@@ -3430,28 +3431,23 @@ def test():
                                 priority_high["filled_by"] = i["filled_by"]
                                 high.append(priority_high)
                                 users["priority_high_survey"] = high
+                                users["priority_high"] = "yes"
                         if i["low"]:
                             if i["low"]["days_remaining"]:
-                                li_low = list(users["priority_low_list"])
-                                li_low.append(i["survey_name"])
-                                users["priority_low_list"] = li_low
-                                li_low_status = list(users["priority_low_status"])
-                                li_low_status.append(i["low"]["days_remaining"])
-                                users["priority_low_status"] = li_low_status
-                                li_low_filled = list(users["priority_low_filled"])
-                                li_low_filled.append(i["filled_by"])
-                                users["priority_low_filled"] = li_low_filled
+                                low = list(users["priority_low_survey"])
+                                priority_low = i["low"]
+                                priority_low["filled_by"] = i["filled_by"]
+                                low.append(priority_low)
+                                users["priority_low_survey"] = low
+                                users["priority_low"] = "yes"
                         if i["medium"]:
                             if i["medium"]["days_remaining"]:
-                                li_medium = list(users["priority_medium_list"])
-                                li_medium.append(i["survey_name"])
-                                users["priority_medium_list"] = li_medium
-                                li_medium_status = list(users["priority_medium_status"])
-                                li_medium_status.append(i["medium"]["days_remaining"])
-                                users["priority_medium_status"] = li_medium_status
-                                li_medium_filled = list(users["priority_medium_filled"])
-                                li_medium_filled.append(i["filled_by"])
-                                users["priority_medium_filled"] = li_medium_filled
+                                medium = list(users["priority_medium_survey"])
+                                priority_medium = i["medium"]
+                                priority_medium["filled_by"] = i["filled_by"]
+                                medium.append(priority_medium)
+                                users["priority_medium_survey"] = medium
+                                users["priority_medium"] = "yes"
                 
                 #Modual status and percentage calculation
                 users["module_completed"] = "no"
@@ -3459,9 +3455,7 @@ def test():
                 users["module_status"] = ""
 
                 if i["user_pri_id"] in list(module.keys()):
-                    print(";;;")
                     test = module[i["user_pri_id"]]
-                    print(test["group"])
                     if test["group"] == "intervention":
                         
                         allotted = int(test["allotted"])
@@ -3485,22 +3479,6 @@ def test():
                     test = refer[i["user_pri_id"]]
                     if test:
                         users["refer_status"] = test["context"]
-                
-                #calculating user priority status
-                users["priority_low"] = "no"
-                users["priority_medium"] = "no"
-                users["priority_high"] = "no"
-                if i["high"]:
-                    if i["high"]["days_remaining"]:
-                        users["priority_high"] = "yes"
-                elif i["low"]:
-                    if i["low"]["days_remaining"]:
-                        users["priority_low"] = "yes"
-                elif i["medium"]:
-                    if i["medium"]["days_remaining"]:
-                        users["priority_medium"] = "yes"
-                else:
-                    print("No priority for this user ==  " + i["user_pri_id"])
 
                 user_survey[i["user_pri_id"]] = users
             
@@ -3523,15 +3501,20 @@ def User_list():
         refer = refer_status()
         
         for i in survey_status_responses:
+            user_survey = {}
+        
+        enroll = enroll_status()
+        module = module_status()
+        refer = refer_status()
+        
+        for i in survey_status_responses:
             users = {}
-                
+            
             #calculation for each users
             users_list =  list(user_survey.keys())
             if i["user_pri_id"] not in users_list:
                 
                 test = enroll[i["user_pri_id"]]
-                print("=-=-=-=-=-=-=-=")     
-                print(test)
                 users["no_of_surveys"] = "1"
                 users["completed"] = "0"
                 users["notcompleted"] = "0"
@@ -3561,15 +3544,12 @@ def User_list():
                     users["enroll_pending"] = "yes"
                 users["enroll_percentage"] = test["enroll_status"]
                 users["part_id"] = test["part_id"]
-                users["priority_high_list"] = []
-                users["priority_high_status"] = []
-                users["priority_low_list"] = []
-                users["priority_low_status"] = []
-                users["priority_medium_list"] = []
-                users["priority_medium_status"] = []
-                users["priority_high_filled"] = []
-                users["priority_low_filled"] = []
-                users["priority_medium_filled"] = []
+                users["priority_high_survey"] = []
+                users["priority_low_survey"] = []
+                users["priority_medium_survey"] = []
+                users["priority_low"] = "no"
+                users["priority_medium"] = "no"
+                users["priority_high"] = "no"
                         
                 #calculating completed and not completed for each users
                 if i["completed"] == "yes":
@@ -3591,19 +3571,22 @@ def User_list():
                         
                     if i["high"]:
                         if i["high"]["days_remaining"]:
-                            users["priority_high_list"] = [i["survey_name"]]
-                            users["priority_high_filled"] =[i["filled_by"]]
-                            users["priority_high_status"] = [i["high"]["days_remaining"]]
+                            high = i["high"]
+                            high["filled_by"] = i["filled_by"]
+                            users["priority_high_survey"] = [high]
+                            users["priority_high"] = "yes"
                     if i["low"]:
                         if i["low"]["days_remaining"]:
-                            users["priority_low_list"] = [i["survey_name"]]
-                            users["priority_low_filled"] =[i["filled_by"]]
-                            users["priority_low_status"] = [i["low"]["days_remaining"]]
+                            low = i["low"]
+                            low["filled_by"] = i["filled_by"]
+                            users["priority_high_survey"] = [low]
+                            users["priority_low"] = "yes"
                     if i["medium"]:
                         if i["medium"]["days_remaining"]:
-                            users["priority_medium_list"] = [i["survey_name"]]
-                            users["priority_medium_filled"] =[i["filled_by"]]
-                            users["priority_medium_status"] = [i["medium"]["days_remaining"]]
+                            medium = i["medium"]
+                            medium["filled_by"] = i["filled_by"]
+                            users["priority_medium_survey"] = [medium]
+                            users["priority_medium"] = "yes"
             
             else:
 
@@ -3644,48 +3627,40 @@ def User_list():
                         
                     if i["high"]:
                         if i["high"]["days_remaining"]:
-                            li_high = list(users["priority_high_list"])
-                            li_high.append(i["survey_name"])
-                            users["priority_high_list"] = li_high
-                            li_high_status = list(users["priority_high_status"])
-                            li_high_status.append(i["high"]["days_remaining"])
-                            users["priority_high_status"] = li_high_status
-                            li_high_filled = list(users["priority_high_filled"])
-                            li_high_filled.append(i["filled_by"])
-                            users["priority_high_filled"] = li_high_filled
+                            high = list(users["priority_high_survey"])
+                            priority_high = i["high"]
+                            priority_high["filled_by"] = i["filled_by"]
+                            high.append(priority_high)
+                            users["priority_high_survey"] = high
+                            users["priority_high"] = "yes"
                     if i["low"]:
                         if i["low"]["days_remaining"]:
-                            li_low = list(users["priority_low_list"])
-                            li_low.append(i["survey_name"])
-                            users["priority_low_list"] = li_low
-                            li_low_status = list(users["priority_low_status"])
-                            li_low_status.append(i["low"]["days_remaining"])
-                            users["priority_low_status"] = li_low_status
-                            li_low_filled = list(users["priority_low_filled"])
-                            li_low_filled.append(i["filled_by"])
-                            users["priority_low_filled"] = li_low_filled
+                            low = list(users["priority_low_survey"])
+                            priority_low = i["low"]
+                            priority_low["filled_by"] = i["filled_by"]
+                            low.append(priority_low)
+                            users["priority_low_survey"] = low
+                            users["priority_low"] = "yes"
                     if i["medium"]:
                         if i["medium"]["days_remaining"]:
-                            li_medium = list(users["priority_medium_list"])
-                            li_medium.append(i["survey_name"])
-                            users["priority_medium_list"] = li_medium
-                            li_medium_status = list(users["priority_medium_status"])
-                            li_medium_status.append(i["medium"]["days_remaining"])
-                            users["priority_medium_status"] = li_medium_status
-                            li_medium_filled = list(users["priority_medium_filled"])
-                            li_medium_filled.append(i["filled_by"])
-                            users["priority_medium_filled"] = li_medium_filled
+                            medium = list(users["priority_medium_survey"])
+                            priority_medium = i["medium"]
+                            priority_medium["filled_by"] = i["filled_by"]
+                            medium.append(priority_medium)
+                            users["priority_medium_survey"] = medium
+                            users["priority_medium"] = "yes"
             
             #Modual status and percentage calculation
             users["module_completed"] = "no"
             users["module_pending"] = "no"
             users["module_status"] = ""
+
             if i["user_pri_id"] in list(module.keys()):
-                tests = module[i["user_pri_id"]]
-                if tests["group"] == "intervention":
+                test = module[i["user_pri_id"]]
+                if test["group"] == "intervention":
                     
-                    allotted = int(tests["allotted"])
-                    pending = int(tests["pending"])
+                    allotted = int(test["allotted"])
+                    pending = int(test["pending"])
                     if allotted > 0:
                         comp = round(eval( 'allotted - pending' ))
                         comp_per = eval(  'comp / allotted * 100' )
@@ -3702,25 +3677,9 @@ def User_list():
             users["refer_status"] = "N/A"
             refer_user = list(refer.keys())
             if i["user_pri_id"] in refer_user:
-                testes = refer[i["user_pri_id"]]
-                if testes:
-                    users["refer_status"] = testes["context"]
-            
-            #calculating user priority status
-            users["priority_low"] = "no"
-            users["priority_medium"] = "no"
-            users["priority_high"] = "no"
-            if i["high"]:
-                if i["high"]["days_remaining"]:
-                    users["priority_high"] = "yes"
-            elif i["low"]:
-                if i["low"]["days_remaining"]:
-                    users["priority_low"] = "yes"
-            elif i["medium"]:
-                if i["medium"]["days_remaining"]:
-                    users["priority_medium"] = "yes"
-            else:
-                print("No priority for this user ==  " + i["user_pri_id"])
+                test = refer[i["user_pri_id"]]
+                if test:
+                    users["refer_status"] = test["context"]
 
             user_survey[i["user_pri_id"]] = users
             
