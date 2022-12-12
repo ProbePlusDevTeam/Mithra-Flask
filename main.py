@@ -3314,8 +3314,6 @@ def test():
                 if i["user_pri_id"] not in users_list:
                     
                     test = enroll[i["user_pri_id"]]
-                    print("=-=-=-=-=-=-=-=")     
-                    print(test)
                     users["no_of_surveys"] = "1"
                     users["completed"] = "0"
                     users["notcompleted"] = "0"
@@ -3345,15 +3343,13 @@ def test():
                         users["enroll_pending"] = "yes"
                     users["enroll_percentage"] = test["enroll_status"]
                     users["part_id"] = test["part_id"]
-                    users["priority_high_list"] = []
-                    users["priority_high_status"] = []
                     users["priority_low_list"] = []
                     users["priority_low_status"] = []
                     users["priority_medium_list"] = []
                     users["priority_medium_status"] = []
-                    users["priority_high_filled"] = []
                     users["priority_low_filled"] = []
                     users["priority_medium_filled"] = []
+                    users["priority_high_survey"] = []
                             
                     #calculating completed and not completed for each users
                     if i["completed"] == "yes":
@@ -3375,9 +3371,10 @@ def test():
                             
                         if i["high"]:
                             if i["high"]["days_remaining"]:
-                                users["priority_high_list"] = [i["survey_name"]]
-                                users["priority_high_filled"] =[i["filled_by"]]
-                                users["priority_high_status"] = [i["high"]["days_remaining"]]
+                                high = [i["high"]]
+                                high["filled_by"] = i["filled_by"]
+                                users["priority_high_survey"] = [high]
+
                         if i["low"]:
                             if i["low"]["days_remaining"]:
                                 users["priority_low_list"] = [i["survey_name"]]
@@ -3428,15 +3425,11 @@ def test():
                             
                         if i["high"]:
                             if i["high"]["days_remaining"]:
-                                li_high = list(users["priority_high_list"])
-                                li_high.append(i["survey_name"])
-                                users["priority_high_list"] = li_high
-                                li_high_status = list(users["priority_high_status"])
-                                li_high_status.append(i["high"]["days_remaining"])
-                                users["priority_high_status"] = li_high_status
-                                li_high_filled = list(users["priority_high_filled"])
-                                li_high_filled.append(i["filled_by"])
-                                users["priority_high_filled"] = li_high_filled
+                                high = list(users["priority_high_survey"])
+                                priority_high = i["high"]
+                                priority_high["filled_by"] = i["filled_by"]
+                                high.append(priority_high)
+                                users["priority_high_survey"] = high
                         if i["low"]:
                             if i["low"]["days_remaining"]:
                                 li_low = list(users["priority_low_list"])
@@ -3464,8 +3457,11 @@ def test():
                 users["module_completed"] = "no"
                 users["module_pending"] = "no"
                 users["module_status"] = ""
+
                 if i["user_pri_id"] in list(module.keys()):
+                    print(";;;")
                     test = module[i["user_pri_id"]]
+                    print(test["group"])
                     if test["group"] == "intervention":
                         
                         allotted = int(test["allotted"])
@@ -3685,11 +3681,11 @@ def User_list():
             users["module_pending"] = "no"
             users["module_status"] = ""
             if i["user_pri_id"] in list(module.keys()):
-                test = module[i["user_pri_id"]]
-                if test["group"] == "intervention":
+                tests = module[i["user_pri_id"]]
+                if tests["group"] == "intervention":
                     
-                    allotted = int(test["allotted"])
-                    pending = int(test["pending"])
+                    allotted = int(tests["allotted"])
+                    pending = int(tests["pending"])
                     if allotted > 0:
                         comp = round(eval( 'allotted - pending' ))
                         comp_per = eval(  'comp / allotted * 100' )
@@ -3706,9 +3702,9 @@ def User_list():
             users["refer_status"] = "N/A"
             refer_user = list(refer.keys())
             if i["user_pri_id"] in refer_user:
-                test = refer[i["user_pri_id"]]
-                if test:
-                    users["refer_status"] = test["context"]
+                testes = refer[i["user_pri_id"]]
+                if testes:
+                    users["refer_status"] = testes["context"]
             
             #calculating user priority status
             users["priority_low"] = "no"
