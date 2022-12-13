@@ -5,7 +5,8 @@
 {% block content %}
 <div class="container mt-5">
     <ul class="breadcrumb roles_breadcrumb d-flex">
-        <li><a href="#">Dashboard</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="#">{{responses.full_name}}</a></li>
     </ul>
 
     <div class="dashboard_shg">
@@ -104,14 +105,25 @@
                                         <h5 class="dashboard_shg_card_header">Survey Status</h5>
                                     </div>
                                 </div>
-                                <h5 class="dashboard_innercard_sub">{{responses.priority_high}}</h5>
-                                <h5 class="dashboard_innercard_sub">list</h5>
-                                <h5 class="dashboard_innercard_sub">{{responses.priority_low_filled}}</h5>
-                                <h5 class="dashboard_innercard_sub">list completed</h5>
-                                {% if responses.priority_high == "no" %}
-                                <h5 class="dashboard_innercard_sub">{{responses.priority_high_survey}}</h5>
+                                {% if responses.priority_high_survey|length > 0 %}
                                 {% for list in responses.priority_high_survey %}
-                                <h5 class="dashboard_innercard_sub">{{list}}</h5>
+
+
+                                <div class="col-3">
+                                    <div class="flex-column ">
+                                        <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/red_day.png')}}"
+                                            class="mx-auto "
+                                            style="height: 50px; width:50px; filter: brightness(150%);"><span
+                                            class="days_number">{{list.days_remaining}}days</span>
+                                        <h5 class="dashboard_innercard_sub pt-2">Filled by : {{list.filled_by}}</h5>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                {% if responses.priority_medium_survey|length > 0 %}
+                                {% for list in responses.priority_medium_survey %}
 
 
                                 <div class="col-3">
@@ -119,8 +131,25 @@
                                         <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/yellow_day.png')}}"
                                             class="mx-auto "
-                                            style="height: 50px; width:50px; filter: brightness(150%);"><span
-                                            class="days_number">{{list.days_remaining}} days</span>
+                                            style="height: 50px; width:50px; filter: brightness(60%);"><span
+                                            class="days_number">{{list.days_remaining}}days</span>
+                                        <h5 class="dashboard_innercard_sub pt-2">Filled by : {{list.filled_by}}</h5>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                {% if responses.priority_low_survey|length > 0 %}
+                                {% for list in responses.priority_low_survey %}
+
+
+                                <div class="col-3">
+                                    <div class="flex-column ">
+                                        <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/green_day.png')}}"
+                                            class="mx-auto "
+                                            style="height: 50px; width:50px; filter: brightness(70%);"><span
+                                            class="days_number">{{list.days_remaining}}days</span>
                                         <h5 class="dashboard_innercard_sub pt-2">Filled by : {{list.filled_by}}</h5>
                                     </div>
                                 </div>
@@ -145,9 +174,13 @@
 
                                 <div class="col-3">
                                     <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">Module 0</h5>
+                                        {% if responses.module_status == "" %}
+                                        <h5 class="dashboard_innercard_sub">No data</h5>
+                                        {% else %}
+                                        <h5 class="dashboard_innercard_sub">{{responses.module_status}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
                                             class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +201,7 @@
 
                                 <div class="col-3">
                                     <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">N/A</h5>
+                                        <h5 class="dashboard_innercard_sub">{{responses.refer_status}}</h5>
                                     </div>
                                 </div>
                             </div>
