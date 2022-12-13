@@ -3306,8 +3306,8 @@ def test():
         refer = refer_status()
         
         for i in survey_status_responses:
-            # if i["user_pri_id"] == "UT-101-2022-11-18-18:18:52-4088":
-            if i["user_pri_id"] == "UT-119-2022-12-01-09:45:16-8652":
+            if i["user_pri_id"] == "UT-81-2022-10-31-09:37:04-123123":
+            # if i["user_pri_id"] == "UT-119-2022-12-01-09:45:16-8652":
                 users = {}
                 
                 #calculation for each users
@@ -3463,7 +3463,7 @@ def test():
                         pending = int(test["pending"])
                         if allotted > 0:
                             comp = round(eval( 'allotted - pending' ))
-                            comp_per = eval(  'comp / allotted * 100' )
+                            comp_per = round(eval(  'comp / allotted * 100' ))
                             # comp_per  = round(comp_per)
                         if allotted == comp:
                             users["module_completed"] = "yes"
@@ -3664,13 +3664,12 @@ def User_list():
                     pending = int(test["pending"])
                     if allotted > 0:
                         comp = round(eval( 'allotted - pending' ))
-                        comp_per = eval(  'comp / allotted * 100' )
-                        # comp_per  = round(comp_per)
+                        comp_per = round(eval(  'comp / allotted * 100' ))
                     if allotted == comp:
                         users["module_completed"] = "yes"
                     if pending > 0:
                         users["module_pending"] = "yes"
-                    users["module_status"] = str(comp_per)
+                    users["module_status"] = str(comp_per) + "%"
                 else:
                     users["module_status"] = "This person does not belong to intervention group"
             
@@ -4123,17 +4122,17 @@ def survey_priority_status():
 
                 #calculating priority for all user
                 if i["completed"] == "no":
-                    if "high" not in users["priority"]:
+                    if "high" not in li_priority:
                         if "days_remaining" in i["high"]:
                             high_priority = high_priority + 1
                             li_priority.append("high")
 
-                    if "low" not in users["priority"]:
+                    if "low" not in li_priority:
                         if "days_remaining" in i["low"]:
                             low_priority = low_priority + 1
                             li_priority.append("low")
 
-                    if "medium" not in users["priority"]:
+                    if "medium" not in li_priority:
                         if "days_remaining" in i["medium"]:
                             medium_priority = medium_priority + 1
                             li_priority.append("medium")
