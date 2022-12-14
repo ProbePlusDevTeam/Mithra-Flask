@@ -211,7 +211,7 @@
                 </div>
             </div>
 
-            <div class="dashboard_inner_card" id="all_data" style="display: block;">
+            <div class="dashboard_inner_card" id="all_data">
                 {% for response in userlist %}
                 <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
@@ -288,7 +288,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="enroll_completed_data" >
+            <div class="dashboard_inner_card" id="enroll_completed_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].enroll_completed == "yes" %}
 
@@ -367,7 +367,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="enroll_pending_data">
+            <div class="dashboard_inner_card" id="enroll_pending_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].enroll_pending == "yes" %}
 
@@ -453,7 +453,7 @@
 
             
 
-            <div class="dashboard_inner_card" id="survey_completed_data">
+            <div class="dashboard_inner_card" id="survey_completed_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].survey_completed == "yes" %}
 
@@ -533,7 +533,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="survey_pending_data">
+            <div class="dashboard_inner_card" id="survey_pending_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].survey_pending == "yes" %}
 
@@ -614,7 +614,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="priority_low_data">
+            <div class="dashboard_inner_card" id="priority_low_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].priority_low == "yes" %}
 
@@ -694,7 +694,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="priority_medium_data">
+            <div class="dashboard_inner_card" id="priority_medium_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].priority_medium == "yes" %}
 
@@ -774,7 +774,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="priority_high_data">
+            <div class="dashboard_inner_card" id="priority_high_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].priority_high == "yes" %}
 
@@ -854,7 +854,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="module_completed_data">
+            <div class="dashboard_inner_card" id="module_completed_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].module_completed == "yes" %}
 
@@ -934,7 +934,7 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="module_pending_data">
+            <div class="dashboard_inner_card" id="module_pending_data" style="display: none;">
                 {% for response in userlist %}
                 {% if responses[response].module_pending == "yes" %}
 
