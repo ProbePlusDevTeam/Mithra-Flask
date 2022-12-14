@@ -16,9 +16,16 @@
 <script>
 
     function enrollment_completed() {
+        
         document.getElementById("enroll_completed_data").style.display = "block"
         document.getElementById("all_data").style.display = "none"
         document.getElementById("enroll_pending_data").style.display = "none"
+        document.getElementById("enroll_total_data").style.display = "none"
+
+        document.getElementById("survey_pending_data").style.display = "none"
+        document.getElementById("survey_completed_data").style.display = "none"
+        document.getElementById("survey_total_data").style.display = "none"
+
         document.getElementById("enrollment_completed_text").style.color = "#4EBDEC"
         document.getElementById("enrollment_completed_num").style.color = "#4EBDEC"
 
@@ -33,6 +40,12 @@
         document.getElementById("enroll_pending_data").style.display = "block"
         document.getElementById("all_data").style.display = "none"
         document.getElementById("enroll_completed_data").style.display = "none"
+        document.getElementById("enroll_total_data").style.display = "none"
+
+        document.getElementById("survey_pending_data").style.display = "none"
+        document.getElementById("survey_completed_data").style.display = "none"
+        document.getElementById("survey_total_data").style.display = "none"
+
         document.getElementById("enrollment_pending_text").style.color = "#4EBDEC"
         document.getElementById("enrollment_pending_num").style.color = "#4EBDEC"
 
@@ -45,9 +58,75 @@
     }
 
     function enrollment_total() {
+        // document.getElementById("enroll_total_data").style.display = "block"
+        document.getElementById("enroll_pending_data").style.display = "none"
+        document.getElementById("enroll_completed_data").style.display = "none"
+        document.getElementById("all_data").style.display = "block"
+
+        document.getElementById("survey_pending_data").style.display = "none"
+        document.getElementById("survey_completed_data").style.display = "none"
+        document.getElementById("survey_total_data").style.display = "none"
+
+        document.getElementById("enrollment_total_text").style.color = "#4EBDEC"
+        document.getElementById("enrollment_total_num").style.color = "#4EBDEC"
+
+        document.getElementById("enrollment_pending_text").style.color = "#414040"
+        document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+        document.getElementById("enrollment_completed_text").style.color = "#414040"
+        document.getElementById("enrollment_completed_num").style.color = "#414040"
+    }
+
+    function survey_completed() {
+        document.getElementById("survey_completed_data").style.display = "block"
+        document.getElementById("survey_pending_data").style.display = "none"
+        document.getElementById("survey_total_data").style.display = "none"
+        
+        document.getElementById("all_data").style.display = "none"
+        document.getElementById("enroll_pending_data").style.display = "none"
+        document.getElementById("enroll_completed_data").style.display = "none"
+        document.getElementById("enroll_total_data").style.display = "none"
+
+        document.getElementById("enrollment_total_text").style.color = "#4EBDEC"
+        document.getElementById("enrollment_total_num").style.color = "#4EBDEC"
+
+        document.getElementById("enrollment_pending_text").style.color = "#414040"
+        document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+        document.getElementById("enrollment_completed_text").style.color = "#414040"
+        document.getElementById("enrollment_completed_num").style.color = "#414040"
+    }
+
+    function survey_pending() {
+        document.getElementById("survey_pending_data").style.display = "block"
+        document.getElementById("survey_completed_data").style.display = "none"
+        document.getElementById("survey_total_data").style.display = "none"
+
+        document.getElementById("all_data").style.display = "none"
+        document.getElementById("enroll_pending_data").style.display = "none"
+        document.getElementById("enroll_completed_data").style.display = "none"
+        document.getElementById("enroll_total_data").style.display = "none"
+
+        document.getElementById("enrollment_total_text").style.color = "#4EBDEC"
+        document.getElementById("enrollment_total_num").style.color = "#4EBDEC"
+
+        document.getElementById("enrollment_pending_text").style.color = "#414040"
+        document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+        document.getElementById("enrollment_completed_text").style.color = "#414040"
+        document.getElementById("enrollment_completed_num").style.color = "#414040"
+    }
+
+    function survey_total() {
+        // document.getElementById("survey_total_data").style.display = "block"
+        document.getElementById("survey_pending_data").style.display = "none"
+        document.getElementById("survey_completed_data").style.display = "none"
+
         document.getElementById("all_data").style.display = "block"
         document.getElementById("enroll_pending_data").style.display = "none"
         document.getElementById("enroll_completed_data").style.display = "none"
+        document.getElementById("enroll_total_data").style.display = "none"
+        
         document.getElementById("enrollment_total_text").style.color = "#4EBDEC"
         document.getElementById("enrollment_total_num").style.color = "#4EBDEC"
 
@@ -61,7 +140,7 @@
 </script>
 
 <div class="container mt-5">
-    <div id="loader" class="loader" style="display: block;"></div>
+    <!-- <div id="loader" class="loader" style="display: block;"></div> -->
 
     <ul class="breadcrumb roles_breadcrumb d-flex">
         <li><a href="#">Dashboard</a></li>
@@ -113,19 +192,19 @@
                         <div class="row">
                             <div class="d-flex justify-content-center p-2 mt-2">
                                 <div class="col-5">
-                                    <div class="flex-column">
+                                    <div class="flex-column" onclick="survey_completed()" style="cursor: pointer;">
                                         <p class="role-loc-sub">Completed</p>
                                         <p class="role-loc-sub">{{survey_status.completed}}</p>
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <div class="flex-column">
+                                    <div class="flex-column" onclick="survey_pending()" style="cursor: pointer;">
                                         <p class="role-loc-sub">Pending</p>
                                         <p class="role-loc-sub">{{survey_status.pending}}</p>
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <div class="flex-column">
+                                    <div class="flex-column" onclick="survey_total()" style="cursor: pointer;">
                                         <p class="role-loc-sub">Total</p>
                                         <p class="role-loc-sub">{{survey_status.total}}</p>
                                     </div>
@@ -252,17 +331,11 @@
                 </div>
             </div>
 
-            <div class="dashboard_inner_card" id="all_data">
+            <div class="dashboard_inner_card" id="all_data" style="display: block;">
                 {% for response in userlist %}
-                <script>
-                    document.getElementById("loader").style.display = "none"
-                </script>
                 <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
                     <div class="card mt-4" id="dashboard_data">
-
-
-
                         <div class="row">
 
                             <div class="d-flex ">
@@ -335,16 +408,13 @@
 
             </div>
 
-            <div class="dashboard_inner_card" id="enroll_completed_data">
+            <div class="dashboard_inner_card" id="enroll_completed_data" >
                 {% for response in userlist %}
                 {% if responses[response].enroll_completed == "yes" %}
 
                 <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
                     <div class="card mt-4" id="dashboard_data">
-
-
-
                         <div class="row">
 
                             <div class="d-flex ">
@@ -379,10 +449,6 @@
                                         </div>
                                     </div>
 
-
-
-
-
                                     <div class="col-2">
                                         <div class="progress_container_survey">
                                             {% set circle = responses[response].survey_percentage|int * 3.6 %}
@@ -410,11 +476,6 @@
 
                                 </div>
                             </div>
-
-
-
-
-
 
                         </div>
 
@@ -470,9 +531,87 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-2">
+                                        <div class="progress_container_survey">
+                                            {% set circle = responses[response].survey_percentage|int * 3.6 %}
+                                            <div class="circular_progress_survey"
+                                                style="background: conic-gradient(#7c47fa {{circle}}deg, #eeeded  0deg)">
+                                                <span
+                                                    class="progress_value_survey">{{responses[response].survey_percentage}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub text-center">
+                                                {{responses[response].module_status}}</h5>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub text-center">
+                                                {{responses[response].refer_status}}</h5>
+                                        </div>
+                                    </div>
 
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- <hr/> -->
+                </a>
+  
+                {% endif %}
+                
+                {% endfor %}
+
+            </div>
+
+            
+
+            <div class="dashboard_inner_card" id="survey_completed_data">
+                {% for response in userlist %}
+                {% if responses[response].survey_completed == "yes" %}
+
+                <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
+
+                    <div class="card mt-4" id="dashboard_data">
+                        <div class="row">
+                            <div class="d-flex ">
+                                <div class="card-body d-flex">
+
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].part_id}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].full_name}}</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].age}}</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].shg_associate}}
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="progress_container_enroll">
+
+                                            {% set circle = responses[response].enroll_percentage|int * 3.6 %}
+                                            <div class="circular_progress_enroll"
+                                                style="background: conic-gradient(#f05d5d {{circle}}deg, #eeeded  0deg)">
+                                                <span
+                                                    class="progress_value_enroll">{{responses[response].enroll_percentage}}</span>
+                                                <script
+                                                    src="{{ url_for('static', filename = 'assets/js/dashboard.js')}}"></script>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-2">
                                         <div class="progress_container_survey">
@@ -502,10 +641,86 @@
                                 </div>
                             </div>
 
+                        </div>
 
+                    </div>
+                    <!-- <hr/> -->
+                </a>
+  
+                {% endif %}
+                
+                {% endfor %}
 
+            </div>
 
+            <div class="dashboard_inner_card" id="survey_pending_data">
+                {% for response in userlist %}
+                {% if responses[response].survey_pending == "yes" %}
 
+                <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
+
+                    <div class="card mt-4" id="dashboard_data">
+                        <div class="row">
+
+                            <div class="d-flex ">
+                                <div class="card-body d-flex">
+
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].part_id}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].full_name}}</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].age}}</h5>
+                                            <h5 class="dashboard_innercard_sub">{{responses[response].shg_associate}}
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="progress_container_enroll">
+
+                                            {% set circle = responses[response].enroll_percentage|int * 3.6 %}
+                                            <div class="circular_progress_enroll"
+                                                style="background: conic-gradient(#f05d5d {{circle}}deg, #eeeded  0deg)">
+                                                <span
+                                                    class="progress_value_enroll">{{responses[response].enroll_percentage}}</span>
+                                                <script
+                                                    src="{{ url_for('static', filename = 'assets/js/dashboard.js')}}"></script>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="progress_container_survey">
+                                            {% set circle = responses[response].survey_percentage|int * 3.6 %}
+                                            <div class="circular_progress_survey"
+                                                style="background: conic-gradient(#7c47fa {{circle}}deg, #eeeded  0deg)">
+                                                <span
+                                                    class="progress_value_survey">{{responses[response].survey_percentage}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub text-center">
+                                                {{responses[response].module_status}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="flex-column">
+                                            <h5 class="dashboard_innercard_sub text-center">
+                                                {{responses[response].refer_status}}</h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
 
                         </div>
 
@@ -518,6 +733,8 @@
                 {% endfor %}
 
             </div>
+
+            
 
         </div>
     </div>
