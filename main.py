@@ -3215,7 +3215,6 @@ def offlineAPI():
 def dashboard():
     # try:
         if g.user:
-            print("Start")
             enroll_response = enroll_status()
             enroll = {}
             enroll["completed"] = enroll_response["total_completed"]
@@ -3243,7 +3242,6 @@ def dashboard():
             userlist = list(responses.keys())
             shg_list = shg_dd()
             
-            print("END")            
             return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = responses, userlist = userlist, shg_list = shg_list)
             # return jsonify( enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = User_list(), userlist = list(User_list().keys()), shg_list = shg_dd())
     # except:
@@ -3255,7 +3253,6 @@ def dashboard_participant(pkid):
         if g.user:
             all_user = User_list()
             response = all_user[pkid]
-            print(response)
             return render_template('dashboard_participant.html', responses = response)
     except:
         return "An exception occurred"
@@ -3462,6 +3459,8 @@ def test():
                     users["module_status"] = str(comp_per) + "%"
                 else:
                     users["module_status"] = "This person does not belong to intervention group"
+                users["module_pending_list"] = list(module_user["pending_list"])
+                users["module_completed_list"] = list( set(list(module_user["allotted_list"])).difference(list(module_user["pending_list"])) )
             
             #Refer status
             users["refer_status"] = "N/A"
@@ -3689,9 +3688,7 @@ def User_list():
             user_survey[i["user_pri_id"]] = users
             
         pending_enroll = list(set(list(enroll.keys())).difference(list(user_survey.keys())))
-        print(pending_enroll)
         for i in pending_enroll:
-            print(i)
             if "UT-" in i:
                 users = {}
                 enrollusers = enroll[i]
@@ -3828,6 +3825,8 @@ def module_status():
         module = {}
         module["allotted"] = str(len(i["total_module_number_allotted"]))
         module["pending"] = str(len(i["module_number_list_pending"]))
+        module["pending_list"] = i["module_number_list_pending"]
+        module["allotted_list"] = i["total_module_number_allotted"]
         module["group"] = i["group1"]
         user_module[i["user_pri_id"]] = module
         user_module["module_completed"] = "0"
