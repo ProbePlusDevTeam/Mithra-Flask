@@ -3265,7 +3265,7 @@ def dashboard_status():
     # try:
         # if g.user:
     
-        # Surveyies = test()
+        Surveyies = test()
         enroll_response = enroll_status()
         enroll = {}
         enroll["completed"] = enroll_response["total_completed"]
@@ -3289,10 +3289,10 @@ def dashboard_status():
         module["pending"] = module_response["module_pending"]
         module["total"] = module_response["module_total"]
 
-        # userlist = list(Surveyies.keys())
+        userlist = list(Surveyies.keys())
         shg_list = shg_dd()
             
-        return module
+        return Surveyies
         # return jsonify( enroll_status), jsonify(survey), jsonify(priority), jsonify(module), jsonify(User_list())
             
     # except:
@@ -3895,6 +3895,7 @@ def survey_priority_status():
                     users["enroll"] = ["pending"]
 
                 #calculating priority for all user
+                users["priority"] = []
                 if i["high"]:
                     if i["high"]["days_remaining"]:
                         high_priority = high_priority + 1
