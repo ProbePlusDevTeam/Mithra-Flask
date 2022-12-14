@@ -3249,13 +3249,14 @@ def dashboard():
 
 @app.route('/dashboard_participant/<pkid>', methods=["POST","GET"])
 def dashboard_participant(pkid):
-    try:
+    # try:
         if g.user:
-            all_user = User_list()
+            data1 = open((app.config['Tokens'] + '/' + "dashboard.json"))
+            all_user = json.load(data1)
             response = all_user[pkid]
             return render_template('dashboard_participant.html', responses = response)
-    except:
-        return "An exception occurred"
+    # except:
+    #     return "An exception occurred"
 
 @app.route('/dashboard_status', methods=["POST","GET"])
 def dashboard_status():
@@ -3490,7 +3491,11 @@ def test():
                 users["module_status"] = "0%"
                 users["refer_status"] = "N/A"
                 user_survey[i] = users
-                
+        
+        json_data = json.dumps(user_survey)
+        with open((app.config['Tokens'] + '/' + "dashboard.json"), "w") as outfile:
+            outfile.write(json_data)
+            
         return user_survey
 
 def User_list():
