@@ -36,16 +36,635 @@
     //   return Characters
 
 
-document.getElementById("dashboard_data").addEventListener("load", myFunction);
+// document.getElementById("dashboard_data").addEventListener("load", myFunction);
 
-function myFunction() {
-    document.getElementById("demo").innerHTML = "Iframe is loaded.";
-    console.log("aaa")
-    $.ajax({
-        type: "GET",
-        url: "/dashboard",
-        success: function (data) {
-            console.log(data)
-        }
-    });
+// function myFunction() {
+//     document.getElementById("demo").innerHTML = "Iframe is loaded.";
+//     console.log("aaa")
+//     $.ajax({
+//         type: "GET",
+//         url: "/dashboard",
+//         success: function (data) {
+//             console.log(data)
+//         }
+//     });
+// }
+
+function enrollment_completed() {
+        
+    document.getElementById("enroll_completed_data").style.display = "block"
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+
+    document.getElementById("enrollment_completed_text").style.color = "#4EBDEC"
+    document.getElementById("enrollment_completed_num").style.color = "#4EBDEC"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function enrollment_pending() {
+    document.getElementById("enroll_pending_data").style.display = "block"
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+
+    document.getElementById("enrollment_pending_text").style.color = "#4EBDEC"
+    document.getElementById("enrollment_pending_num").style.color = "#4EBDEC"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+
+}
+
+function enrollment_total() {
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+    document.getElementById("all_data").style.display = "block"
+
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#4EBDEC"
+    document.getElementById("enrollment_total_num").style.color = "#4EBDEC"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+    
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function survey_completed() {
+    document.getElementById("survey_completed_data").style.display = "block"
+    document.getElementById("survey_pending_data").style.display = "none"
+    
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#4EBDEC"
+    document.getElementById("survey_completed_text").style.color = "#4EBDEC"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function survey_pending() {
+    document.getElementById("survey_pending_data").style.display = "block"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#4EBDEC"
+    document.getElementById("survey_pending_num").style.color = "#4EBDEC"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function survey_total() {
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("all_data").style.display = "block"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+    
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#4EBDEC"
+    document.getElementById("survey_total_text").style.color = "#4EBDEC"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function priority_low() {
+
+    document.getElementById("priority_low_data").style.display = "block"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "none"
+
+    document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_pending_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+    
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#4EBDEC"
+    document.getElementById("priority_low_text").style.color = "#4EBDEC"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function priority_medium() {
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "block"
+    document.getElementById("priority_high_data").style.display = "none"
+    
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#4EBDEC"
+    document.getElementById("priority_medium_text").style.color = "#4EBDEC"   
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function priority_high() {
+
+    document.getElementById("priority_low_data").style.display = "none"
+    document.getElementById("priority_medium_data").style.display = "none"
+    document.getElementById("priority_high_data").style.display = "high"
+
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+    
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#4EBDEC"
+    document.getElementById("priority_high_text").style.color = "#4EBDEC"
+}
+
+function module_completed() {
+
+    document.getElementById("module_pending_data").style.display = "none"
+    document.getElementById("module_completed_data").style.display = "block"
+
+    document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_pending_data").style.display = "none"
+    
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#4EBDEC"
+    document.getElementById("module_completed_text").style.color = "#4EBDEC"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function module_pending() {
+
+    document.getElementById("module_pending_data").style.display = "block"
+    document.getElementById("module_completed_data").style.display = "none"
+
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("all_data").style.display = "none"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#414040"
+    document.getElementById("module_total_text").style.color = "#414040"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#4EBDEC"
+    document.getElementById("module_pending_num").style.color = "#4EBDEC"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function module_total() {
+    document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_completed_data").style.display = "none"
+
+    document.getElementById("all_data").style.display = "block"
+    document.getElementById("enroll_pending_data").style.display = "none"
+    document.getElementById("enroll_completed_data").style.display = "none"
+    
+    document.getElementById("enrollment_total_text").style.color = "#414040"
+    document.getElementById("enrollment_total_num").style.color = "#414040"
+
+    document.getElementById("enrollment_pending_text").style.color = "#414040"
+    document.getElementById("enrollment_pending_num").style.color = "#414040"
+
+    document.getElementById("enrollment_completed_text").style.color = "#414040"
+    document.getElementById("enrollment_completed_num").style.color = "#414040"
+
+    document.getElementById("survey_pending_text").style.color = "#414040"
+    document.getElementById("survey_pending_num").style.color = "#414040"
+
+    document.getElementById("survey_completed_num").style.color = "#414040"
+    document.getElementById("survey_completed_text").style.color = "#414040"
+
+    document.getElementById("survey_total_num").style.color = "#414040"
+    document.getElementById("survey_total_text").style.color = "#414040"
+
+    document.getElementById("module_total_num").style.color = "#4EBDEC"
+    document.getElementById("module_total_text").style.color = "#4EBDEC"
+
+    document.getElementById("module_completed_num").style.color = "#414040"
+    document.getElementById("module_completed_text").style.color = "#414040"
+
+    document.getElementById("module_pending_text").style.color = "#414040"
+    document.getElementById("module_pending_num").style.color = "#414040"
+
+    document.getElementById("priority_low_num").style.color = "#414040"
+    document.getElementById("priority_low_text").style.color = "#414040"
+
+    document.getElementById("priority_medium_num").style.color = "#414040"
+    document.getElementById("priority_medium_text").style.color = "#414040"
+
+    document.getElementById("priority_high_num").style.color = "#414040"
+    document.getElementById("priority_high_text").style.color = "#414040"
 }

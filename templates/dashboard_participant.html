@@ -50,44 +50,75 @@
                                     </div>
                                 </div>
 
+                                {% if responses.enroll_percentage == "yes" %}
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Registration</h5>
-                                        {% if responses.Registration == "yes" %}
-                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        {% else %}
-                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        {% endif %}
+                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Socio Demography</h5>
-                                        {% if responses.Socio_Demography == "yes" %}
-                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        {% else %}
-                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        {% endif %}
+                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
                                 <div class="col-3">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Disease Profile</h5>
-                                        {% if responses.Disease_Profile == "yes" %}
-                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        {% else %}
-                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
-                                            class="mx-auto" style="height: 30px; width:30px; margin: 0 auto;">
-                                        {% endif %}
+                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
+
+                                {% elif responses.enroll_percentage == "33" %}
+                                <div class="col-3">
+                                    <div class="flex-column">
+                                        <h5 class="dashboard_innercard_sub">Registration</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="flex-column">
+                                        <h5 class="dashboard_innercard_sub">Socio Demography</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}">                              
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="flex-column">
+                                        <h5 class="dashboard_innercard_sub">Disease Profile</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}">                              
+                                    </div>
+                                </div>
+
+                                {% elif responses.enroll_percentage == "66" %}
+
+                                <div class="col-3">
+                                    <div class="flex-column">
+                                        <h5 class="dashboard_innercard_sub">Registration</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="flex-column">
+                                        <h5 class="dashboard_innercard_sub">Socio Demography</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="flex-column">
+                                        <h5 class="dashboard_innercard_sub">Disease Profile</h5>
+                                        <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}">                              
+                                    </div>
+                                </div>
+
+                                {% endif %}
+                                
                             </div>
                         </div>
                     </div>
