@@ -3893,20 +3893,20 @@ def survey_priority_status():
                     notcomplete_status = notcomplete_status + 1
                     users["enroll"] = ["pending"]
 
-                #calculating priority for all user
                 users["priority"] = []
-                if i["high"]:
-                    if i["high"]["days_remaining"]:
-                        high_priority = high_priority + 1
-                        users["priority"] = ["high"]
-                if i["low"]:
-                    if i["low"]["days_remaining"]:
-                        low_priority = low_priority + 1
-                        users["priority"] = ["low"]
-                if i["medium"]:
-                    if i["medium"]["days_remaining"]:
-                        medium_priority = medium_priority + 1
-                        users["priority"] = ["medium"]
+                if i["completed"] == "no":
+                    if i["high"]:
+                        if i["high"]["days_remaining"]:
+                            high_priority = high_priority + 1
+                            users["priority"] = ["high"]
+                    if i["low"]:
+                        if i["low"]["days_remaining"]:
+                            low_priority = low_priority + 1
+                            users["priority"] = ["low"]
+                    if i["medium"]:
+                        if i["medium"]["days_remaining"]:
+                            medium_priority = medium_priority + 1
+                            users["priority"] = ["medium"]
                 user_list[i["user_pri_id"]] = users
             else:
                 users ={}
@@ -3926,9 +3926,6 @@ def survey_priority_status():
                         notcomplete_status = notcomplete_status + 1
                         li_enroll.append("pending")
                          
-                
-
-                #calculating priority for all user
                 if i["completed"] == "no":
                     if "high" not in li_priority:
                         if "days_remaining" in i["high"]:
