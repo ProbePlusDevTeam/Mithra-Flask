@@ -1357,24 +1357,7 @@ def return_files_web(foldername,filename):
     except Exception as e:
         return str(e)
     
-@app.route('/web/versoin_check/<Android_Version>')
-def version_check1(Android_Version):
-    try:
-        list_of_files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'] + "/" + "APKs" + "/*"))
-        latest_file = max(list_of_files, key=os.path.getctime)
-        split_str = latest_file.split("/")
-        split_str.reverse()
-        latest_file =split_str[0]
-        response = {}
-        if Android_Version == latest_file:
-            response["message"] = ["no Updates"]
-        else:
-            response["message"] = ["available", latest_file]
-        return jsonify(response)
-    except Exception as e:
-        return str(e) 
-    
-@app.route('/versoin_check/<secret_key>/<Android_Version>', methods = ["GET", "POST"])
+@app.route('/version_check/<secret_key>/<Android_Version>')
 def version_check(secret_key,Android_Version):
     try:
         if secret_key == app.secret_key:
@@ -1388,7 +1371,7 @@ def version_check(secret_key,Android_Version):
                 response["message"] = ["no Updates"]
             else:
                 response["message"] = ["available", latest_file]
-            return jsonify(response)
+        return jsonify(response)
     except Exception as e:
         return str(e) 
 ###################### Download File APIs ######################
@@ -3966,7 +3949,7 @@ def survey_priority_status():
     except:
         return "An exception occurred"
 
-@app.route('/shg_dashboard/<SHG>')
+@app.route('/shg_dashboard/<SHG>' , methods = ["POST", "GET"])
 def shg_dashboard(SHG):
     try:
         data1 = open((app.config['Tokens'] + '/' + "dashboard.json"))
