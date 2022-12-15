@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
                                 {% if responses.survey_percentage == "0" %}
-                                <h5 class="dashboard_innercard_sub">No survey is allowted as of now for you </h5>
+                                <h5 class="dashboard_innercard_sub">No survey is alloted as of now for you </h5>
                                 {% else %}
                                 {% if responses.priority_high_survey|length > 0 %}
                                 {% for list in responses.priority_high_survey %}
@@ -209,7 +209,7 @@
                                 <div class="col-3">
                                     <div class="flex-column">
                                         {% if responses.module_status == "0%" %}
-                                        <h5 class="dashboard_innercard_sub">No module allowted as of now for you</h5>
+                                        <h5 class="dashboard_innercard_sub">No module alloted as of now for you</h5>
                                         {% else %}
                                         <h5 class="dashboard_innercard_sub">{{responses.module_status}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}"
