@@ -170,7 +170,7 @@
                     <div class="col-6">
                     </div>
                     <div class="col-6 px-3">
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" id="shg_dropdown" onchange="shg_dropdown()" aria-label="Default select example">
                             {% for response in shg_list %}
                             <option value="{{response}}">{{response}}</option>
                             {% endfor %}

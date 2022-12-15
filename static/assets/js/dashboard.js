@@ -26,14 +26,14 @@
 // circular_value.style.background = `conic-gradient(#db6f30 ${progress_start_value * 3.6}deg, #e9e6e6  0deg)`;
 
 
-    // Characters = (
-    //     <>
-    //       <button>Star</button>
-    //       <button>Toad</button>
-    //       <button>x</button>
-    //     </>
-    //   );
-    //   return Characters
+// Characters = (
+//     <>
+//       <button>Star</button>
+//       <button>Toad</button>
+//       <button>x</button>
+//     </>
+//   );
+//   return Characters
 
 
 // document.getElementById("dashboard_data").addEventListener("load", myFunction);
@@ -51,7 +51,7 @@
 // }
 
 function enrollment_completed() {
-        
+
     document.getElementById("enroll_completed_data").style.display = "block"
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -182,7 +182,7 @@ function enrollment_total() {
 
     document.getElementById("survey_pending_text").style.color = "#414040"
     document.getElementById("survey_pending_num").style.color = "#414040"
-    
+
     document.getElementById("priority_medium_num").style.color = "#414040"
     document.getElementById("priority_medium_text").style.color = "#414040"
 
@@ -214,7 +214,7 @@ function enrollment_total() {
 function survey_completed() {
     document.getElementById("survey_completed_data").style.display = "block"
     document.getElementById("survey_pending_data").style.display = "none"
-    
+
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
     document.getElementById("enroll_completed_data").style.display = "none"
@@ -329,7 +329,7 @@ function survey_total() {
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
     document.getElementById("priority_high_data").style.display = "none"
-    
+
     document.getElementById("enrollment_total_text").style.color = "#414040"
     document.getElementById("enrollment_total_num").style.color = "#414040"
 
@@ -378,7 +378,7 @@ function priority_low() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
-    
+
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
     document.getElementById("enroll_completed_data").style.display = "none"
@@ -425,7 +425,7 @@ function priority_medium() {
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "block"
     document.getElementById("priority_high_data").style.display = "none"
-    
+
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
 
@@ -467,7 +467,7 @@ function priority_medium() {
     document.getElementById("priority_low_text").style.color = "#414040"
 
     document.getElementById("priority_medium_num").style.color = "#4EBDEC"
-    document.getElementById("priority_medium_text").style.color = "#4EBDEC"   
+    document.getElementById("priority_medium_text").style.color = "#4EBDEC"
 
     document.getElementById("priority_high_num").style.color = "#414040"
     document.getElementById("priority_high_text").style.color = "#414040"
@@ -488,7 +488,7 @@ function priority_high() {
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
     document.getElementById("enroll_completed_data").style.display = "none"
-    
+
     document.getElementById("enrollment_total_text").style.color = "#414040"
     document.getElementById("enrollment_total_num").style.color = "#414040"
 
@@ -646,7 +646,7 @@ function module_total() {
     document.getElementById("all_data").style.display = "block"
     document.getElementById("enroll_pending_data").style.display = "none"
     document.getElementById("enroll_completed_data").style.display = "none"
-    
+
     document.getElementById("enrollment_total_text").style.color = "#414040"
     document.getElementById("enrollment_total_num").style.color = "#414040"
 
@@ -682,4 +682,17 @@ function module_total() {
 
     document.getElementById("priority_high_num").style.color = "#414040"
     document.getElementById("priority_high_text").style.color = "#414040"
+}
+
+function shg_dropdown() {
+    var dd = document.getElementById("shg_dropdown").value
+    console.log(dd)
+
+    $.ajax({
+        type: "POST",
+        url: "/shg_dashboard/" + dd,
+        success: function (data) {
+            console.log(data)
+        }
+    });
 }
