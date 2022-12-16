@@ -687,12 +687,51 @@ function module_total() {
 function shg_dropdown() {
     var dd = document.getElementById("shg_dropdown").value
     console.log(dd)
+    sessionStorage.setItem('dd_value', document.getElementById("shg_dropdown").value);
+    if (dd == "All Shg") {
+        window.location.href = "/dashboard";
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: "/shg_dashboard/" + dd,
+            success: function (data) {
 
-    $.ajax({
-        type: "POST",
-        url: "/shg_dashboard/" + dd,
-        success: function (data) {
-            console.log(data)
-        }
-    });
+                if (data) {
+                    window.location.href = "/shg_dashboard/" + dd;
+
+                    // document.getElementById("enrollment_completed_num").innerText="111"
+                    // window.history.pushState("","","/shg_dashboard/"+dd)
+
+                    // dd = sessionStorage.getItem('dd_value')
+                    // window.onload=my_code();
+
+                    // window.addEventListener("load", (event) => {
+                    //     document.getElementById("shg_dropdown").value = sessionStorage.getItem('dd_value');
+                    // });    
+                    console.log(data)
+
+                }
+                if (document.referrer) {
+                    window.onload = my_code();
+                }
+
+            }
+        });
+    }
+}
+
+window.onload = function () {
+    if (window.location.pathname.split("/").pop() == "dashboard") {
+        var selItem = 'All Shg';
+        $('#shg_dropdown').val(selItem);
+    }
+    else {
+        var selItem = sessionStorage.getItem("dd_value");
+        $('#shg_dropdown').val(selItem);
+        $('#shg_dropdown').change(function () {
+            var selVal = $(this).val();
+            sessionStorage.setItem("dd_value", selVal);
+        });
+    }
 }
