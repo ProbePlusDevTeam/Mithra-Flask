@@ -1368,7 +1368,7 @@ def version_check(secret_key,Android_Version):
             latest_file =split_str[0]
             response = {}
             if Android_Version == latest_file:
-                response["message"] = ["no Updates"]
+                response["message"] = ["no updates"]
             else:
                 response["message"] = ["available", latest_file]
         return jsonify(response)
