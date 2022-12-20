@@ -3951,7 +3951,7 @@ def survey_priority_status():
 
 @app.route('/shg_dashboard/<SHG>' , methods = ["POST", "GET"])
 def shg_dashboard(SHG):
-    # try:
+    try:
         data1 = open((app.config['Tokens'] + '/' + "dashboard.json"))
         all_user = json.load(data1)
         
@@ -4060,8 +4060,8 @@ def shg_dashboard(SHG):
         module["total"] = str( int(module_pending) + int(module_completed) )
         
         return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = shg_user_details, userlist = list(shg_user_details.keys()), shg_list = shg_dd())
-    # except:
-    #     return "An exception occurred"
+    except:
+        return "An exception occurred"
 
 ###################### End of Dashboard API's ######################
 
