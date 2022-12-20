@@ -17,7 +17,7 @@
                         <div class="d-flex align-items-center">
                             <div class="card-body d-flex">
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">{{responses.full_name}}</h5>
                                         <h5 class="dashboard_innercard_sub">{{responses.age}}</h5>
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">{{responses.village_name}}</h5>
                                         <h5 class="dashboard_innercard_sub">{{responses.shg_associate}}</h5>
@@ -44,28 +44,28 @@
                         <div class="d-flex align-items-center">
                             <div class="card-body d-flex">
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="d-flex">
                                         <h5 class="dashboard_shg_card_header">Enrollment Status</h5>
                                     </div>
                                 </div>
 
                                 {% if responses.enroll_percentage == "yes" %}
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Registration</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Socio Demography</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Disease Profile</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
@@ -73,21 +73,21 @@
                                 </div>
 
                                 {% elif responses.enroll_percentage == "33" %}
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Registration</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Socio Demography</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}">                              
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Disease Profile</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}">                              
@@ -96,21 +96,21 @@
 
                                 {% elif responses.enroll_percentage == "66" %}
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Registration</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Socio Demography</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/tick1.png')}}">                              
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Disease Profile</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}">                              
@@ -124,24 +124,24 @@
                     </div>
                 </div>
 
-                <div class="card mt-4" style="overflow-x: scroll; overflow-y: hidden;">
+                <div class="card survey_inner_card mt-4" style="overflow-x: scroll; overflow-y: hidden;">
                     <div class="row">
                         <div class="d-flex align-items-center">
                             <div class="card-body d-flex">
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="d-flex">
                                         <h5 class="dashboard_shg_card_header">Survey Status</h5>
                                     </div>
                                 </div>
-                                {% if responses.survey_percentage == "0" %}
+                                {% if responses.enroll_percentage != "yes" %}
                                 <h5 class="dashboard_innercard_sub">No survey is alloted as of now for you </h5>
                                 {% else %}
                                 {% if responses.priority_high_survey|length > 0 %}
                                 {% for list in responses.priority_high_survey %}
 
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column ">
                                         <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/red_day.png')}}"
@@ -158,7 +158,7 @@
                                 {% for list in responses.priority_medium_survey %}
 
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column ">
                                         <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/yellow_day.png')}}"
@@ -175,7 +175,7 @@
                                 {% for list in responses.priority_low_survey %}
 
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column ">
                                         <h5 class="dashboard_innercard_sub">{{list.survey_name}}</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/green_day.png')}}"
@@ -200,13 +200,13 @@
                         <div class="d-flex align-items-center">
                             <div class="card-body d-flex">
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="d-flex">
                                         <h5 class="dashboard_shg_card_header">Module Status</h5>
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         {% if responses.module_status == "0%" %}
                                         <h5 class="dashboard_innercard_sub">No module alloted as of now for you</h5>
@@ -227,13 +227,13 @@
                         <div class="d-flex align-items-center">
                             <div class="card-body d-flex">
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="d-flex">
                                         <h5 class="dashboard_shg_card_header">Referal Status</h5>
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">{{responses.refer_status}}</h5>
                                     </div>

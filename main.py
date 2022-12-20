@@ -3951,7 +3951,7 @@ def survey_priority_status():
 
 @app.route('/shg_dashboard/<SHG>' , methods = ["POST", "GET"])
 def shg_dashboard(SHG):
-    try:
+    # try:
         data1 = open((app.config['Tokens'] + '/' + "dashboard.json"))
         all_user = json.load(data1)
         
@@ -3988,17 +3988,20 @@ def shg_dashboard(SHG):
                         enroll_completed = str( int(enroll_completed) + 1 )
                     else:
                         enroll_pending = str( int(enroll_pending) + 1 )
-                    if i["survey_completed"] == "yes":
-                        survey_completed = "1"
-                    else:
-                        survey_pending = "1"
-                        
-                    if i["priority_low"] == "yes":
-                        low_priority = "1"
-                    if i["priority_high"] == "yes":
-                        high_priority = "1"
-                    if i["priority_medium"] == "yes":
-                        medium_priority = "1"
+                    if "survey_completed" in i:
+                        if i["survey_completed"] == "yes":
+                            survey_completed = "1"
+                        else:
+                            survey_pending = "1"
+                    if "priority_low" in i:
+                        if i["priority_low"] == "yes":
+                            low_priority = "1"
+                    if "priority_high" in i:
+                        if i["priority_high"] == "yes":
+                            high_priority = "1"
+                    if "priority_medium" in i:
+                        if i["priority_medium"] == "yes":
+                            medium_priority = "1"
                         
                     if '"completed": "no"' in i:
                         survey_pending = "1"
@@ -4011,29 +4014,30 @@ def shg_dashboard(SHG):
                 
                 
         else:
-            if shg_users[0]["enroll_percentage"] == "yes":
-                enroll_completed = "1"
-            else:
-                enroll_pending = "1"
-            
-            if shg_users[0]["survey_completed"] == "yes":
-                survey_completed = "1"
-            else:
-                survey_pending = "1"
+            if shg_users:
+                if shg_users[0]["enroll_percentage"] == "yes":
+                    enroll_completed = "1"
+                else:
+                    enroll_pending = "1"
                 
-            if shg_users[0]["priority_low"] == "yes":
-                low_priority = "1"
-            if shg_users[0]["priority_high"] == "yes":
-                high_priority = "1"
-            if shg_users[0]["priority_medium"] == "yes":
-                medium_priority = "1"
-                
-            if '"completed": "no"' in shg_users[0]:
-                survey_pending = "1"
-            if '"completed": "yes"' in shg_users[0]:
-                survey_completed = "1"
+                if shg_users[0]["survey_completed"] == "yes":
+                    survey_completed = "1"
+                else:
+                    survey_pending = "1"
+                    
+                if shg_users[0]["priority_low"] == "yes":
+                    low_priority = "1"
+                if shg_users[0]["priority_high"] == "yes":
+                    high_priority = "1"
+                if shg_users[0]["priority_medium"] == "yes":
+                    medium_priority = "1"
+                    
+                if '"completed": "no"' in shg_users[0]:
+                    survey_pending = "1"
+                if '"completed": "yes"' in shg_users[0]:
+                    survey_completed = "1"
 
-            shg_user_details[shg_users[0]["pri_id"]] = shg_users[0]
+                shg_user_details[shg_users[0]["pri_id"]] = shg_users[0]
         
         enroll = {}
         enroll["completed"] = enroll_completed
@@ -4056,8 +4060,8 @@ def shg_dashboard(SHG):
         module["total"] = str( int(module_pending) + int(module_completed) )
         
         return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = shg_user_details, userlist = list(shg_user_details.keys()), shg_list = shg_dd())
-    except:
-        return "An exception occurred"
+    # except:
+    #     return "An exception occurred"
 
 ###################### End of Dashboard API's ######################
 
