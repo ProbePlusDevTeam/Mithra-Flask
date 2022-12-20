@@ -170,7 +170,7 @@
                     <div class="col-6">
                     </div>
                     <div class="col-6 px-3">
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" id="shg_dropdown" onchange="shg_dropdown()" aria-label="Default select example">
                             {% for response in shg_list %}
                             <option value="{{response}}">{{response}}</option>
                             {% endfor %}
@@ -290,7 +290,7 @@
 
             <div class="dashboard_inner_card" id="enroll_completed_data" style="display: none;">
                 {% for response in userlist %}
-                {% if responses[response].enroll_completed == "yes" %}
+                {% if responses[response].enroll_percentage == "yes" %}
 
                 <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
@@ -369,7 +369,7 @@
 
             <div class="dashboard_inner_card" id="enroll_pending_data" style="display: none;">
                 {% for response in userlist %}
-                {% if responses[response].enroll_pending == "yes" %}
+                {% if responses[response].enroll_percentage == "33" or enroll_percentage == "66" %}
 
                 <a href='{{ url_for("dashboard_participant", pkid=response) }}' style="width: fit-content">
 
