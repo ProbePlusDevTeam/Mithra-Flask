@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
 
-                                {% if responses.enroll_percentage == "yes" %}
+                                {% if responses.enroll_percentage == "100" %}
                                 <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Registration</h5>
@@ -134,7 +134,7 @@
                                         <h5 class="dashboard_shg_card_header">Survey Status</h5>
                                     </div>
                                 </div>
-                                {% if responses.enroll_percentage != "yes" %}
+                                {% if responses.enroll_percentage != "100" %}
                                 <h5 class="dashboard_innercard_sub">No survey is alloted as of now for you </h5>
                                 {% else %}
                                 {% if responses.priority_high_survey|length > 0 %}
