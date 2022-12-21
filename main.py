@@ -3345,6 +3345,10 @@ def test():
                 users["shg_associate"] = enrollusers["shg_associate"]
                 users["panchayat"] = enrollusers["panchayat"]
                 users["enroll_percentage"] = enrollusers["enroll"]
+                if enrollusers["enroll"] == "yes":
+                    users["enroll_completed"] = "yes"
+                else:
+                    users["enroll_completed"] = "no"
                 users["survey_pending"] = "no"
                 users["survey_completed"] = "no"                
                 users["part_id"] = enrollusers["part_id"]
@@ -3546,7 +3550,10 @@ def test():
                 users["shg_associate"] = enrollusers["shg_associate"]
                 users["panchayat"] = enrollusers["panchayat"]
                 users["enroll_percentage"] = enrollusers["enroll"]
-                users["enroll_completed"] = "no"
+                if enrollusers["enroll"] == "yes":
+                    users["enroll_completed"] = "yes"
+                else:
+                    users["enroll_completed"] = "no"
                 users["survey_percentage"] = "0"
                 users["module_status"] = "0%"
                 users["refer_status"] = "N/A"
@@ -3596,6 +3603,10 @@ def User_list():
                 users["shg_associate"] = enrollusers["shg_associate"]
                 users["panchayat"] = enrollusers["panchayat"]
                 users["enroll_percentage"] = enrollusers["enroll"]
+                if enrollusers["enroll"] == "yes":
+                    users["enroll_completed"] = "yes"
+                else:
+                    users["enroll_completed"] = "no"
                 users["survey_pending"] = "no"
                 users["survey_completed"] = "no"                
                 users["part_id"] = enrollusers["part_id"]
@@ -3797,7 +3808,10 @@ def User_list():
                 users["shg_associate"] = enrollusers["shg_associate"]
                 users["panchayat"] = enrollusers["panchayat"]
                 users["enroll_percentage"] = enrollusers["enroll"]
-                users["enroll_completed"] = "no"
+                if enrollusers["enroll"] == "yes":
+                    users["enroll_completed"] = "yes"
+                else:
+                    users["enroll_completed"] = "no"
                 users["survey_percentage"] = "0"
                 users["module_status"] = "0%"
                 users["refer_status"] = "N/A"
@@ -4074,12 +4088,15 @@ def shg_dashboard(SHG):
         module_status = {}
         module_completed = "0"
         module_pending = "0"
+        module_total = "0"
         
         shg_user_details = {}
 
         if len(shg_users) > 0:
             for i in shg_users:
-
+                print("--------------------")
+                print(i)
+                print("=-=-=-=-=-=-=-")
                 if i["enroll_percentage"] == "100":
                     if i["enroll_percentage"] == "100":
                         enroll_completed = str( int(enroll_completed) + 1 )
@@ -4105,6 +4122,16 @@ def shg_dashboard(SHG):
                     if "notcompleted_count" in i:
                         if int(i["notcompleted_count"]) > 0:
                             survey_pending = str( int(survey_pending) + 1 )
+                    
+                    if "module_completed" in i:
+                        if i["module_completed"] == "yes":
+                            module_completed = str( int(module_completed) +1 )
+                    if "module_pending" in i:
+                        if i["module_pending"] == "yes":
+                            module_pending = str( int(module_pending) +1 )
+                    if "module_completed" in i or "module_pending" in i:
+                        if i["module_completed"] == "yes" or i["module_pending"] == "yes":
+                            module_total = str( int(module_total) +1 )
                 else:
                     enroll_pending = str( int(enroll_pending) + 1 )
                 
@@ -4135,6 +4162,13 @@ def shg_dashboard(SHG):
                 if '"completed": "yes"' in shg_users[0]:
                     survey_completed = "1"
 
+                if shg_users[0]["module_completed"] == "yes":
+                    module_completed = "1"
+                    module_total = "1"
+                if shg_users[0]["module_pending"] == "yes":
+                    module_pending = "1"
+                    module_total = "1"
+                    
                 shg_user_details[shg_users[0]["pri_id"]] = shg_users[0]
         
         enroll = {}
@@ -4155,7 +4189,7 @@ def shg_dashboard(SHG):
         module = {}
         module["completed"] = module_completed
         module["pending"] = module_pending
-        module["total"] = str( int(module_pending) + int(module_completed) )
+        module["total"] = module_total
 
         return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = shg_user_details, userlist = list(shg_user_details.keys()), shg_list = shg_dd())
     # except:
