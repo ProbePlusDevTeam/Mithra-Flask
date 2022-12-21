@@ -4067,7 +4067,6 @@ def shg_dashboard(SHG):
                     
                     if "priority_low" in i:
                         if i["priority_low"] == "yes":
-                            priority_low_survey
                             low_priority = str( int(low_priority) + 1 )
                     if "priority_high" in i:
                         if i["priority_high"] == "yes":
