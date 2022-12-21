@@ -58,6 +58,7 @@ function enrollment_completed() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -110,6 +111,7 @@ function enrollment_pending() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -163,6 +165,7 @@ function enrollment_total() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -214,6 +217,7 @@ function enrollment_total() {
 function survey_completed() {
     document.getElementById("survey_completed_data").style.display = "block"
     document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -266,6 +270,7 @@ function survey_completed() {
 function survey_pending() {
     document.getElementById("survey_pending_data").style.display = "block"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -318,8 +323,9 @@ function survey_pending() {
 function survey_total() {
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "block"
 
-    document.getElementById("all_data").style.display = "block"
+    document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
     document.getElementById("enroll_completed_data").style.display = "none"
 
@@ -375,6 +381,7 @@ function priority_low() {
 
     document.getElementById("survey_completed_data").style.display = "none"
     document.getElementById("survey_pending_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -428,6 +435,7 @@ function priority_medium() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -481,6 +489,7 @@ function priority_high() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -534,6 +543,7 @@ function module_completed() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "block"
@@ -587,6 +597,7 @@ function module_pending() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "block"
     document.getElementById("module_completed_data").style.display = "none"
@@ -639,6 +650,7 @@ function module_total() {
 
     document.getElementById("survey_pending_data").style.display = "none"
     document.getElementById("survey_completed_data").style.display = "none"
+    document.getElementById("survey_total_data").style.display = "none"
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
@@ -685,13 +697,16 @@ function module_total() {
 }
 
 function shg_dropdown() {
+    alert("adsad")
     var dd = document.getElementById("shg_dropdown").value
     console.log(dd)
     sessionStorage.setItem('dd_value', document.getElementById("shg_dropdown").value);
     if (dd == "All Shg") {
+        alert("xxx")
         window.location.href = "/dashboard";
     }
     else {
+        alert("aaa")
         $.ajax({
             type: "POST",
             url: "/shg_dashboard/" + dd,
