@@ -62,6 +62,7 @@ function enrollment_completed() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
@@ -115,6 +116,7 @@ function enrollment_pending() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
@@ -169,6 +171,7 @@ function enrollment_total() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
@@ -225,6 +228,7 @@ function survey_completed() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
@@ -278,6 +282,7 @@ function survey_pending() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
@@ -331,6 +336,7 @@ function survey_total() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("priority_low_data").style.display = "none"
     document.getElementById("priority_medium_data").style.display = "none"
@@ -385,6 +391,7 @@ function priority_low() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -439,6 +446,7 @@ function priority_medium() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -493,6 +501,7 @@ function priority_high() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -547,6 +556,7 @@ function module_completed() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "block"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -601,6 +611,7 @@ function module_pending() {
 
     document.getElementById("module_pending_data").style.display = "block"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "none"
 
     document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
@@ -654,8 +665,10 @@ function module_total() {
 
     document.getElementById("module_pending_data").style.display = "none"
     document.getElementById("module_completed_data").style.display = "none"
+    document.getElementById("module_total_data").style.display = "block"
 
-    document.getElementById("all_data").style.display = "block"
+
+    document.getElementById("all_data").style.display = "none"
     document.getElementById("enroll_pending_data").style.display = "none"
     document.getElementById("enroll_completed_data").style.display = "none"
 
