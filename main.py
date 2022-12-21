@@ -3981,32 +3981,28 @@ def shg_dashboard(SHG):
         module_pending = "0"
         
         shg_user_details = {}
-        if len(shg_users) > 1 and len(shg_users) > 0:
+        if len(shg_users) > 0:
             for i in shg_users:
                 if i["enroll_percentage"] == "yes":
                     if i["enroll_percentage"] == "yes":
                         enroll_completed = str( int(enroll_completed) + 1 )
                     else:
                         enroll_pending = str( int(enroll_pending) + 1 )
-                    if "survey_completed" in i:
-                        if i["survey_completed"] == "yes":
-                            survey_completed = "1"
-                        else:
-                            survey_pending = "1"
+                    
                     if "priority_low" in i:
                         if i["priority_low"] == "yes":
-                            low_priority = "1"
+                            low_priority = str( int(low_priority) + 1 )
                     if "priority_high" in i:
                         if i["priority_high"] == "yes":
-                            high_priority = "1"
+                            high_priority = str( int(high_priority) + 1 )
                     if "priority_medium" in i:
                         if i["priority_medium"] == "yes":
-                            medium_priority = "1"
+                            medium_priority = str( int(medium_priority) + 1 )
                         
                     if '"completed": "no"' in i:
-                        survey_pending = "1"
+                        survey_pending = str( int(survey_pending) + 1 )
                     if '"completed": "yes"' in i:
-                        survey_completed = "1"
+                        survey_completed = str( int(survey_completed) +1 )
                 else:
                     enroll_pending = str( int(enroll_pending) + 1 )
                 
