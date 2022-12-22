@@ -710,16 +710,13 @@ function module_total() {
 }
 
 function shg_dropdown() {
-    alert("adsad")
     var dd = document.getElementById("shg_dropdown").value
     console.log(dd)
     sessionStorage.setItem('dd_value', document.getElementById("shg_dropdown").value);
     if (dd == "All Shg") {
-        alert("xxx")
         window.location.href = "/dashboard";
     }
     else {
-        alert("aaa")
         $.ajax({
             type: "POST",
             url: "/shg_dashboard/" + dd,

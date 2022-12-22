@@ -1447,7 +1447,7 @@ input[type=number] {
     }
 
     .survey_inner_card{
-      overflow: hidden !important;
+      /* overflow: hidden !important; */
     }
     
     .circular_progress_enroll{
