@@ -4088,7 +4088,6 @@ def shg_dashboard(SHG):
         module_status = {}
         module_completed = "0"
         module_pending = "0"
-        module_total = "0"
         
         shg_user_details = {}
 
@@ -4129,9 +4128,7 @@ def shg_dashboard(SHG):
                     if "module_pending" in i:
                         if i["module_pending"] == "yes":
                             module_pending = str( int(module_pending) +1 )
-                    if "module_completed" in i or "module_pending" in i:
-                        if i["module_completed"] == "yes" or i["module_pending"] == "yes":
-                            module_total = str( int(module_total) +1 )
+
                 else:
                     enroll_pending = str( int(enroll_pending) + 1 )
                 
@@ -4164,10 +4161,8 @@ def shg_dashboard(SHG):
 
                 if shg_users[0]["module_completed"] == "yes":
                     module_completed = "1"
-                    module_total = "1"
                 if shg_users[0]["module_pending"] == "yes":
                     module_pending = "1"
-                    module_total = "1"
                     
                 shg_user_details[shg_users[0]["pri_id"]] = shg_users[0]
         
@@ -4189,7 +4184,7 @@ def shg_dashboard(SHG):
         module = {}
         module["completed"] = module_completed
         module["pending"] = module_pending
-        module["total"] = module_total
+        module["total"] = str(int(module_completed) + int(module_pending))
 
         return render_template('dashboard.html', enroll_status = enroll, survey_status = survey , priority_status = priority, module_status = module, responses = shg_user_details, userlist = list(shg_user_details.keys()), shg_list = shg_dd())
     # except:
