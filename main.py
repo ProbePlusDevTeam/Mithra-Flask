@@ -3558,7 +3558,7 @@ def User_list():
                 user_survey[i] = users
         
         json_data = json.dumps(user_survey)
-        with open((app.config['Tokens'] + '/' + "dashboard.json"), "w") as outfile:
+        with open((app.config['Dashboard'] + '/' + "dashboard.json"), "w") as outfile:
             outfile.write(json_data)
             
         return user_survey
