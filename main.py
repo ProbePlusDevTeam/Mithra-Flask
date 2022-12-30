@@ -3327,212 +3327,213 @@ def User_list():
         for i in survey_status_responses:
             users = {}
             enrollusers = enroll[i["user_pri_id"]]
-                                
-            #calculation for each users
-            users_list =  list(user_survey.keys())                        
-            if i["user_pri_id"] not in users_list:
-                users["no_of_surveys"] = "1"
-                users["completed_count"] = "0"
-                users["notcompleted_count"] = "0"
-                users["full_name"] = enrollusers["full_name"]
-                users["age"] = enrollusers["age"]
-                users["mobile_number"] = enrollusers["mobile_number"]
-                users["village_name"] = enrollusers["village_name"]
-                users["shg_associate"] = enrollusers["shg_associate"]
-                users["panchayat"] = enrollusers["panchayat"]
-                users["enroll_percentage"] = enrollusers["enroll"]
-                if enrollusers["enroll"] == "yes":
-                    users["enroll_completed"] = "yes"
-                else:
-                    users["enroll_completed"] = "no"
-                users["survey_pending"] = "no"
-                users["survey_completed"] = "no"                
-                users["part_id"] = enrollusers["part_id"]
-                users["priority_high_survey"] = []
-                users["priority_low_survey"] = []
-                users["priority_medium_survey"] = []
-                users["priority_low"] = "no"
-                users["priority_medium"] = "no"
-                users["priority_high"] = "no"
-                        
-                #calculating completed and not completed for each users
-                if i["completed"] == "yes":
-                    users["completed_count"] = str( int( users["completed_count"] ) + 1 )
-                    users["survey_completed"] = "yes"
-                    com = int(users["completed_count"])
-                    notcom = int(users["no_of_surveys"])
-                    users["survey_percentage"] = str(round(eval(' (com / notcom) * 100')))
-                    
-                    if i["high"]:
-                        if i["high"]["days_remaining"]:
-                            high = i["high"]
-                            high["filled_by"] = i["filled_by"]
-                            high["completed"] = i["completed"]
-                            users["priority_high_survey"] = [high]
-                    if i["low"]:
-                        if i["low"]["days_remaining"]:
-                            low = i["low"]
-                            low["filled_by"] = i["filled_by"]
-                            low["completed"] = i["completed"]
-                            users["priority_low_survey"] = [low]
-                    if i["medium"]:
-                        if i["medium"]["days_remaining"]:
-                            medium = i["medium"]
-                            medium["filled_by"] = i["filled_by"]
-                            medium["completed"] = i["completed"]
-                            users["priority_medium_survey"] = [medium]
-    
-                else:
-                    # if "notcompleted" in users:
-                    users["notcompleted_count"] = str( int( users["notcompleted_count"] ) + 1 )
-                    com = int(users["completed_count"])
-                    notcom = int(users["no_of_surveys"])
-                    users["survey_percentage"] = str(round(eval(' (com / notcom) * 100')))
-                    users["survey_pending"] = "yes"
-                        
-                    if i["high"]:
-                        if i["high"]["days_remaining"]:
-                            high = i["high"]
-                            high["filled_by"] = i["filled_by"]
-                            high["completed"] = i["completed"]
-                            users["priority_high_survey"] = [high]
-                            users["priority_high"] = "yes"
-                    if i["low"]:
-                        if i["low"]["days_remaining"]:
-                            low = i["low"]
-                            low["filled_by"] = i["filled_by"]
-                            low["completed"] = i["completed"]
-                            users["priority_low_survey"] = [low]
-                            users["priority_low"] = "yes"
-                    if i["medium"]:
-                        if i["medium"]["days_remaining"]:
-                            medium = i["medium"]
-                            medium["filled_by"] = i["filled_by"]
-                            medium["completed"] = i["completed"]
-                            users["priority_medium_survey"] = [medium]
-                            users["priority_medium"] = "yes"
             
-            else:
-
-                users = user_survey[i["user_pri_id"]]
-                users["no_of_surveys"] = str( int( users["no_of_surveys"] ) + 1)
-                
-                #calculating completed and not completed for each users
-                if i["completed"] == "yes":
-                    
-                    if "completed_count" in list(dict(users).keys()):
-                        
+            if enrollusers["active_status"] == "yes":          
+                #calculation for each users
+                users_list =  list(user_survey.keys())                        
+                if i["user_pri_id"] not in users_list:
+                    users["no_of_surveys"] = "1"
+                    users["completed_count"] = "0"
+                    users["notcompleted_count"] = "0"
+                    users["full_name"] = enrollusers["full_name"]
+                    users["age"] = enrollusers["age"]
+                    users["mobile_number"] = enrollusers["mobile_number"]
+                    users["village_name"] = enrollusers["village_name"]
+                    users["shg_associate"] = enrollusers["shg_associate"]
+                    users["panchayat"] = enrollusers["panchayat"]
+                    users["enroll_percentage"] = enrollusers["enroll"]
+                    if enrollusers["enroll"] == "yes":
+                        users["enroll_completed"] = "yes"
+                    else:
+                        users["enroll_completed"] = "no"
+                    users["survey_pending"] = "no"
+                    users["survey_completed"] = "no"                
+                    users["part_id"] = enrollusers["part_id"]
+                    users["priority_high_survey"] = []
+                    users["priority_low_survey"] = []
+                    users["priority_medium_survey"] = []
+                    users["priority_low"] = "no"
+                    users["priority_medium"] = "no"
+                    users["priority_high"] = "no"
+                            
+                    #calculating completed and not completed for each users
+                    if i["completed"] == "yes":
                         users["completed_count"] = str( int( users["completed_count"] ) + 1 )
                         users["survey_completed"] = "yes"
                         com = int(users["completed_count"])
                         notcom = int(users["no_of_surveys"])
                         users["survey_percentage"] = str(round(eval(' (com / notcom) * 100')))
+                        
+                        if i["high"]:
+                            if i["high"]["days_remaining"]:
+                                high = i["high"]
+                                high["filled_by"] = i["filled_by"]
+                                high["completed"] = i["completed"]
+                                users["priority_high_survey"] = [high]
+                        if i["low"]:
+                            if i["low"]["days_remaining"]:
+                                low = i["low"]
+                                low["filled_by"] = i["filled_by"]
+                                low["completed"] = i["completed"]
+                                users["priority_low_survey"] = [low]
+                        if i["medium"]:
+                            if i["medium"]["days_remaining"]:
+                                medium = i["medium"]
+                                medium["filled_by"] = i["filled_by"]
+                                medium["completed"] = i["completed"]
+                                users["priority_medium_survey"] = [medium]
+        
                     else:
-                        
-                        users["completed_count"] = str( int( users["completed_count"] ) + 1 )
-                        users["survey_completed_count"] = "yes"
-                        
-                    if i["high"]:
-                        if i["high"]["days_remaining"]:
-                            high = list(users["priority_high_survey"])
-                            priority_high = i["high"]
-                            priority_high["filled_by"] = i["filled_by"]
-                            priority_high["completed"] = i["completed"]
-                            high.append(priority_high)
-                            users["priority_high_survey"] = high
-                    if i["low"]:
-                        if i["low"]["days_remaining"]:
-                            low = list(users["priority_low_survey"])
-                            priority_low = i["low"]
-                            priority_low["filled_by"] = i["filled_by"]
-                            priority_low["completed"] = i["completed"]
-                            low.append(priority_low)
-                            users["priority_low_survey"] = low
-                    if i["medium"]:
-                        if i["medium"]["days_remaining"]:
-                            medium = list(users["priority_medium_survey"])
-                            priority_medium = i["medium"]
-                            priority_medium["filled_by"] = i["filled_by"]
-                            priority_medium["completed"] = i["completed"]
-                            medium.append(priority_medium)
-                            users["priority_medium_survey"] = medium
-
-                else:
-                    
-                    if "notcompleted_count" in users:
-                        
+                        # if "notcompleted" in users:
                         users["notcompleted_count"] = str( int( users["notcompleted_count"] ) + 1 )
+                        com = int(users["completed_count"])
+                        notcom = int(users["no_of_surveys"])
+                        users["survey_percentage"] = str(round(eval(' (com / notcom) * 100')))
                         users["survey_pending"] = "yes"
-                    else:
-                        
-                        users["notcompleted_count"] = str( int( users["notcompleted_count"] ) + 1 )
-                        users["survey_pending"] = "yes"
-                        
-                    if i["high"]:
-                        if i["high"]["days_remaining"]:
-                            high = list(users["priority_high_survey"])
-                            priority_high = i["high"]
-                            priority_high["filled_by"] = i["filled_by"]
-                            priority_high["completed"] = i["completed"]
-                            high.append(priority_high)
-                            users["priority_high_survey"] = high
-                            users["priority_high"] = "yes"
-                    if i["low"]:
-                        if i["low"]["days_remaining"]:
-                            low = list(users["priority_low_survey"])
-                            priority_low = i["low"]
-                            priority_low["filled_by"] = i["filled_by"]
-                            priority_low["completed"] = i["completed"]
-                            low.append(priority_low)
-                            users["priority_low_survey"] = low
-                            users["priority_low"] = "yes"
-                    if i["medium"]:
-                        if i["medium"]["days_remaining"]:
-                            medium = list(users["priority_medium_survey"])
-                            priority_medium = i["medium"]
-                            priority_medium["filled_by"] = i["filled_by"]
-                            priority_medium["completed"] = i["completed"]
-                            medium.append(priority_medium)
-                            users["priority_medium_survey"] = medium
-                            users["priority_medium"] = "yes"
-            
+                            
+                        if i["high"]:
+                            if i["high"]["days_remaining"]:
+                                high = i["high"]
+                                high["filled_by"] = i["filled_by"]
+                                high["completed"] = i["completed"]
+                                users["priority_high_survey"] = [high]
+                                users["priority_high"] = "yes"
+                        if i["low"]:
+                            if i["low"]["days_remaining"]:
+                                low = i["low"]
+                                low["filled_by"] = i["filled_by"]
+                                low["completed"] = i["completed"]
+                                users["priority_low_survey"] = [low]
+                                users["priority_low"] = "yes"
+                        if i["medium"]:
+                            if i["medium"]["days_remaining"]:
+                                medium = i["medium"]
+                                medium["filled_by"] = i["filled_by"]
+                                medium["completed"] = i["completed"]
+                                users["priority_medium_survey"] = [medium]
+                                users["priority_medium"] = "yes"
                 
-            #Modual status and percentage calculation
-            users["module_completed"] = "no"
-            users["module_pending"] = "no"
-            users["module_status"] = ""
-
-            if i["user_pri_id"] in list(module.keys()):
-                module_user = module[i["user_pri_id"]]
-                if module_user["group"] == "intervention":
-                    
-                    allotted = int(module_user["allotted"])
-                    pending = int(module_user["pending"])
-                    if allotted > 0:
-                        comp = round(eval( 'allotted - pending' ))
-                        comp_per = round(eval(  'comp / allotted * 100' ))
-                    if allotted == comp:
-                        users["module_completed"] = "yes"
-                    if pending > 0:
-                        users["module_pending"] = "yes"
-                    users["module_status"] = str(comp_per) + "%"
                 else:
-                    users["module_status"] = "This person does not belong to intervention group"
-                users["module_pending_list"] = list(module_user["pending_list"])
-                users["module_completed_list"] = list( set(list(module_user["allotted_list"])).difference(list(module_user["pending_list"])) )
-            
-            #Refer status
-            users["refer_status"] = "N/A"
-            refer_user_list = list(refer.keys())
-            if i["user_pri_id"] in refer_user_list:
-                refer_user = refer[i["user_pri_id"]]
-                if refer_user:
-                    users["refer_status"] = refer_user["context"]               
 
-            if users["enroll_percentage"] == "yes":
-                users["enroll_percentage"] = "100"
-            user_survey[i["user_pri_id"]] = users
-            
+                    users = user_survey[i["user_pri_id"]]
+                    users["no_of_surveys"] = str( int( users["no_of_surveys"] ) + 1)
+                    
+                    #calculating completed and not completed for each users
+                    if i["completed"] == "yes":
+                        
+                        if "completed_count" in list(dict(users).keys()):
+                            
+                            users["completed_count"] = str( int( users["completed_count"] ) + 1 )
+                            users["survey_completed"] = "yes"
+                            com = int(users["completed_count"])
+                            notcom = int(users["no_of_surveys"])
+                            users["survey_percentage"] = str(round(eval(' (com / notcom) * 100')))
+                        else:
+                            
+                            users["completed_count"] = str( int( users["completed_count"] ) + 1 )
+                            users["survey_completed_count"] = "yes"
+                            
+                        if i["high"]:
+                            if i["high"]["days_remaining"]:
+                                high = list(users["priority_high_survey"])
+                                priority_high = i["high"]
+                                priority_high["filled_by"] = i["filled_by"]
+                                priority_high["completed"] = i["completed"]
+                                high.append(priority_high)
+                                users["priority_high_survey"] = high
+                        if i["low"]:
+                            if i["low"]["days_remaining"]:
+                                low = list(users["priority_low_survey"])
+                                priority_low = i["low"]
+                                priority_low["filled_by"] = i["filled_by"]
+                                priority_low["completed"] = i["completed"]
+                                low.append(priority_low)
+                                users["priority_low_survey"] = low
+                        if i["medium"]:
+                            if i["medium"]["days_remaining"]:
+                                medium = list(users["priority_medium_survey"])
+                                priority_medium = i["medium"]
+                                priority_medium["filled_by"] = i["filled_by"]
+                                priority_medium["completed"] = i["completed"]
+                                medium.append(priority_medium)
+                                users["priority_medium_survey"] = medium
+
+                    else:
+                        
+                        if "notcompleted_count" in users:
+                            
+                            users["notcompleted_count"] = str( int( users["notcompleted_count"] ) + 1 )
+                            users["survey_pending"] = "yes"
+                        else:
+                            
+                            users["notcompleted_count"] = str( int( users["notcompleted_count"] ) + 1 )
+                            users["survey_pending"] = "yes"
+                            
+                        if i["high"]:
+                            if i["high"]["days_remaining"]:
+                                high = list(users["priority_high_survey"])
+                                priority_high = i["high"]
+                                priority_high["filled_by"] = i["filled_by"]
+                                priority_high["completed"] = i["completed"]
+                                high.append(priority_high)
+                                users["priority_high_survey"] = high
+                                users["priority_high"] = "yes"
+                        if i["low"]:
+                            if i["low"]["days_remaining"]:
+                                low = list(users["priority_low_survey"])
+                                priority_low = i["low"]
+                                priority_low["filled_by"] = i["filled_by"]
+                                priority_low["completed"] = i["completed"]
+                                low.append(priority_low)
+                                users["priority_low_survey"] = low
+                                users["priority_low"] = "yes"
+                        if i["medium"]:
+                            if i["medium"]["days_remaining"]:
+                                medium = list(users["priority_medium_survey"])
+                                priority_medium = i["medium"]
+                                priority_medium["filled_by"] = i["filled_by"]
+                                priority_medium["completed"] = i["completed"]
+                                medium.append(priority_medium)
+                                users["priority_medium_survey"] = medium
+                                users["priority_medium"] = "yes"
+                
+                    
+                #Modual status and percentage calculation
+                users["module_completed"] = "no"
+                users["module_pending"] = "no"
+                users["module_status"] = ""
+
+                if i["user_pri_id"] in list(module.keys()):
+                    module_user = module[i["user_pri_id"]]
+                    if module_user["group"] == "intervention":
+                        
+                        allotted = int(module_user["allotted"])
+                        pending = int(module_user["pending"])
+                        if allotted > 0:
+                            comp = round(eval( 'allotted - pending' ))
+                            comp_per = round(eval(  'comp / allotted * 100' ))
+                        if allotted == comp:
+                            users["module_completed"] = "yes"
+                        if pending > 0:
+                            users["module_pending"] = "yes"
+                        users["module_status"] = str(comp_per) + "%"
+                    else:
+                        users["module_status"] = "This person does not belong to intervention group"
+                    users["module_pending_list"] = list(module_user["pending_list"])
+                    users["module_completed_list"] = list( set(list(module_user["allotted_list"])).difference(list(module_user["pending_list"])) )
+                
+                #Refer status
+                users["refer_status"] = "N/A"
+                refer_user_list = list(refer.keys())
+                if i["user_pri_id"] in refer_user_list:
+                    refer_user = refer[i["user_pri_id"]]
+                    if refer_user:
+                        users["refer_status"] = refer_user["context"]               
+
+                if users["enroll_percentage"] == "yes":
+                    users["enroll_percentage"] = "100"
+                user_survey[i["user_pri_id"]] = users
+                
         pending_enroll = list(set(list(enroll.keys())).difference(list(user_survey.keys())))
         for i in pending_enroll:
             if "UT-" in i:
@@ -3595,6 +3596,7 @@ def enroll_status():
             dict_user["registration"]= i["registration"]
             dict_user["socio_demography"] = i["socio_demography"]
             dict_user["disease_profile"] = i["disease_profile"]
+            dict_user["active_status"] = i["active"]
             
             if i["registration"] != "" or "PAR" not in i["registration"]:
                 dict_user["enroll_status"] = str( int( dict_user["enroll_status"] ) + 33)
@@ -3816,7 +3818,7 @@ def survey_priority_status():
 @app.route('/shg_dashboard/<SHG>' , methods = ["POST", "GET"])
 def shg_dashboard(SHG):
     try:
-        data1 = open((app.config['Tokens'] + '/' + "dashboard.json"))
+        data1 = open((app.config['Dashboard'] + '/' + "dashboard.json"))
         all_user = json.load(data1)
         
         shg_users = []
