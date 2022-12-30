@@ -3292,14 +3292,14 @@ def dashboard():
 
 @app.route('/dashboard_participant/<pkid>', methods=["POST","GET"])
 def dashboard_participant(pkid):
-    try:
+    # try:
         if g.user:
             data1 = open((app.config['Dashboard'] + '/' + "dashboard.json"))
             all_user = json.load(data1)
             response = all_user[pkid]
             return render_template('dashboard_participant.html', responses = response)
-    except:
-        return "An exception occurred"
+    # except:
+    #     return "An exception occurred"
 
 
 def User_list():

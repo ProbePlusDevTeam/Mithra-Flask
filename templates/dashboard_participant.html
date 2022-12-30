@@ -27,9 +27,9 @@
 
                                 <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                                     <div class="flex-column">
-                                        <h5 class="dashboard_innercard_sub">{{responses.village_name}}</h5>
-                                        <h5 class="dashboard_innercard_sub">{{responses.shg_associate}}</h5>
                                         <h5 class="dashboard_innercard_sub">{{responses.panchayat}}</h5>
+                                        <h5 class="dashboard_innercard_sub">{{responses.shg_associate}}</h5>
+                                        <h5 class="dashboard_innercard_sub">{{responses.village_name}}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                     <div class="flex-column">
                                         <h5 class="dashboard_innercard_sub">Disease Profile</h5>
                                         <img src="{{ url_for('static', filename='assets/img/icons/wrong.png')}}"
-                                            style="width:50px; height:30px">
+                                            style="width:50px; height:50px">
                                     </div>
                                 </div>
 
@@ -231,11 +231,7 @@
 
                                 <div class="col-6 col-lg-9 col-md-9 col-sm-6">
                                     <div class="d-flex">
-                                        {% if responses.module_status == "0%" %}
-                                        <h5 class="dashboard_innercard_sub">No module alloted as of now for you</h5>
-                                        {% elif responses.module_status == "This person does not belong to intervention group" %}
-                                        <h5 class="dashboard_innercard_sub">{{responses.module_status}}</h5>
-                                        {% else %}
+                                        {% if responses.module_completed == "yes" or responses.module_pending == "yes" %}
                                         {% if responses.module_completed_list|length > 0 %}
                                         {% for list in responses.module_completed_list %}
                                         <div class="flex-column">
@@ -256,6 +252,13 @@
                                                 style="height: 50px; width:50px; filter: brightness(150%);">
                                         </div>
                                         {% endfor %}
+                                        {% endif %}
+                                        
+                                        {% else %}
+                                        {% if responses.module_status == "0%" %}
+                                        <h5 class="dashboard_innercard_sub">No module alloted as of now for you</h5>
+                                        {% elif responses.module_status == "This person does not belong to intervention group" %}
+                                        <h5 class="dashboard_innercard_sub">{{responses.module_status}}</h5>
                                         {% endif %}
                                         {% endif %}
 
