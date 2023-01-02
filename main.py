@@ -1363,7 +1363,7 @@ def return_files_web(foldername,filename):
 def version_check(secret_key,Android_Version):
     try:
         if secret_key == app.secret_key:
-            list_of_files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'] + "/" + "APKs" + "/*"))
+            list_of_files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'] + "/" + "APKs" + "/Latest_APKs"+ "/*"))
             latest_file = max(list_of_files, key=os.path.getctime)
             split_str = latest_file.split("/")
             split_str.reverse()
@@ -1376,6 +1376,7 @@ def version_check(secret_key,Android_Version):
         return jsonify(response)
     except Exception as e:
         return str(e) 
+    
 ###################### Download File APIs ######################
 
 ###################### Devices APIs ######################
@@ -3026,104 +3027,6 @@ def Failed_APIs():
         return "An exception occurred"
 
 
-# API to sync manually the json file
-@app.route('/offlineAPI_old' , methods=["POST","GET"])
-def offlineAPI_old():
-    try:        
-        xl = open ("data.csv")        
-        
-        for i in xl:
-            store_ids = {}
-            st = i.strip()
-            test = open((app.config['SYNC_FOLDER'] + '/' + st))
-            data1 = json.load(test)
-            dict_request_body = json.dumps(data1)
-            server_pk_id = ""
-            android_pk_id = ""
-            failed_api = []
-            result = {}
-            key_list = list(data1.keys())
-            for key in key_list:
-                
-                full_value = data1[key]
-                for api in full_value:
-                    ic = ic + 1
-                    act_url = api["url"]
-                    act_data = json.loads(api["body"])
-                    act_role = "participant"
-                    pkid = ""
-                    
-                    if api["method"] == "PUT":
-                        
-                        if api["table"] == "par_video_data":
-                            id_key = store_ids.keys()
-                            id_key = list(id_key)
-                            length_data = len(id_key)
-                            id_key_string = str(id_key)
-                           
-                            if "PVD" in act_data["name"]:
-                                # if length_data == 0:
-                                act_method = api["method"]
-                                act_responses = {}
-                                act_responses = apicall(act_method, act_url, act_data, act_role)
-                               
-                                
-                            elif act_data["name"] not in id_key_string:
-                                act_responses = "unable to find the server primary key for this android primary id in dictionary"
-                            
-                            else:
-                                act_data["name"] = store_ids[act_data["name"]]
-                                act_method = api["method"]
-                                act_responses = {}
-                                act_responses = apicall(act_method, act_url, act_data, act_role)
-                            
-                    else:
-                        if api["table"] == "par_video_data":
-                            split_date = api["api_pri_key"]
-                            split_date = str(split_date)
-                            split_date = split_date.split("2022")
-                            t = str(split_date[1])
-                            t = "2022" + t
-                            act_data["creation"] = t
-                        act_method = api["method"]
-                        act_responses = {}
-                        act_responses = apicall(act_method, act_url, act_data, act_role)
-                            
-
-                    if "message" in act_responses:
-                        #if post save the server primary id
-                        if api["table"] == "par_video_data":
-                            if api["method"] == "POST":
-                                store_ids[act_data["name"]] = act_responses["message"]["name"]
-                        #to save the success message in api sync table
-                        if act_responses["message"] == "success" or act_responses["message"]["status"] == "success":
-                            sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
-                            sync_role = "admin"
-                            sync_method = api["method"]
-                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "pass",  "error_log": "no error log"}
-                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
-                    else:
-                        failed_api.append(api["api_pri_key"])
-                        sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
-                        sync_role = "admin"
-                        sync_method = api["method"]
-                        sync_data = {}
-                        if "exception" in act_responses:
-                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses["exception"]}
-                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
-                            
-                        else:
-                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses}
-                            sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
-        if len(failed_api) == 0:
-            result["message"] = "success"
-            return jsonify(result)
-        else:
-            result["message"] = failed_api
-            return jsonify(result)
-    except:
-        return "An exception occurred"
-
 @app.route('/offlineAPI' , methods=["POST","GET"])
 def offlineAPI():
     try:
@@ -3201,7 +3104,7 @@ def offlineAPI():
                             sync_url = "api/method/mithra.mithra.doctype.api_sync_data.api.add_api_sync_data"
                             sync_role = "admin"
                             sync_method = api["method"]
-                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "pass",  "error_log": "no error log"}
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "aap_version": api["app_version"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "pass",  "error_log": "no error log"}
                             sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
                     else:
                         failed_api.append(api["api_pri_key"])
@@ -3210,11 +3113,11 @@ def offlineAPI():
                         sync_method = api["method"]
                         sync_data = {}
                         if "exception" in act_responses:
-                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses["exception"]}
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "aap_version": api["app_version"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses["exception"]}
                             sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
                             
                         else:
-                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses}
+                            sync_data = {"api_device_pri_id": api["api_pri_key"], "user_pri_id": key , "method": api["method"] ,"url": api["url"], "body": api["body"], "table_name": api["table"], "device_id": api["device_id"], "created_user": api["coordinator_id"], "aap_version": api["app_version"], "modified_user": "UT-9-2022-07-11-08:19:58-no_one_modified", "status": "fail", "error_log": act_responses}
                             sync_responses = apicall(sync_method, sync_url, sync_data, sync_role)
 
         if len(failed_api) == 0:
@@ -3292,14 +3195,14 @@ def dashboard():
 
 @app.route('/dashboard_participant/<pkid>', methods=["POST","GET"])
 def dashboard_participant(pkid):
-    # try:
+    try:
         if g.user:
             data1 = open((app.config['Dashboard'] + '/' + "dashboard.json"))
             all_user = json.load(data1)
             response = all_user[pkid]
             return render_template('dashboard_participant.html', responses = response)
-    # except:
-    #     return "An exception occurred"
+    except:
+        return "An exception occurred"
 
 
 def User_list():
